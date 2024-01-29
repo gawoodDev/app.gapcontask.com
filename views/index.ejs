@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo List</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+<body>
+
+    <div class="container mt-5">
+        <!-- Formulaire pour Ajouter une Nouvelle Tache -->
+        <form action="/addTask" method="POST">
+            <div class="form-group">
+                <input type="checkbox" id="isDone" class="form-check-input">
+                <label for="isDone" class="form-check-label">TerminÃ©</label>
+            </div>
+            <div class="form-group">
+                <label for="title">Titre :</label>
+                <input type="text" id="title" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="body">Description :</label>
+                <textarea id="body" class="form-control" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Ajouter TÃ¢che</button>
+        </form>
+
+        <!-- Container pour les TÃ¢ches -->
+        <div id="afficher" class="mt-4">
+            <!-- ModÃ¨le de TÃ¢che -->
+            <div class="card">
+                <div class="card-body">
+                    <input type="checkbox" class="form-check-input">
+                    <h5 class="card-title">Titre de la Tache</h5>
+                    <p class="card-text">Description de la Tache</p>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <script src="/js/jquery.min.js"></script>
+    
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/main.js"></script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+ 
