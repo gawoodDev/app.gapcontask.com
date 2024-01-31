@@ -1,31 +1,21 @@
 const express = require("express");
 const app = express();
-const mysql = require("mysql");
+const db = require("./db/db.js");
+const Joi = require("joi");
+const validation = require("./midelware/model.js");
+
+
+const router = require("./routes/routes")
+
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(express.static('public'));
 app.set("view engine", "ejs");
 
-const db = mysql.createConnection({
-    host: "localhost",
-    user : "root",
-    password: "root",
-    database : "skyapper"
-})
 
 
-
-db.connect((err)=> {
-    if (err) throw err; 
-    //console.log("Connection a la base de donne reussit!");
-});
-
-
-
-
-
-
+app.use(router);
 
 app.get("/",(req, res)=>{
     res.render("index.ejs")
@@ -39,12 +29,6 @@ app.get("/getDatas", (req, res)=>{
     })
 })
 
-
-
-
-app.post("/addTask",(req, res)=>{
-    console.log(req.body)
-})
 
 
 
