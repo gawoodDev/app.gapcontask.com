@@ -22,7 +22,6 @@ app.get("/",(req, res)=>{
 })
 
 app.get("/getDatas", (req, res)=>{
-    
     db.query("SELECT * FROM tasklist",(err, result)=>{
         if (err) throw err
         res.json(result);

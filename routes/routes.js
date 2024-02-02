@@ -9,7 +9,6 @@ const db = require("../db/db.js");
 
 routes.post("/addTask", (req, res)=>{
     
-    
     let {err, value } = validation(req.body);
     
     
@@ -31,25 +30,52 @@ routes.post("/addTask", (req, res)=>{
         console.log("Ajouter a la base de donnee avec succes !")
     });
     
+    res.send("Ajouter avec success !").end()
     
 })
 
+ 
 
-
-routes.get("/deleteTask",(req, res)=>{
+routes.post("/deleteTask",(req, res)=>{
     
-    let query = "";
-    db.query("",(err)=>{
+    
+    let id = Number(req.body.id);
+    
+    console.log(typeof id)
+    let query = `DELETE FROM tasklist WHERE id=${id}`;
+    
+    db.query(query,(err)=>{
+        if(err) throw err
+        console.log("La tache " + id + " a ete supprimer  avec succes !")
+    })
+    
+    res.send("Delete avec success !").end()
+    
+    
+});
+
+
+
+
+routes.post("/modifTask",(req, res)=>{
+    
+    let {id, title, body, isdone} = req.body
+    
+    let ref = "00-A";
+    
+    isdone = isdone === true ? 1 : 0;
+    
+    let query = `UPDATE tasklist SET title="${title}",  body="${body}",  ref='${ref}', isdone='${isdone}'  WHERE id='${id}'`;
+    db.query(query,(err)=>{
+        if(err) throw err;
+        
+        console.log("Modif avec success ")
         
     })
     
-})
-routes.get("/modifTask",(req, res)=>{
     
-    let query = ""
-    db.query("",(err)=>{
-        
-    })
+    res.send("Modif avec success !").end()
+    
     
 })
 

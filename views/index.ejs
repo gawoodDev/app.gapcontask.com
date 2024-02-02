@@ -4,17 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ToDo List</title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/index.css">
 </head>
 <body>
     
+    
+    
+    <div class="container mt-5 p-3">
+        
+        <h2 class="display-6 ">Clicker sur ce bouton pour ajouter une tache !</h2>
+        
+        <button style="" id="addNewTaskBtn" class="btn btn-secondary">Ajouter</button>
+        
+    </div>
 
-    <div class="container mt-5">
+    <div class="container pannel_form ">
         <!-- Formulaire pour Ajouter une Nouvelle Tache -->
         <form action="/addTask" method="POST" >
             <div class="form-group">
                 <input type="checkbox" id="isdone" name="isdone" class="form-check-input">
-                <label for="isdone" class="form-check-label">TerminÃ©</label>
+                <label for="isdone" class="form-check-label">Terminer</label>
             </div>
             <div class="form-group">
                 <label for="title">Titre :</label>
@@ -22,31 +32,60 @@
             </div>
             <div class="form-group">
                 <label for="body">Description :</label>
-                <textarea id="body" name="body" class="form-control" required></textarea>
+                <textarea id="body" nameg="body" class="form-control" required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Ajouter Tache</button>
+            
+            <div id="existing">
+                
+                <button type="button" class="btn btn-secondary modifBtn"id="modifBtn">Modifier</button>
+                
+                <button type="button" class="btn btn-danger deleteBtn"id="deleteBtn">Suprimer</button>
+                
+            </div>
+            
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+                Ajouter
+            </button>
+            
+            
+            
         </form>
+
+
+    
+</div>
+
+<div class="container -mt-5 mb-5">
 
         <!-- Container pour les TÃ¢ches -->
         <div id="afficher" class="mt-4">
             <!-- ModÃ¨le de TÃ¢che -->
+            
+            
+            
             <div class="card">
                 <div class="card-body">
                     <input type="checkbox" class="form-check-input">
                     <h5 class="card-title">Titre de la Tache</h5>
                     <p class="card-text">Description de la Tache</p>
                 </div>
+                
+                
+                
             </div>
+            
+            
+
 
 
         </div>
     </div>
 
 
-    <script src="/js/jquery.min.js"></script>
+    <script src="./js/jquery.min.js"></script>
     
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/main.js"></script>
 
 </body>
 </html>

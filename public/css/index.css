@@ -1,0 +1,140 @@
+
+*{ margin: 0; padding: 0; box-sizing: border-box; }
+
+/*
+html{ font-size: 62.5%; }
+
+/*
+@font-face {  font-family: RedHatDisplay_Bold;  src: url("/docs/assets/font/RedHatDisplay-Bold.ttf"); }
+
+@font-face { font-family: Lato-Regular ; src: url("/docs/assets/font/Lato-Regular.ttf"); }
+
+@font-face {  font-family: OpenSans-Bold ; src: url("/docs/assets/font/OpenSans-Regular.ttf"); }
+
+@font-face { font-family: Poppins-Regular ;  src: url("/docs/assets/font/Poppins-Regular.ttf"); }
+
+*/
+:root{
+  --red :  #F44236; 
+  --blue: #152932; 
+  --gray: #E0E0E0;
+  --black: #282828;
+  --p_color : #646464;
+}
+
+img{ width: 100%;}
+
+button{ width: auto;  height: auto;  padding: 10px 24px;  border-radius: 5px;  font-size: 1.8em;  color: white; background:  #4C5BFF;  border: none;  outline: none;  box-shadow: 0 1.5px 2px .2px  rgba(197, 197, 197, .5);  background: var(--red);}
+
+p{ max-width: 650px; font-size: 18px; font-weight: 400; line-height: 28px; font-family: Lato-Regular ; color: var(--p_color)  }
+
+ul, li { font-size: 1.2em;  list-style: none; text-decoration: none; color: #C5C5C5}
+
+a{ font-size: 14px; padding: 5px 0; margin-top: 10px;   color: #4D5DFF; font-family: Poppins-Regular; font-weight: 500;  text-decoration: underline;}
+
+
+
+
+a { text-decoration: none }
+
+section { padding: 2em 20px; }
+
+
+header { width: 100%; height: 90px; display: grid;  justify-content: space-between;  box-shadow: .2px .8px 12px 2px #414C7A40; background: #fff; }
+
+header > div:first-child { width: 70%;  height: 70px; display: flex; justify-content: flex-start; align-items: center; padding: 0 20px;}
+
+header > div img { height: 40px; width: 40px; }
+
+header > div strong { font-size: 24px;  font-family: RedHatDisplay_Bold; margin-left: 7px; }
+
+nav { transition: right .5s ease-out; position: fixed; right: -100%; top: 0; height: 100vh;  width: 100%; background: #E4E4E4;  padding: 230px 15px 80px; display: flex;  flex-direction: column; display: nolne;}
+
+nav.active { right: 0;}
+
+nav ul li{  margin-bottom: 20px; text-align: center;}
+
+nav ul li a{  color: var(--blue); font-size: 1.5em;}
+
+div#toggleMenu{width: 30%;height: 100%;display: grid; justify-items: flex-end; padding: 0 20px 0 0; }
+
+.toggleMenu svg{height: 20px;width: 20px;}
+
+
+
+/* :::::::::::::::: */
+/* :::::::::::::::: */
+/* :::::::::::::::: */
+/* :::::::::::::::: */
+
+
+/* 
+    #39CEAA : vert pastel
+    #109C7B : vert dark
+    #0093DC : blue pastel
+*/
+
+
+/* :::::::::::::::: */
+/* :::::::::::::::: */
+/* :::::::::::::::: */
+
+
+.card{
+    position: relative;
+    overflow: hidden;
+    margin: 0 0 20px 0;
+}
+
+.focusBox{
+    background: #FFF28D;
+}
+
+.actions{
+    position: absolute;
+    width: 20%;
+    height: 100%;
+    background: #70FFE2;
+    right: -21%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: right 0.5 ease-in;
+    
+}
+
+.actions.open{
+    right: 0;
+    
+}
+
+
+.actions button {
+    width: 100%;
+    height: 40%;
+    font-size: 10px;
+    padding: 0;
+}
+
+
+.pannel_form {
+    position: fixed;
+    z-index: 10;
+    bottom: -51%;
+    background: white;
+    width: 100%;
+    height: 50%;
+    padding: 20px;
+    box-shadow: 0 -3px 3px #2222;
+    transition: bottom .2s ease-in;
+} 
+
+
+
+.pannel_form.open{
+    bottom: 0;
+}
+
+
+
+
