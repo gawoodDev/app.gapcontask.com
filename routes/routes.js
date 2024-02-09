@@ -3,90 +3,83 @@ const routes = express.Router();
 const Joi = require("joi");
 const validation = require("../midelware/model.js");
 const db = require("../db/db.js");
+let datas ;
+get_prodlist();
 
 
 
-
-routes.post("/addTask", (req, res)=>{
-    
-    let {err, value } = validation(req.body);
-    
-    
-    if (err) {
-        console.log(err.details[0].message)
-    }
-    
-    let {title, body, isdone} = value
-    let ref = "00-A";
-    
-    console.log(value);
-    
-    
-    let query = `INSERT INTO tasklist (title,body,isdone,ref) VALUES ("${title}","${body}","${isdone}","${ref}")`;
-    
-    db.query(query,(err)=>{
-        if (err) throw err;
-        
-        console.log("Ajouter a la base de donnee avec succes !")
-    });
-    
-    res.send("Ajouter avec success !").end()
-    
+routes.get('/project',(req, res)=>{
+    res.render('project.ejs')
 })
 
- 
 
-routes.post("/deleteTask",(req, res)=>{
-    
-    
-    let id = Number(req.body.id);
-    
-    console.log(typeof id)
-    let query = `DELETE FROM tasklist WHERE id=${id}`;
-    
-    db.query(query,(err)=>{
-        if(err) throw err
-        console.log("La tache " + id + " a ete supprimer  avec succes !")
+routes.get("/getDatas", (req, res)=>{
+    db.query("SELECT * FROM tasklist",(err, result)=>{
+        if (err) throw err
+        res.json(result);
     })
+})
+
+
+routes.get('/get_project_list',(req, res)=>{
+    console.log('Page demander')
+    res.json(get_prodlist()).end()
+})
+
+
+
+
+
+routes.get('/plan:id',(req, res)=>{
     
-    res.send("Delete avec success !").end()
+    let id = Number(req.params.id.slice(1,2));
+    let datas = get_prodlist();
+    let data = datas.find( item => item.id === id );
+    let ref = data.ref_key;
     
+    let query = `SELECT * FROM tasklist WHERE ref="${ref}"`;
     
+    db.query(query, 
+        (err, result)=>{
+            if(err) throw err;
+            data.service = result;
+            console.log('Envoie des donner de la ta/le')
+            res.json(data)
+    });
 });
 
 
+routes.get('/project/plan:id',(req, res)=>{
+    
+    let id = Number(req.params.id.slice(1,2));
+    let datas = get_prodlist();
+    
+    let data = datas
+    .find( item => item.id === id );
+    
+    console.log(`: Page afficher`);
+    res.render('plan', {data});
 
-
-routes.post("/modifTask",(req, res)=>{
-    
-    let {id, title, body, isdone} = req.body
-    
-    let ref = "00-A";
-    
-    isdone = isdone === true ? 1 : 0;
-    
-    let query = `UPDATE tasklist SET title="${title}",  body="${body}",  ref='${ref}', isdone='${isdone}'  WHERE id='${id}'`;
-    db.query(query,(err)=>{
-        if(err) throw err;
-        
-        console.log("Modif avec success ")
-        
-    })
-    
-    
-    res.send("Modif avec success !").end()
-    
-    
 })
 
 
 
 
 
+function get_prodlist (){
+    
+    db.query(`SELECT * FROM prodlist`,
+        (err, result)=>{
+        if(err) throw err;
+        datas = result;
+        
+    })
+    return datas;
+    
+    
+};
 
-
-
-
+get_prodlist()
 
 
 

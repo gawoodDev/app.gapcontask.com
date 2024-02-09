@@ -40,21 +40,36 @@ a { text-decoration: none }
 section { padding: 2em 20px; }
 
 
-header { width: 100%; height: 90px; display: grid;  justify-content: space-between;  box-shadow: .2px .8px 12px 2px #414C7A40; background: #fff; }
+header { width: 100%; height: 70px; display: grid;  justify-content: space-between;  box-shadow: .2px .8px 12px 2px #414C7A40; background: #fff; }
 
 header > div:first-child { width: 70%;  height: 70px; display: flex; justify-content: flex-start; align-items: center; padding: 0 20px;}
 
-header > div img { height: 40px; width: 40px; }
+header > div img { height: 60px; width: 40px; }
 
 header > div strong { font-size: 24px;  font-family: RedHatDisplay_Bold; margin-left: 7px; }
-
+/*
 nav { transition: right .5s ease-out; position: fixed; right: -100%; top: 0; height: 100vh;  width: 100%; background: #E4E4E4;  padding: 230px 15px 80px; display: flex;  flex-direction: column; display: nolne;}
 
-nav.active { right: 0;}
+*/
 
-nav ul li{  margin-bottom: 20px; text-align: center;}
 
-nav ul li a{  color: var(--blue); font-size: 1.5em;}
+nav{ height: 100%; right: 0;}
+
+
+header ul{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    padding: 10px 0;
+}
+
+header ul li{  margin: 0 10px; text-align: center; background : gold; padding: 0 5px; display: grid; place-content: center; 
+}
+
+
+header ul li a{ margin: 0 ; padding: 0; color: #0054E3; font-size: 15px;}
+
+
 
 div#toggleMenu{width: 30%;height: 100%;display: grid; justify-items: flex-end; padding: 0 20px 0 0; }
 
@@ -77,53 +92,15 @@ div#toggleMenu{width: 30%;height: 100%;display: grid; justify-items: flex-end; p
 
 /* :::::::::::::::: */
 /* :::::::::::::::: */
-/* :::::::::::::::: */
-
-
-.card{
-    position: relative;
-    overflow: hidden;
-    margin: 0 0 20px 0;
-}
-
-.focusBox{
-    background: #FFF28D;
-}
-
-.actions{
-    position: absolute;
-    width: 20%;
-    height: 100%;
-    background: #70FFE2;
-    right: -21%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: right 0.5 ease-in;
-    
-}
-
-.actions.open{
-    right: 0;
-    
-}
-
-
-.actions button {
-    width: 100%;
-    height: 40%;
-    font-size: 10px;
-    padding: 0;
-}
 
 
 .pannel_form {
     position: fixed;
-    z-index: 10;
-    bottom: -51%;
+    z-index: 17;
+    bottom: -350px;
     background: white;
     width: 100%;
-    height: 50%;
+    height: 350px;
     padding: 20px;
     box-shadow: 0 -3px 3px #2222;
     transition: bottom .2s ease-in;
@@ -134,6 +111,25 @@ div#toggleMenu{width: 30%;height: 100%;display: grid; justify-items: flex-end; p
 .pannel_form.open{
     bottom: 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

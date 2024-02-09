@@ -1,0 +1,51 @@
+<div class="pannelAddTask">
+
+    
+    <diiv class="closePanel">
+        
+    </diiv>
+    
+    
+    <form action="/addTask" method="POST">
+
+        <div class="insertionText">
+            <div>
+                <input type="checkbox" id="isdone" name="isdone" class="form-check-input">
+            </div>
+
+            <div>
+                <input placeholder="Nom de la tâche" type="text" id="title" name="title" class="form-control" required>
+                <textarea placeholder="Description de la tâche" id="body" nameg="body" class="form-control" required></textarea>
+            </div>
+        </div>
+
+        <div class="boxSelectSend">
+            <button type="button" class="selectDate"> Date d'échéance</button>
+
+
+            <div>
+                <select name="" id="selectProd">
+                    <option value="">Boîte de réception</option>
+                    <option value="">Finance</option>
+                </select>
+            </div>
+
+
+            <button type="button" class="selectPriory"> Priorité </button>
+            <button type="button" class="selectPriory"> Alert </button>
+        </div>
+
+
+
+        <div class="submitBox">
+
+            <button type="submit" class="submitBtn" id="submitBtn">Send</button>
+
+        </div>
+
+
+
+
+
+    </form>
+</div>

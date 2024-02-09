@@ -6,11 +6,10 @@
     <title>ToDo List</title>
     
     <link rel="stylesheet" href="./../css/plan.css">
-    <link rel="stylesheet" href="./../css/cssComposant.css">
-    
-    
-    
 </head>
+
+
+
 <body>
   
   <%- include("composant/bottomBar") %>
@@ -18,22 +17,39 @@
 
 
 
+
+
+
   
-<header>
+<header id="<%= data.id %>">
     
     <div class="top">
+      
       <div>
-        <h5> Hello Gary</h5>
+          <a href="/project">
+        <button type="button">
+          Retour
+        </button>
+        
+        </a>
+        
       </div>
+      
+      <div>
+        <h5> <%= data.title %> </h5>
+      </div>
+      
+      
       <div>
         <button id="modProd" type="button">
           Modif
         </button>
       </div>
+
     </div>
       
     
-    <div style="display: no" class="middle">
+    <div style="display: none" class="middle">
       
       
       <div>
@@ -55,7 +71,7 @@
     </div>
     
     
-    <div style="display: no" class="bottom">
+    <div style="display: none" class="bottom">
       <div class="scrollCont">
         <button type="button">All</button>
         <button type="button">Today</button>
@@ -66,10 +82,6 @@
     
   </header>
   
-  
-  
-        
-
   
 <div class="assembly">
   
@@ -275,6 +287,8 @@
   
   
  </div>
+  
+  
 
 <div class="container pannel_form ">
 
@@ -325,6 +339,8 @@
     
 </div>
 
+
+
   
 <div class="btn-group-vertical alter_prod_box">
         <button class="btn btn-primary" type="button" id="modifProd">
@@ -340,37 +356,138 @@
   
   
   
-     <script src="./js/jquery.min.js"></script>
+     <script src="./../js/jquery.min.js"></script>
     
-    <script type="module" src="./js/main.js"></script>
+    <script type="module" src="./../js/plan.js"></script>
 
 </body>
-</html>
 
 
 
 
+<!--
+<body>
+    
+    
+    
+    <header id="<%= data.id %>">
+        <h5> <%= data.title %> </h5>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/project">Projet</a>
+            </li>
+        </ul>
+        
+        <div>
+            <button id="modProd" class="btn " type='button'>Alter</button>
+        </div>
+    </header>
+    
+    
+    
+    <div class="btn-group-vertical alter_prod_box">
+        <button class="btn btn-primary" type="button" id="modifProd">
+            Modifier
+        </button>
+        <button class="btn btn-danger" type="button" id="deleteProd">
+            Suprimer
+        </button>
+    </div>
+    
+    
+    
+    <div class="container mb-5 mt-5">
+        <div class="card">
+            <button id="addNewTaskBtn" type="button" class="btn btn-primary">Ajouter</button>
+        </div>
+    </div>
+    
+    
+    <div class="container mb-5">
+        <div id="affichage" class="mt-4">
+            
+            <div class="card">
+                <div class="card-body">
+                    <input type="checkbox" class="form-check-input">
+                    <h5 class="card-title">Titre de la Tache</h5>
+                    <p class="card-text">Description de la Tache</p>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    
+
+    
+    
+    
+    
+    
+    <div class="container pannel_form ">
+
+      <form action="/addTask" method="POST" >
+            
+            <div class="form-group">
+                <input type="checkbox" id="isdone" name="isdone" class="form-check-input">
+                <label for="isdone" class="form-check-label">Terminer</label>
+                
+            </div>
+            
+            
+             <div class="form-group" id="select_box">
+                  
+                  
+                <label for="title">Choisi le Projet :</label>
+                
+                
+                
+            </div>
+            
+            
+            
+            
+            <div class="form-group">
+                <label for="title">Titre :</label>
+                <input type="text" id="title" name="title" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="body">Description :</label>
+                <textarea id="body" nameg="body" class="form-control" required></textarea>
+            </div>
+            
+            <div id="existing">
+                
+                <button type="button" class="btn btn-secondary modifBtn"id="modifBtn">Modifier</button>
+                
+                <button type="button" class="btn btn-danger deleteBtn"id="deleteBtn">Suprimer</button>
+                
+            </div>
+            
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+                Ajouter
+            </button>
+            
+        </form>
+    
+</div>
 
 
-
-
-
-
-
+    
+    
+    
+    
+    
+    
+    
+    
  
+</body>
+-->
 
 
-
-
-    
-
-  
-    
-  
-
-
-
-
+</html>
 
 
 

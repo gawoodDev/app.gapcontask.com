@@ -1,0 +1,394 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  height: 100vh;
+  width: 100vw;
+  background: #0000dd;
+
+}
+
+@font-face {  font-family: RedHatDisplay_Bold;  src: url("../font/RedHatDisplay-Bold.ttf"); }
+@font-face {  font-family: Montserrat-Regular;  src: url("../font/Montserrat-Regular.ttf"); }
+@font-face { font-family: Lato-Regular ; src: url("../font/Lato-Regular.ttf"); }
+
+@font-face {  font-family: OpenSans ; src: url("../font/OpenSans-Regular.ttf"); }
+
+@font-face {  font-family: OpenSans-Bold ; src: url("../font/OpenSans-Bold.ttf"); }
+
+@font-face { font-family: Poppins-Regular ;  src: url("../font/Poppins-Regular.ttf"); }
+
+
+header{
+  width: 100%;
+  position: relative;
+}
+
+header .top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 70px;
+  padding: 20px 15px;
+
+}
+
+header .top h5{
+  font-size: 20px;
+  font-weight: 500;
+  font-family: RedHatDisplay_Bold;
+  color: #fff;
+}
+
+
+header .top > div  button{
+  width: 40px;
+  height: 40px;
+  border-radius: 50em;
+  border: none;
+  font-size: 10px;
+  background: #FFFFFFA6;
+  
+}
+
+header .middle
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+}
+
+
+header .middle > div{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: CENTER;
+  width: 100%;
+  height: 100px;
+}
+
+header .middle > div strong{
+  font-size: 12px;
+  color: #FFF;
+  font-family: Montserrat-Regular;
+}
+header .middle > div span{
+    font-size: 9px;
+    color: #e0e0e0;
+    font-family: Poppins-Regular;
+}
+
+
+
+
+header .bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  padding-bottom: 20px;
+  display: non;
+  padding: 0 15px;
+}
+
+header .bottom > .scrollCont{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  overflow: scroll;
+  margin: 0 0 10px 0;
+}
+
+header .bottom > .scrollCont button {
+  width: auto;
+  height: 30px;
+  max-width: 200px;
+  padding: 0 20px;
+  margin: 0 20px 0 0;
+  border: none;
+  border-radius: 5px;
+  text-overflow: ellipsis;
+  color: #444;
+}
+
+
+
+
+
+.assembly{
+  padding: 30px 15px 100px;
+  height: auto;
+  width: 100%;
+  background: #e4e4e9;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+
+.assembly h3{
+  font-size: 17px;
+  color: #333;
+  font-family: RedHatDisplay_Bold;
+}
+
+
+
+.container{
+  padding: 0px 0px 0px 20px;
+  margin: 15px 0;
+  height: auto;
+  width: 100%;
+  position : relative;
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  z-index: 9;
+  width: 5px;
+  height: 100%;
+  background: #aaa;
+  left: 0;
+  border-radius: 20px;
+}
+
+.card{
+  position: relative;
+  width: 100%;
+  height: auto;
+  max-height: 73px;
+  background: #FFFFFF;
+  border-radius: 7.5px;
+  display: flex;
+  padding-bottom: 0px;
+  justify-content: space-between;
+  border: 1px solid #D9D9D9;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  z-index: 9;
+  width: 5px;
+  height: 100%;
+  background: #619B4F;
+  right: 0;
+}
+
+.card > div:first-child{
+  height: 70px;
+  width: 12%;
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 15px;
+  align-items: center;
+}
+
+.card > div:first-child > input{
+  width: 22px;
+  height: 22px;
+  border: none;
+}
+
+.card > div:nth-child(2){
+  height: 100%;
+  width: 73%;
+  display: flex;
+  flex-direction: column;
+  padding: 7px 10px 0;
+}
+
+.card > div:last-child {
+  width: 15%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  height: auto;
+  max-height: 270px;
+}
+
+.card > div:last-child > div {
+  height: auto;
+  width: auto;
+  font-size: 10px;
+  display: grid;
+  place-content: center;
+  position: absolute;
+  padding: 2.5px 5px;
+  border-radius: 2px;
+  color: #fff;
+  top: 10px;
+  right: 15px;
+  font-family: Poppins-Regular;
+  background: #FF98D8;
+}
+
+.card > div:last-child > button {
+  border: none;
+  height: 40px;
+  width: 100%;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.card-body h5{
+  font-size: 15px;
+  color: #454545;
+  margin: 6.5px 0 5px 0;
+  font-family: Montserrat-Regular;
+}
+
+
+
+.card-body div {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: #A0A0A0;
+
+}
+
+
+.card-body div > p{
+  font-size: 11px;
+  color: #A0A0A0;
+  margin: 0 6px 0 4px;
+  font-family: Poppins-Regular;
+  font-weight: 0;
+}
+
+.card-body div > span{
+  font-size: 11px;
+  color: #A0A0A0;
+  font-family: Poppins-Regular;
+}
+
+.card-body .card-text{
+  font-size: 12px;
+  display: nono;
+  padding: 15px 0 15px 0;
+  font-family: Poppins-Regular;
+  color: #959595;
+  font-weight: 500;
+  letter-spacing: 0.05px
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.bottom_bar{
+  position: fixed;
+  background: #0000dd;
+  bottom: 0;
+  width: 100%;
+  height: 70px;
+  padding: 0 0px;
+  z-index: 13;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bottom_bar > div{
+  width: 20%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bottom_bar > div button {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50em;
+  font-size: 10px;
+  background: none;
+  color: #fff;
+}
+
+
+
+
+
+
+
+
+
+/*
+
+
+header{
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 20px;
+    
+}
+*/
+
+
+
+.alter_prod_box {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    z-index: 11;
+    opacity: 0;
+    visibility: hidden;
+    transition: .5s opacity ease;
+}
+
+.alter_prod_box.open{
+    opacity: 1;
+    visibility: visible;
+}
+
+.pannel_form {
+    position: fixed;
+    z-index: 10;
+    bottom: -51%;
+    background: white;
+    width: 100%;
+    height: 170px;
+    padding: 20px;
+    box-shadow: 0 -3px 3px #2222;
+    transition: bottom .2s ease-in;
+    z-index: 14;
+} 
+
+
+
+.pannel_form.open{
+    bottom: 0;
+}
+
+
+
+
+

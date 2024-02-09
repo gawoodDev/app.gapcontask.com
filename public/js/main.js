@@ -1,3 +1,77 @@
+import TASK_ITEM from './task_proto.js';
+import SELECT_ITEM from './component/select_prod_proto.js';
+
+let section_container = document.querySelector("#affichage");
+
+
+async function getDataFromDB (url) {
+    let fetched = await fetch(`/getDatas`)
+    let datas = await fetched.json()
+    return datas;
+}
+
+getDataFromDB().then((datas)=>{
+    
+    if (datas.length  > 0) {
+        
+        for(let data of datas){
+            let task = new TASK_ITEM(data);
+            task.append_to_section(section_container);
+        };
+        
+    }
+    else{
+        alert('00  de projet pour linstant.')
+    }
+    
+});
+
+
+
+
+
+
+
+/*
+let form = document.querySelector("form");
+let liveId;
+let existing = document.querySelector("#existing");
+let submitBtn = document.querySelector("#submitBtn");
+
+let pannel_form = document.querySelector(".pannel_form");
+
+
+document.querySelector("#addNewTaskBtn")
+.addEventListener("click", (e)=>{
+    e.preventDefault();
+    
+    pannel_form.classList.add("open");
+    
+    form.title.value = ""
+    form.body.value = ""
+    form.isdone.checked = false;
+    
+    try {
+        document.querySelector(`.card.focusBox`).classList.remove("focusBox");
+    } catch(error){}
+    
+    
+    liveId = null;
+    
+    
+    existing.style.display = "none";
+    submitBtn.style.display = "block";
+})
+
+
+
+
+
+
+/
+
+
+
 let section_container = document.querySelector("#afficher");
 let form = document.querySelector("form");
 let liveId;
@@ -6,7 +80,8 @@ let submitBtn = document.querySelector("#submitBtn");
 let deleteBtn = document.querySelector("button#deleteBtn");
 let modifBtn = document.querySelector("button#modifBtn");
 let pannel_form = document.querySelector(".pannel_form");
-        
+
+
 class TASK_ITEM {
     
     
@@ -166,59 +241,17 @@ class TASK_ITEM {
     
     
     
-    /*
-    
-    create_actionable(){
-        this.actionsBox = this.CREATE_ELEMENT("div", "actions" )
-        this.deleteBtn = this.CREATE_ELEMENT("button", "", "Del" )
-        this.modifBtn = this.CREATE_ELEMENT("button", "", "Modif" )
-        
-        this.actionsBox.append(this.modifBtn); 
-        this.actionsBox.append(this.deleteBtn); 
-        
-        //this.box.append(this.actionsBox)
-    }
-    
-    make_actionable(){
-        
-        //this.box.append(this.actionsBox)
-        /*
-        if(this.#isFocus){
-            this.actionsBox.classList.add("open")
-        }else{
-            this.actionsBox.classList.remove("open")
-        }
-        *
-        
-    }
-    */
-    
 }
 
-document.querySelector("#addNewTaskBtn")
-.addEventListener("click", (e)=>{
-    e.preventDefault();
-    
-    pannel_form.classList.add("open");
-    
-    form.title.value = ""
-    form.body.value = ""
-    form.isdone.checked = false;
-    
-    try {
-        document.querySelector(`.card.focusBox`).classList.remove("focusBox");
-    } catch(error){}
-    
-    
-    liveId = null;
-    
-    
-    existing.style.display = "none";
-    submitBtn.style.display = "block";
-})
+
+
+*/
 
 
 
+
+
+/*
 
 async function getDataFromDB (argument) {
     let fetched = await fetch("/getdatas")
@@ -229,10 +262,17 @@ async function getDataFromDB (argument) {
 
 
 getDataFromDB().then((datas)=>{
+    
+    
+    
+    
+
     for(let data of datas){
         let task = new TASK_ITEM(data);
         task.append_to_section(section_container);
     }
+    
+}).catch(()=>{
     
 })
 
@@ -249,11 +289,19 @@ form.addEventListener("submit",(e)=>{
     let title = form.title.value
     let body = form.body.value
     let isdone = form.isdone.checked === true ? 1 : 0;
-    alert(isdone)
+    
+    let select = form.select
+    
+    
+    console.log(select.value)
+    
+    
+    let ref = select.value;
+    
     
     
     if (liveId === null) {
-        postToServer("/addTask", JSON.stringify({title, body, isdone}), "POST")
+        postToServer("/addTask", JSON.stringify({title, body, isdone, ref }), "POST")
         .then((res)=>{
             if ( res.status === 200) {
                 alert("Added ...")
@@ -264,7 +312,7 @@ form.addEventListener("submit",(e)=>{
         })
         
     }else{
-        postToServer("/modifTask", JSON.stringify({title, body, isdone}), "POST")
+        postToServer("/modifTask", JSON.stringify({title, body, isdone, ref}), "POST")
         .then((res)=>{
             if ( res.status === 200) {
                 alert("Modified ...")
@@ -276,7 +324,7 @@ form.addEventListener("submit",(e)=>{
     }
     
     
-    let task = new TASK_ITEM({title, body, isdone})
+    let task = new TASK_ITEM({title, body, isdone, ref})
     task.append_to_section(document.querySelector("#afficher"));
     
 })
@@ -292,7 +340,7 @@ function deleteItem(e){
     e.preventDefault()
     
     document.querySelector(`div#task_${liveId}`).remove();
-    postToServer("deleteTask", JSON.stringify({id : liveId}), "POST")
+    postToServer("/deleteTask", JSON.stringify({id : liveId}), "POST")
     .then((res)=>{
         
     })
@@ -312,7 +360,8 @@ function modifItem(e){
         id: liveId,
         title: form.title.value,
         body: form.body.value,
-        isdone: form.isdone.checked
+        isdone: form.isdone.checked,
+        ref : form.select.value
     }
     
     
@@ -324,7 +373,7 @@ function modifItem(e){
     
     
     
-    postToServer("modifTask", JSON.stringify(data), "POST")
+    postToServer("/modifTask", JSON.stringify(data), "POST")
     .then((res)=>{
         
     })
@@ -346,5 +395,5 @@ function postToServer(url, body, method){
 }
 
 
-
+*/
 
