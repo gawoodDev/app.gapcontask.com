@@ -45,7 +45,7 @@
 
 .container {
     padding: 0px 0px 0px 20px;
-    margin: 15px 0;
+    margin: 15px 0 200px 0;
     height: auto;
     width: 100%;
     position: relative;
@@ -79,6 +79,11 @@
     margin-bottom: 10px;
 }
 
+
+.card.focusBox {
+    background: red;
+}
+
 .card::before {
     content: "";
     position: absolute;
@@ -99,8 +104,8 @@
 }
 
 .card > div:first-child > input {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     border: none;
 }
 
@@ -149,10 +154,14 @@
 }
 
 .card-body h5 {
-    font-size: 15px;
+    font-size: 12px;
     color: #454545;
     margin: 6.5px 0 5px 0;
     font-family: Montserrat-Regular;
+    max-height: 25px;
+    overflow: hidden;
+    text-overflow: hidden;
+    line-height: 25px;
 }
 
 .card-body div {
@@ -160,7 +169,6 @@
     justify-content: flex-start;
     align-items: center;
     color: #A0A0A0;
-
 }
 
 .card-body div > p {

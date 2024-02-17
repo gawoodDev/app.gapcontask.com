@@ -10,13 +10,13 @@ async function getDataFromDB (url) {
     return datas;
 }
 
+
 getDataFromDB().then((datas)=>{
     
     if (datas.length  > 0) {
-        
         for(let data of datas){
             let task = new TASK_ITEM(data);
-            task.append_to_section(section_container);
+            task.appendTo(section_container);
         };
         
     }
@@ -27,9 +27,29 @@ getDataFromDB().then((datas)=>{
 });
 
 
+let i = 0;
+let on = true;
+
+document.querySelector("#start").addEventListener("click", (e)=>{
+    
+
+    
+    
+    e.target.parentElement.querySelector("p").innerText = i++
+        
+    
+    
+        document.cookie = `values=[{"a" :"${i}"}];`; 
+    
+    
+})
 
 
 
+function go () {
+        
+        
+    }
 
 
 /*

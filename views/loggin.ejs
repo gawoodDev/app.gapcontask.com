@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo List</title>
+
+    
+    <link rel="stylesheet" type="text/css" href="./../css/bootstrap.min.css">
+
+
+</head>
+<body>
+
+
+<div class="card m-3">
+  <a href="/signup">
+    <button type="button" class="btn btn-primary">Signup</button>
+  </a>
+</div>
+
+
+
+<div class="container">
+  
+  <form class="form">
+    <div class="form-group">
+      <input name="email" value="a@a.com" placeholder="Email" type="text" class="form-control"/>
+    </div>
+    
+    <div class="form-group">
+      <input name="password" placeholder="Password" value="a" type="text" class="form-control"/>
+    </div>
+  
+    <div class="form-group">
+      <input class="btn btn-primary" placeholder="Username" type="submit" class="form-control"/>
+    </div>
+    
+  </form>
+  
+  
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="./../js/bootstrap.min.js"></script>
+
+<script>
+  
+  
+const form = document.querySelector("form");
+form.addEventListener("submit",(e)=>{
+  e.preventDefault()
+  
+  
+  let { password, email } = form;
+  /*
+  let id = "1707852220546Ma"
+  let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3MDc5NTYxNzA5MzBNYSIsImlhdCI6MTcwNzk1NjE3NywiZXhwIjoxNzA3OTk5Mzc3fQ.RGRBOPkMwQUQ2fxytA5Kt24sJrkp3Un9v-HYaN2CYJM__";
+  
+  let a = document.createElement("a")
+      a.href = `/auth?token=${token}`;
+      a.click();
+  
+  
+  
+  
+  return
+  
+  */
+  
+  
+  
+  let body = { password: password.value, email: email.value };
+  
+  alert(e.target.email.value);
+  
+  
+  POST_TO_SERVER("/loggin", body)
+  .then((res) => res.json())
+  .then((res) => { 
+      
+    console.log(res)
+    
+    let {allow, msg} = res;
+    
+    if(msg){
+      alert(msg)
+    }
+    
+    if(allow){
+      
+      let a = document.createElement("a")
+      a.href = `/auth`;
+      a.click();
+    }
+    
+    
+    
+    
+    
+    
+  })
+  
+  
+  
+});
+  
+  
+  
+  
+  
+function POST_TO_SERVER (url, body){
+    body = JSON.stringify(body);
+    return fetch(url,{
+      headers: {
+        "Content-type": "application/json;charset=UTF-8"
+      },
+      method: "POST",
+      body
+    } )
+  }
+  
+  
+  
+</script>
+
+</body>
+</html>

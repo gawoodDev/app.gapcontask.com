@@ -1,0 +1,12 @@
+[{
+    "user_id": "001A",
+    "email": "a@a.com",
+    "password": "$2a$10$oWDfskt9Iw773LcvPeR.aeGOp6H4Gntf2sexAPvGHLMmtuKMfCsTm",
+    "username": "Brolly"
+},
+{
+    "user_id": "002B",
+    "email": "b@b.com",
+    "password": "$2a$10$rlcqVhfD9L2F3nCR82mJfuOUzrPcJLLEMWIGMcQpSF3EuXikmo3MG",
+    "username": "Goku"
+}]

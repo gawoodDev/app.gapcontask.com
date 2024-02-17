@@ -4,382 +4,144 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ToDo List</title>
-    
+
     <link rel="stylesheet" href="./../css/plan.css">
     <link rel="stylesheet" href="./../css/cssComposant.css">
-    
-    
-    
+
+
+
 </head>
 <body>
-  
-  <%- include("composant/bottomBar") %>
-  <%- include("composant/bottomAddTask") %>
+
+    <%- include("composant/bottomBar") %>
+    <%- include("composant/bottomAddTask") %>
 
 
 
-  
-<header>
+
+    <header>
+
+        <div class="top">
+            <div>
+        
+                <h5> Hello <%= username %></h5>
+            </div>
+            <div>
+                <button id="modProd" type="button">
+                    Modif
+                </button>
+            </div>
+        </div>
+
+
+        <div style="display: no" class="middle">
+
+
+            <div>
+                <strong>124</strong>
+                <span>En cours</span>
+            </div>
+
+            <div>
+                <strong>12 Fév 2024</strong>
+                <span>Today</span>
+            </div>
+
+            <div>
+                <strong>330</strong>
+                <span>Achevée</span>
+            </div>
+
+
+        </div>
+
+
+        <div style="display: no" class="bottom">
+            <div class="scrollCont">
+                <button type="button">All</button>
+                <button type="button">Today</button>
+                <button type="button">Tomorrow</button>
+                <button type="button">Late</button>
+            </div>
+        </div>
+
+    </header>
+
+
+
+
+
+
+    <div class="assembly">
     
-    <div class="top">
-      <div>
-        <h5> Hello Gary</h5>
-      </div>
-      <div>
-        <button id="modProd" type="button">
-          Modif
+    
+    <div>
+        <h1>La derniere valeur recus est : </h1>
+        <p></p>
+        <button id="start">
+            Start
         </button>
-      </div>
+        
     </div>
-      
     
-    <div style="display: no" class="middle">
-      
-      
-      <div>
-        <strong>124</strong>
-        <span>En cours</span>
-      </div>
-      
-      <div>
-        <strong>12 Fév 2024</strong>
-        <span>Today</span>
-      </div>
+        <h3> URGENT </h3>
+        <div id="affichage" class="container">
 
-      <div>
-        <strong>330</strong>
-        <span>Achevée</span>
-      </div>
-      
-      
-    </div>
-    
-    
-    <div style="display: no" class="bottom">
-      <div class="scrollCont">
-        <button type="button">All</button>
-        <button type="button">Today</button>
-        <button type="button">Tomorrow</button>
-        <button type="button">Late</button>
-      </div>
-    </div>
-    
-  </header>
-  
-  
-  
+            <div class="card">
+                <div>
+                    <input type="checkbox" class="form-check-input">
+                </div>
+
+                <div class="card-body">
+                    <h5 class="card-title">Titre de cette tâche ... </h5>
+                    <div>
+                        <p>
+                            10:00 PM
+                        </p>
+                        &nbsp; • &nbsp;
+                        <span> Repeat </span>
+                    </div>
+                    <p class="card-text">
+                        Description de la tache de sang pour vous offrir ou pas demain mais vous avez besoin.
+                    </p>
+                </div>
+
+                <div>
+                    <div>
+                        Home
+                    </div>
+                    <button type="button"> __ </button>
+                </div>
+
+            </div>
+
+
+        </div>
+
         
 
-  
-<div class="assembly">
-  
-      <h3> URGENT </h3>
-      <div id="affichage" class="container">
-          
-          <div class="card">
-              <div>
-                  <input type="checkbox" class="form-check-input">
-              </div>
-              
-              <div class="card-body">
-                <h5 class="card-title">Titre de cette tâche ... </h5>
-                <div>
-                  <p>10:00 PM </p>  &nbsp; • &nbsp;
-                  <span> Repeat </span>
-                </div>
-                <p class="card-text">Description de la tache de sang pour vous offrir ou pas demain mais vous avez besoin.  </p>
-              </div>
-              
-              <div>
-                <div>Home</div>
-                <button type="button"> __ </button>
-              </div>
-          
-          </div>
-          
-          
-      </div>  
-    
-     <h3>IMPORTANT</h3>
-      <div class="container">
-          <div class="card">
-              <div>
-                  <input type="checkbox" class="form-check-input">
-              </div>
-              
-              <div class="card-body">
-                <h5 class="card-title">Titre de cette tâche ... </h5>
-                <div>
-                  <p>10:00 PM </p>  &nbsp; • &nbsp;
-                  <span> Repeat </span>
-                </div>
-                <p class="card-text">Description de la tache de sang pour vous offrir ou pas demain mais vous avez besoin.  </p>
-              </div>
-              
-              <div>
-                <div>Home</div>
-                <button type="button"> __ </button>
-              </div>
-          
-          </div>
-          <div class="card">
-              <div>
-                  <input type="checkbox" class="form-check-input">
-              </div>
-              
-              <div class="card-body">
-                <h5 class="card-title">Titre de cette tâche ... </h5>
-                <div>
-                  <p>10:00 PM </p>  &nbsp; • &nbsp;
-                  <span> Repeat </span>
-                </div>
-                <p class="card-text">Description de la tache de sang pour vous offrir ou pas demain mais vous avez besoin.  </p>
-              </div>
-              
-              <div>
-                <div>Home</div>
-                <button type="button"> __ </button>
-              </div>
-          
-          </div>
-      </div>  
-      
-      
-     <h3>NÉCESSAIRE</h3>
-      <div class="container">
-          <div class="card">
-              <div>
-                  <input type="checkbox" class="form-check-input">
-              </div>
-              
-              <div class="card-body">
-                <h5 class="card-title">Titre de cette tâche ... </h5>
-                <div>
-                  <p>10:00 PM </p>  &nbsp; • &nbsp;
-                  <span> Repeat </span>
-                </div>
-                <p class="card-text">Description de la tache de sang pour vous offrir ou pas demain mais vous avez besoin.  </p>
-              </div>
-              
-              <div>
-                <div>Home</div>
-                <button type="button"> __ </button>
-              </div>
-          
-          </div>
-          <div class="card">
-              <div>
-                  <input type="checkbox" class="form-check-input">
-              </div>
-              
-              <div class="card-body">
-                <h5 class="card-title">Titre de cette tâche ... </h5>
-                <div>
-                  <p>10:00 PM </p>  &nbsp; • &nbsp;
-                  <span> Repeat </span>
-                </div>
-                <p class="card-text">Description de la tache de sang pour vous offrir ou pas demain mais vous avez besoin.  </p>
-              </div>
-              
-              <div>
-                <div>Home</div>
-                <button type="button"> __ </button>
-              </div>
-          
-          </div>
-          <div class="card">
-              <div>
-                  <input type="checkbox" class="form-check-input">
-              </div>
-              
-              <div class="card-body">
-                <h5 class="card-title">Titre de cette tâche ... </h5>
-                <div>
-                  <p>10:00 PM </p>  &nbsp; • &nbsp;
-                  <span> Repeat </span>
-                </div>
-                <p class="card-text">Description de la tache de sang pour vous offrir ou pas demain mais vous avez besoin.  </p>
-              </div>
-              
-              <div>
-                <div>Home</div>
-                <button type="button"> __ </button>
-              </div>
-          
-          </div>
-      </div>  
-      
-     <h3>PAS D'URGENCE</h3>
-      <div class="container">
-          <div class="card">
-              <div>
-                  <input type="checkbox" class="form-check-input">
-              </div>
-              
-              <div class="card-body">
-                <h5 class="card-title">Titre de cette tâche ... </h5>
-                <div>
-                  <p>10:00 PM </p>  &nbsp; • &nbsp;
-                  <span> Repeat </span>
-                </div>
-                <p class="card-text">Description de la tache de sang pour vous offrir ou pas demain mais vous avez besoin.  </p>
-              </div>
-              
-              <div>
-                <div>Home</div>
-                <button type="button"> __ </button>
-              </div>
-          
-          </div>
-          <div class="card">
-              <div>
-                  <input type="checkbox" class="form-check-input">
-              </div>
-              
-              <div class="card-body">
-                <h5 class="card-title">Titre de cette tâche ... </h5>
-                <div>
-                  <p>10:00 PM </p>  &nbsp; • &nbsp;
-                  <span> Repeat </span>
-                </div>
-                <p class="card-text">Description de la tache de sang pour vous offrir ou pas demain mais vous avez besoin.  </p>
-              </div>
-              
-              <div>
-                <div>Home</div>
-                <button type="button"> __ </button>
-              </div>
-          
-          </div>
-          <div class="card">
-              <div>
-                  <input type="checkbox" class="form-check-input">
-              </div>
-              
-              <div class="card-body">
-                <h5 class="card-title">Titre de cette tâche ... </h5>
-                <div>
-                  <p>10:00 PM </p>  &nbsp; • &nbsp;
-                  <span> Repeat </span>
-                </div>
-                <p class="card-text">Description de la tache de sang pour vous offrir ou pas demain mais vous avez besoin.  </p>
-              </div>
-              
-              <div>
-                <div>Home</div>
-                <button type="button"> __ </button>
-              </div>
-          
-          </div>
-      </div>  
-  
-  
- </div>
+    </div>
 
-<div class="container pannel_form ">
 
-      <form action="/addTask" method="POST" >
-            
-            <div class="form-group">
-                <input type="checkbox" id="isdone" name="isdone" class="form-check-input">
-                <label for="isdone" class="form-check-label">Terminer</label>
-                
-            </div>
-            
-            
-             <div class="form-group" id="select_box">
-                  
-                  
-                <label for="title">Choisi le Projet :</label>
-                
-                
-                
-            </div>
-            
-            
-            
-            
-            <div class="form-group">
-                <label for="title">Titre :</label>
-                <input type="text" id="title" name="title" class="form-control" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="body">Description :</label>
-                <textarea id="body" nameg="body" class="form-control" required></textarea>
-            </div>
-            
-            <div id="existing">
-                
-                <button type="button" class="btn btn-secondary modifBtn"id="modifBtn">Modifier</button>
-                
-                <button type="button" class="btn btn-danger deleteBtn"id="deleteBtn">Suprimer</button>
-                
-            </div>
-            
-            <button type="submit" class="btn btn-primary" id="submitBtn">
-                Ajouter
-            </button>
-            
-        </form>
-    
-</div>
 
-  
-<div class="btn-group-vertical alter_prod_box">
+    <div class="btn-group-vertical alter_prod_box">
         <button class="btn btn-primary" type="button" id="modifProd">
             Modifier
         </button>
         <button class="btn btn-danger" type="button" id="deleteProd">
             Suprimer
         </button>
-</div>
-  
-  
-  
-  
-  
-  
-     <script src="./js/jquery.min.js"></script>
-    
+    </div>
+
+
+
+
+
+
+    <script src="./js/jquery.min.js"></script>
+
     <script type="module" src="./js/main.js"></script>
+
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-    
-
-  
-    
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 

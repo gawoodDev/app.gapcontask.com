@@ -1,7 +1,7 @@
 const Joi = require("joi");
 
 
-function validation(body) {
+function validation (body) {
     
     let schemaTask = Joi.object({
         title : Joi.string().min(2).max(200).required(),
@@ -10,8 +10,21 @@ function validation(body) {
     })
     
     
-    console.log("Do you have the ....");
-    return schemaTask.validate(body);
+    let userValidationSignup = Joi.object({
+        username : Joi.string().min(1).max(20).trim().required(),
+        email : Joi.string().email().trim().required(),
+        password : Joi.string().min(1).max(20).trim().required()
+    })
+    
+    
+    
+    
+    
+    
+    return {
+      schemaTask : schemaTask.validate(body),
+      userValidationSignup : userValidationSignup.validate(body)
+    }
 }
 
 

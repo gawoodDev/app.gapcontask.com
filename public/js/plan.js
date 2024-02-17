@@ -1,7 +1,6 @@
 import TASK_ITEM from './task_proto.js';
 import SELECT_ITEM from './component/select_prod_proto.js';
 
-
 let section_container = document.querySelector("#affichage");
 let select_box = document.querySelector("#select_box");
 
@@ -14,8 +13,8 @@ const id_page = document.querySelector('header').id;
 
 
 async function getDataFromDB (url) {
-    let fetched = await fetch(url)
-    let datas = await fetched.json()
+    let fetched = await fetch(url);
+    let datas = await fetched.json();
     return datas;
 }
 
@@ -26,19 +25,19 @@ getDataFromDB(`/plan:${id_page}`).then((datas)=>{
     
     if (datas.service.length  > 0) {
         for(let data of datas.service){
-        let task = new TASK_ITEM(data);
-        task.append_to_section(section_container);
+            let task = new TASK_ITEM(data);
+            task.appendTo(section_container);
         }
     }
     else{
-        alert('Pas de projet pour linstant.')
+        alert('Plan Pas de projet pour linstant.')
     }
     
 })  
 
 
 
-let alter_prod_box = $(`.alter_prod_box`)
+let alter_prod_box = $(`.alter_prod_box`);
 
 $(`#modProd`).on(`click`,()=>{
     
@@ -51,18 +50,14 @@ $(`#modProd`).on(`click`,()=>{
 
 document.querySelectorAll(`.alter_prod_box button`).forEach((item)=>{
         
-        
-        
-        item.addEventListener('click', (e)=>{
-            e.preventDefault();
+    item.addEventListener('click', (e)=>{
+        e.preventDefault();
             
-            let id = e.target.id
+        let id = e.target.id;
             
-            
-            alert(id)
-            
-            
-            if (id === `deleteProd`) {
+        if (id === `deleteProd`) {
+             
+             alert("Suprimer")
                 
                 postToServer('/deleteProd', JSON.stringify({ id: id_page }))
                 .then((res)=>{
@@ -71,40 +66,36 @@ document.querySelectorAll(`.alter_prod_box button`).forEach((item)=>{
                 .catch((err)=>{
                     
                 })
-                
-            }
+        }
+
+
+
+
+        if(id === `modifProd`) {
             
-            if(id === `modifProd`) {
-                postToServer('/modifProd', JSON.stringify({ id: id_page }))
+            alert("Modifier")
+            
+            postToServer('/modifProd', JSON.stringify({ id: id_page }))
                 .then((res)=>{
                     
                 })
                 .catch((err)=>{
                     
-                })
-            }
-            
-            
-            
-            
-        })
-        
-        
-        
+                });
+        }
     })
+})
     
 
 
 
 
 function postToServer(url, body){
-    
     return fetch(url, {
         headers : {"Content-type": "application/json;charset=UTF-8" },
         method : "POST",
         body : body
-    })
-
+    });
 }
 
 

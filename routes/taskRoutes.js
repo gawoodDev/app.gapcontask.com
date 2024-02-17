@@ -2,12 +2,12 @@ const express =  require("express");
 const routes = express.Router();
 const db = require("../db/db.js");
 const validation = require("../midelware/model.js");
-
+let Users = require("../db/users.json");
 
 
 routes.post("/addTask", (req, res)=>{
-    
-    let {err, value } = validation(req.body);
+    let {user_id} = req.session.user;
+    let {err, value } = validation(req.body).schemaTask
     
     
     if (err) {
@@ -20,7 +20,7 @@ routes.post("/addTask", (req, res)=>{
     console.log(value);
     
     
-    let query = `INSERT INTO tasklist (title,body,isdone,ref) VALUES ("${title}","${body}","${isdone}","${ref}")`;
+    let query = `INSERT INTO tasklist (title,body,isdone,ref,user_id) VALUES ("${title}","${body}","${isdone}","${ref}", "${user_id}")`;
     
     db.query(query,(err)=>{
         if (err) throw err;
@@ -36,11 +36,11 @@ routes.post("/addTask", (req, res)=>{
 
 routes.post("/deleteTask",(req, res)=>{
     
-    
+    let {user_id} = req.session.user;
     let id = Number(req.body.id);
     
     console.log(typeof id)
-    let query = `DELETE FROM tasklist WHERE id=${id}`;
+    let query = `DELETE FROM tasklist WHERE id=${id} WHERE user_id="${user_id}"`;
     
     db.query(query,(err)=>{
         if(err) throw err
@@ -54,31 +54,38 @@ routes.post("/deleteTask",(req, res)=>{
 
 
 
-
 routes.post("/modifTask",(req, res)=>{
-    
+    let {user_id} = req.session.user;
     let {id, title, body, isdone, ref} = req.body;
     
-    
+    console.log("Its work!")
     
     isdone = isdone === true ? 1 : 0;
     
-    let query = `UPDATE tasklist SET title="${title}",  body="${body}",  ref='${ref}', isdone='${isdone}'  WHERE id='${id}'`;
+    let query = `UPDATE tasklist SET title="${title}",  body="${body}",  ref='${ref}', isdone='${isdone}'  WHERE id='${id}' AND  user_id="${user_id}"`;
+    
     db.query(query,(err)=>{
         if(err) throw err;
-        
-        console.log("Modif avec success ")
-        
+        console.log("Modif avec success ");
     })
     
     
-    res.send("Modif avec success !").end()
+    res.send("Modif avec success   !").end();
     
     
 })
 
 
-
+routes.get("/getDatas", (req, res)=>{
+    let user = req.session.user;
+    
+    console.log(user)
+    
+    db.query(`SELECT * FROM tasklist WHERE user_id="${user.user_id}"`,(err, result)=>{
+        if (err) throw err
+        res.json(result);
+    })
+})
 
 
 module.exports = routes;

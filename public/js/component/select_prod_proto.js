@@ -38,11 +38,16 @@ let select_box = document.querySelector("#select_box");
 async function getDataFromDB (url) {
     let fetched = await fetch(url)
     let datas = await fetched.json()
+    console.log(datas)
     return datas;
 }
 
-getDataFromDB(`/get_project_list`).then((datas)=>{
+
+let datas = getDataFromDB(`/get_project_list`).then((datas)=>{
     
+    console.log(datas)
+    
+        
     if (datas.length  > 0) {
         let task = new SELECT_ITEM(datas);
         task.appendTo(select_box);
@@ -50,7 +55,13 @@ getDataFromDB(`/get_project_list`).then((datas)=>{
     else{
         alert('pppppPas de projet pour linstant.');
     }
-})  
+    
+    
+})
+
+
+
+
 
 export default SELECT_ITEM;
 

@@ -5,6 +5,8 @@ let form = document.querySelector(`#addProdInp`)
 let id  = 0;
 
 
+
+
 class PROD_ITEM {
     
     #isFocus = false;
@@ -17,7 +19,6 @@ class PROD_ITEM {
         this.create_item()
         this.handle_click()
           
-        
     }
     
     

@@ -12,14 +12,63 @@ let modifBtn = document.querySelector("button#modifBtn");
 let pannelAddTask = document.querySelector(".pannelAddTask");
 let closePanel = document.querySelector(".closePanel");
 
+let addNewTaskBtn = document.querySelector("#addNewTaskBtn");
+
+function auto_reset (){
+        
+    form.title.value = "";
+    form.body.value = "";
+    try {
+        form.select.querySelector(`option[value='0B_']`).selected = true;
+    } catch(err) {}
+
+    form.isdone.checked = false;
+    form.title.focus()
+    
+    
+}
+
+
+let  onFucusExisting = (self) => {
+    
+    pannelAddTask.classList.add("open");
+    self.auto_fill()
+    console.log(liveId);
+}
+
+
+let  FucusNoExisting = () => {
+    pannelAddTask.classList.add("open");
+    auto_reset();
+    console.log(liveId);
+}
+
+
+
+let  onLoseFucusExisting = ()=>{
+    pannelAddTask.classList.remove("open");
+    auto_reset()
+    liveId = null;
+    
+}
+
+
 
 closePanel.addEventListener("click", function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
-    pannelAddTask.classList.remove("open");
-    liveId = null;
-
+    onLoseFucusExisting();
 });
+
+addNewTaskBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    FucusNoExisting();
+    liveId = null;
+});
+
+
+
 
 
 class TASK_ITEM {
@@ -60,36 +109,10 @@ class TASK_ITEM {
 
     create_item () {
 
-
-        let g = `
-        <div class="card">
-        <div>
-        <input type="checkbox" class="form-check-input">
-        </div>
-
-        <div class="card-body">
-        <h5 class="card-title">Titre de cette tâche ... </h5>
-        <div>
-        <p>10:00 PM </p>  &nbsp; • &nbsp;
-        <span> Repeat </span>
-        </div>
-        <p class="card-text">Description de la tache de sang pour vous offrir ou pas demain mais vous avez besoin.  </p>
-        </div>
-
-        <div>
-        <div>Home</div>
-        <button type="button"> __ </button>
-        </div>
-
-        </div>`;
-
-
-
-
         this.box = this.CREATE_ELEMENT("div", "card");
         this.box.id = `task_${this.id}`;
-        this.cardBox = this.CREATE_ELEMENT("div", "card-body");
 
+        this.div1 = this.CREATE_ELEMENT("div", null, null);
         this.checkbox = this.CREATE_ELEMENT("input", "form-check-input");
         this.checkbox.setAttribute("type", "checkbox");
 
@@ -98,18 +121,46 @@ class TASK_ITEM {
             this.checkbox.checked = true;
             //this.box.style.backgroundColor = "#55667720"
         }
-
+        
+    
+        this.div1.append(this.checkbox)
+        this.cardBox = this.CREATE_ELEMENT("div", "card-body");
+        this.div2div = this.CREATE_ELEMENT("div", null, null)
+        this.div2div.innerHTML = `
+            <p>10:00 PM </p> 
+            &nbsp; • &nbsp;
+            <span> Repeat </span>
+        `;
 
         this.p = this.CREATE_ELEMENT("p", "card-text", this.body);
         this.h5 = this.CREATE_ELEMENT("h5", "card-title", this.title);
 
-        this.cardBox.append(this.checkbox);
-        this.cardBox.append(this.h5);
+        this.cardBox.append(this.h5)
+        this.cardBox.append(this.div2div)
         this.cardBox.append(this.p);
-
-
+        
+        
+        
+        
+        this.div3 = this.CREATE_ELEMENT("div", null);
+        
+        this.prodGP = this.CREATE_ELEMENT("div", "prodGP");
+        this.prodGP.innerHTML = "Home"
+        this.dropDown = this.CREATE_ELEMENT("button", null);
+        this.dropDown.id = "dropDown";
+        this.dropDown.innerHTML = "__"
+        this.dropDown.id = "dropDown";
+        
+        this.div3.append(this.prodGP);
+        this.div3.append(this.dropDown);
+        
+        
+        
+        
+        
+        this.box.append(this.div1)
         this.box.append(this.cardBox)
-
+        this.box.append(this.div3)
     }
 
 
@@ -128,13 +179,16 @@ class TASK_ITEM {
         } else {
             form.isdone.checked = false;
         }
+        
+        
+        form.title.focus()
     }
 
 
 
     handle_click () {
 
-        this.box.addEventListener("click", (e)=> {
+        this.cardBox.addEventListener("click", (e)=> {
             e.preventDefault();
             e.stopImmediatePropagation()
             try {
@@ -142,43 +196,19 @@ class TASK_ITEM {
                 let other = this.box.parentElement.querySelector(`.card.focusBox:not(#task_${this.id})`);
                 //other.querySelector(".actions").classList.remove("open");
                 other.classList.remove("focusBox");
-
+                
             } catch (e) {}
 
-            this.add_focus()
+            onFucusExisting(this);
+            liveId = this.id;
         })
 
     }
 
-    add_focus () {
-
-        this.box.classList.toggle("focusBox");
-        this.#isFocus = this.box.classList.contains("focusBox");
-
-        liveId = this.id;
-
-        if (this.#isFocus || true) {
-            pannelAddTask.classList.add("open");
-
-
-        } else {
-            pannelAddTask.classList.remove("open");
-            liveId = null
-        }
-
-        console.log(liveId);
-
-        this.auto_fill()
-
-        existing.style.display = "flex";
-        submitBtn.style.display = "none"
-        // console.log(document.querySelector(`#task_${this.id}`).clientTop)
-
-    }
 
 
 
-    append_to_section (section) {
+    appendTo (section) {
         section.append(this.box)
     }
 
@@ -196,30 +226,20 @@ class TASK_ITEM {
 
 
 
-deleteBtn.addEventListener("click", deleteItem);
-modifBtn.addEventListener("click", modifItem);
-
 
 form.addEventListener("submit", (e)=> {
     e.preventDefault();
-
-
+   
+    // let {title, body, isdone, select} = form
     let title = form.title.value
     let body = form.body.value
     let isdone = form.isdone.checked === true ? 1: 0;
-
-    let select = form.select
-
-
-    console.log(select.value)
-
-
+    let select = form.select;
     let ref = select.value;
 
 
-
-
     if (liveId === null) {
+        
         postToServer("/addTask", JSON.stringify({
             title, body, isdone, ref
         }), "POST")
@@ -228,30 +248,31 @@ form.addEventListener("submit", (e)=> {
                 alert("Added ...")
             }
         })
-        .catch((err)=> {})
+        .catch((err)=> {});
+        
+        let task = new TASK_ITEM({
+                title,
+                body,
+                isdone,
+                ref
+            });
+    
+        task.appendTo(document.querySelector("#affichage"));
 
-    } else {
-        postToServer("/modifTask", JSON.stringify({
-            title, body, isdone, ref
-        }), "POST")
-        .then((res)=> {
-            if (res.status === 200) {
-                alert("Modified ...")
-            }
-        })
-        .catch((err)=> {})
+
+
+    }
+    
+    if ( liveId !== null ) {
+        
+        modifItem()
+        
+        
+        
     }
 
 
-    let task = new TASK_ITEM({
-        title,
-        body,
-        isdone,
-        ref
-    })
-    task.appendTo(document.querySelector("#afficher"));
-
-})
+});
 
 
 
@@ -267,11 +288,13 @@ function deleteItem(e) {
 }
 
 function modifItem(e) {
-    e.preventDefault()
-
+    if(e) {
+        e.preventDefault()
+    }
+    
     let modItem = document.querySelector(`div#task_${liveId}`);
 
-    alert(form.isdone.checked);
+    
 
     let data = {
         id: liveId,
@@ -288,7 +311,7 @@ function modifItem(e) {
     //modItem.querySelector("select").value = data.;
 
 
-
+    alert(form.isdone.checked);
 
 
     postToServer("/modifTask", JSON.stringify(data), "POST")
@@ -302,25 +325,10 @@ try {
     document.querySelector("#addNewTaskBtn")
     .addEventListener("click", (e)=> {
         e.preventDefault();
-
-
-        pannelAddTask.classList.toggle("open");
-
-        form.title.value = "";
-        form.body.value = "";
-        form.isdone.checked = false;
-
-        try {
-            document.querySelector(`.card.focusBox`).classList.remove("focusBox");
-        } catch(error) {}
-
-
-        liveId = null;
-
-
-        existing.style.display = "none";
-        submitBtn.style.display = "block";
-    })
+        
+        onLoseFucusExisting()
+        
+    });
 
 
 
