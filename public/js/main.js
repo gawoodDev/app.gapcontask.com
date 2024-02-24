@@ -27,8 +27,38 @@ getDataFromDB().then((datas)=>{
 });
 
 
+window.addEventListener("DOMContentLoaded", (e)=>{
+  
+  alert(e)
+  
+  
+})
+
+
+
+
 let i = 0;
 let on = true;
+
+
+
+
+Array.from(document.querySelectorAll(".card")).forEach((item)=>{
+  
+  console.log(item)
+  
+  item.addEventListener("swiped-left", swiped_left );
+  
+  
+})
+
+
+function swiped_left (e){
+  console.log(e.target)
+}
+
+
+
 
 document.querySelector("#start").addEventListener("click", (e)=>{
     

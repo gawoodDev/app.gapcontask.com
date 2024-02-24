@@ -5,12 +5,7 @@ let section_container = document.querySelector("#affichage");
 let select_box = document.querySelector("#select_box");
 
 
-
-
-
-
 const id_page = document.querySelector('header').id;
-
 
 async function getDataFromDB (url) {
     let fetched = await fetch(url);
@@ -20,14 +15,20 @@ async function getDataFromDB (url) {
 
 
 
-getDataFromDB(`/plan:${id_page}`).then((datas)=>{
-    console.log(datas.service)
+getDataFromDB(`/unique_prod_datas:${id_page}`).then((datas)=>{
+  
+  console.log(datas, datas.service)
+    
+  document.querySelector("h5#title").innerText = datas.title;
     
     if (datas.service.length  > 0) {
         for(let data of datas.service){
             let task = new TASK_ITEM(data);
             task.appendTo(section_container);
         }
+        
+        
+        
     }
     else{
         alert('Plan Pas de projet pour linstant.')

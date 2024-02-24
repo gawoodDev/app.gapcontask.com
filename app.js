@@ -5,7 +5,7 @@ const Joi = require("joi");
 const validation = require("./midelware/model.js");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken")
-
+let passport = require("passport")
 
 
 const router = require("./routes/routes")
@@ -13,11 +13,11 @@ const taskRoutes = require('./routes/taskRoutes.js')
 const projectRoutes = require('./routes/projectRoutes.js')
 const authRoutes = require('./routes/authRoutes.js')
 
+const {addTask, updateTask, deleteTask} = require("./api/taskApi.js");
 
+app.use(require("cors")())
 app.use(cookieParser())
-app.use(express.urlencoded({
-    extended: true
-}));
+app.use(express.urlencoded({  extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
 app.set("view engine", "ejs");
@@ -27,71 +27,99 @@ app.use(require("express-session")({
     saveUninitialized: true,
     maxAge: 3 * 60 * 1000
 }))
+app.use(passport.initialize())
+app.use(passport.session());
+
+app.get('/get',  (req, res)=>{
+  let mode = req.headers['sec-fetch-mode'];
+    if(mode === "cors"){
+      console.log("Corsing...")
+    }
+    console.log("Testinng...", mode)
+    res.status(200).json({mode: "social"})
+});
 
 
 
-
-//app.use(PROTECT_ROUTES)
 app.use(authRoutes);
+
+app.use(function(req, res, next){
+  
+    if(req.isAuthenticated() && (req.user || req.session.user) )
+        {
+       return  next()
+    }
+    
+    res.redirect("/loggin");
+    
+})
+
 app.use(router);
 app.use(taskRoutes);
 app.use(projectRoutes);
 
-
-
-
-
-
-
-
-app.listen(8000,
-    () => {
-        console.log("Ist ok running at 8000")
-    })
+app.use(function(req, res, next){
+    
+    return next()
+    
+    if(!req.isAuthenticated() && !req.user) return  res.redirect("/loggin") 
+    let c  = req.cookies.values ||  [];
+    console.log(c)
+    if(c.length < 1) return next()
+    
+    const cookies = JSON.parse(c);
     
     
     
-function PROTECT_ROUTES (req, res, next){
+ 
+    let {user_id} = req.session.user || req.user; 
     
-    let token = null;
+
+    console.log("cookies ", cookies);
     
-    if(req.path === "/loggin" || req.path === "/signup"  || req.path === "/auth"   ){
+    for (let item of cookies){
+        if (item.state === 1) {
+            
+            updateTask(item,user_id,function(error, success) {
+                
+                if(err) throw err
+                
+                console.log("is successfull updateTask")
+                
+            })
+            
+            
+        }
+        if (item.state === 2) {
+            
+            addTask(item, user_id,function(error, success) {
+                
+                if(err) throw err
+                
+                console.log("is successfull")
+                
+            })
+            
+        }
         
-        console.log("Cesroutes sont libre ", req.path)
-        
-        res.redirect()
-        
-        return
+        if (item.state === 3) {
+            
+            deleteTask(item, user_id, function(err, success){
+                if(err) throw err
+                console.log("Delete avec success !")
+            })
+            
+        }
     }
     
-    try {
-        
-        token = req.cookies.token 
-        //console.log(req.cookies)
-        
-    } catch (e) {
-        res.status(401).json({msg : "no cookie"})
-    }
+    
+    next()
+});
+
+
+
+
+app.listen(8000, () => console.log("Ist ok running at 8000"));
     
     
-    
-    
-    
-    if(token){
-        
-        jwt.verify(token, "MY_SECRET", (err, payload)=>{
-            
-            if (err) return res.status(401).redirect("/loggin");
-            
-            // console.log(err)
-            
-            next()
-            
-        })
-    }else{
-        res.status(403).redirect("/loggin")
-            
-    }
-    
-}
 

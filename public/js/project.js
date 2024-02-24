@@ -16,6 +16,7 @@ class PROD_ITEM {
         this.data = data;
         this.title = this.data.title;
         this.id  = this.data.id;
+        console.log(data)
         this.create_item()
         this.handle_click()
           
@@ -39,7 +40,7 @@ class PROD_ITEM {
     create_item (){
         
         this.box = this.CREATE_ELEMENT("div", "card", null);
-        this.box.id = `task_${this.id}`;
+        this.box.id = `prod_${this.id}`;
         this.box.classList.add('card_prod');
         
         this.h5 = this.CREATE_ELEMENT('h5', null, this.title)
@@ -60,9 +61,13 @@ class PROD_ITEM {
             e.preventDefault();
             e.stopImmediatePropagation()
             
-            let a = this.CREATE_ELEMENT(`a`, 'text-link', `Democryte`)
+            alert(this.id)
+            let a = this.CREATE_ELEMENT(`a`, 'text-link', `Democryte`);
             
-            a.href = `/project/plan:${this.id}`;
+            
+            a.href = `/project/plan`;
+            document.cookie = `p_d=${this.data.ref_key}${this.id}`;
+            
             
             a.click()
             
@@ -76,7 +81,7 @@ class PROD_ITEM {
             })
             
             
-            alert(this.id)
+            
         })
     }
     
@@ -87,7 +92,7 @@ class PROD_ITEM {
     
 }
 
-async function getDataFromDB (argument) {
+async function getDataFromDB () {
     let fetched = await fetch("/get_project_list")
     let datas = await fetched.json()
     return datas;
@@ -95,6 +100,7 @@ async function getDataFromDB (argument) {
 
 
 async function SET_PROD_LIST(){
+    
     let datas  = await getDataFromDB();
 
     section_container.innerHTML = ``;
@@ -104,13 +110,24 @@ async function SET_PROD_LIST(){
         task.append_to_section(section_container);
     }
     
-    
 }
 
 SET_PROD_LIST()
 
 
-
+function getHighestID () {
+    
+    return  Array.from(document.querySelectorAll(".card_prod"))
+    .map((item)=>{
+        if(!item.id) return undefined
+        return Number(item.id.split("_")[1]);
+    })
+    .filter((item)=> item !== undefined)
+    .sort((a, b)=>{
+        return b - a
+    })[0];
+    
+}
 
 
 
@@ -119,32 +136,26 @@ document.querySelector('#add_prod').addEventListener('click', CREATE_NEW_PROD)
 async function CREATE_NEW_PROD (e) {
     e.preventDefault();
     
-    let value  = form.value;
-    let datas = await getDataFromDB();
-    let ids = []
-    for (let item of datas ){
-        ids.push(item.id);
-    }
-    let sort = ids.sort(function(a, b){
-        return b - a;
-    })
-    
-    let highest = sort[0];
+    let title = form.value;
+    let highest = getHighestID();
     let id = highest + 1;
     
-    console.log(datas, ids, sort, highest, id)
+    console.log(highest, id)
 
-    if (value.length >= 1) {
+    if (title.length >= 1) {
         //datas.push(value);
-        postToServer('/addProd', JSON.stringify({title: value, id}), "POST")
+        postToServer('/addProd', JSON.stringify({title, id}), "POST")
         .then((res)=>{
             alert(res)
         })
+        
+        let task = new PROD_ITEM({title, id});
+        task.append_to_section(section_container);
     }
     
     form.value = '';
     
-    SET_PROD_LIST()
+    //SET_PROD_LIST()
 };
 
 

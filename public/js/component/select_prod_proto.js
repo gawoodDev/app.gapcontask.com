@@ -43,7 +43,8 @@ async function getDataFromDB (url) {
 }
 
 
-let datas = getDataFromDB(`/get_project_list`).then((datas)=>{
+let datas = getDataFromDB(`/get_project_list`)
+    .then((datas)=>{
     
     console.log(datas)
     

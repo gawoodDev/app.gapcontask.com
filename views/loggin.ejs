@@ -23,7 +23,7 @@
 
 <div class="container">
   
-  <form class="form">
+  <form class="form" action="/loggin" method="POST">
     <div class="form-group">
       <input name="email" value="a@a.com" placeholder="Email" type="text" class="form-control"/>
     </div>
@@ -87,7 +87,9 @@ form.addEventListener("submit",(e)=>{
   
   alert(e.target.email.value);
   
+  form.submit()
   
+  /*
   POST_TO_SERVER("/loggin", body)
   .then((res) => res.json())
   .then((res) => { 
@@ -107,13 +109,10 @@ form.addEventListener("submit",(e)=>{
       a.click();
     }
     
-    
-    
-    
-    
+
     
   })
-  
+  */
   
   
 });

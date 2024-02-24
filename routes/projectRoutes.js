@@ -4,155 +4,142 @@ const db = require("../db/db.js");
 const validation = require("../midelware/model.js");
 let datas ;
 const {AUTH, LOCKED_ROUTES, PROTECT_ROUTES} = require("../midelware/auth_midelware.js")
-
+const {ADD_PROD,GET_ALL_USER_PROD, DELETE_PROD, GET_PROD_BY, GET_ALL_TASK_FROM} = require("../api/prodApi.js")
 
 
 routes.post(`/addProd`, (req, res) => {
-    let {user_id} = req.session.user;
-    let {
-        id, title
-    } = req.body;
+    let {user_id} = req.session.user || req.user; 
     
+    let { id, title } = req.body;
+
     let ref_key = id + title.slice(0, 1) + "_";
-
-    console.log(`Recus addProd`, req.body, ref_key);
-    let query = `INSERT INTO prodlist (title, ref_key, user_id) VALUES ("${title}", "${ref_key}", "${user_id}")`;
-    db.query(query, (err) => {
-        if (err) throw err;
-        console.log("Projet ajouter avec success!");
+        
+    ADD_PROD({ref_key, title, user_id}, (err, success)=>{
+        
+        if(err) throw err
+        
+        console.log(`Projet ajouter  addProd`);
+        res.status(200).send("success");
     })
-
-    res.status(200).send("success");
+    
 });
 
 
 
 
 routes.post(`/modifProd`, (req, res) => {
-    let {
-        id
-    } = req.body;
+    let {id} = req.body;
+
     console.log(`Recus modifProd`);
 });
 
+
+
+
 routes.post(`/deleteProd`, (req, res) => {
-    let {user_id} = req.session.user;
+    let {user_id} = req.session.user || req.user; 
+    
     let {id} = req.body;
     
     
-    db.query(`SELECT * FROM prodlist WHERE id="${id}" AND user_id="${user_id}"`,
-        (err, result)=>{
-        if(err) throw err;
-        datas = result;
+    DELETE_PROD({id, user_id}, (err, success)=>{
         
-        console.log("resultt", result)
+        if(err) throw err
         
+        console.log(`Projet supprimer  addProd`);
+        res.status(200).send("success");
     })
     
-    
-    return
-    
-    
-    if (true) {
-        
-    }
-    
-    let query = `DELETE FROM prodlist WHERE id="${id}" `;
-    
-    
-    
-    console.log("Formation")
-    
-    
-    db.query(query, (err) => {
-        if (err) throw err;
-        console.log("Projet supprimer avec success!");
-    });
-    
-    
-    
-    res.end("project");
-
 });
 
 let referer 
 
+
 routes.get('/get_project_list',  (req, res)=>{
-    
+  
     let mode = req.headers['sec-fetch-mode'];
-    referer = req.headers.referer || referer
-    let {user_id} = req.session.user    
+    referer = req.headers.referer || referer;
     
-    console.log('Liste des projet demander', mode, user_id, referer)
+    let user_id =  req.user.user_id || undefined;
+
     
-    
-    db.query(`SELECT * FROM prodlist WHERE user_id="${user_id}"`,
-        (err, result)=>
-    {
-        if(err) throw err;
-        datas = result;
+    GET_ALL_USER_PROD({user_id, mode, referer}, (err, success, datas)=>{
         
-        if(mode == "cors"){
-            let datas = result || [];
-            console.log("data", datas)
-            
-            res.status(200).json(datas)
-        }else if(mode === "navigate"){
-            
-            res.redirect(referer)
-            
-        }
-        else{
-            
-        }
+        if(err) throw err
+        console.log("Success api call", datas)
+        res.status(200).json(datas)
         
-        console.log("res ufhhfultt", result)
     })
+    
+})
+
+
+function getCookie(req){
+  let p = req.cookies.p_d;
+  let spl = p.split("_");
+  let ref_key = spl[0] + "_";
+  let id = Number(spl[1]);
+    
+  console.log("_______", p, spl, ref_key, id,  req.cookies)
+  
+  return {
+    id, ref_key
+  }
+  
+}
+
+
+routes.get('/project/plan', (req, res)=>{
+    let {user_id} = req.session.user || req.user; 
+    
+    
+    let {id, ref_key} = getCookie(req)
+    
+
+    
+    
+    return res.render("plan.ejs", {datas: {
+      id,
+      title: "Ok"}
+    })
+    
+    
+    
+    
+    
+    
     
     
     
 })
 
-routes.get('/project/plan:id' ,(req, res)=>{
-    if(!req.session.token || !req.session.user ) {
+
+routes.get('/unique_prod_datas:id',    (req, res)=>{
+    
+    let {user_id} = req.session.user || req.user; 
+    
+    let {id, ref_key} = getCookie(req);
+    
+    id = id || Number(req.params.id.slice(1,2));
+    
+    
+    console.log("/unique_prod_datas", id);
+    
+    
+    GET_ALL_TASK_FROM({ id, user_id}, (err, success, datas)=>{
+      
+        if(err) throw err
+        console.log("Success api call from db", datas)
         
-        return res.redirect("/loggin")
-    } 
-    
-    
-    
-    let {user_id} = req.session.user;
-    console.log(user_id)
-    let id = Number(req.params.id.slice(1,2));
-    get_prodlist(user_id);
-    
-    console.log(datas)
-    
-    let data = datas
-    .find( item => item.id === id );
-    
-    console.log(`: Page afficher`, data);
-    res.render('plan.ejs', {data});
-
-})
-
-
-
-function get_prodlist (user_id){
-    
-    db.query(`SELECT * FROM prodlist WHERE user_id="${user_id}"`,
-        (err, result)=>{
-        if(err) throw err;
-        datas = result;
-        
+        res.status(200).json(datas);
     })
     
-    return datas;
     
     
-};
-
-
+});
 
 
 module.exports = routes;
+
+
+
