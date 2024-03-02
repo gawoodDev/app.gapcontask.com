@@ -30,35 +30,24 @@
     appendTo(section){
         section.append(this.select);
     }
+    
+    
+    defaultSelected(txt){
+        
+        this.select.value = txt;
+        this.select.querySelector(`option[value="${txt}"]`).selected = true;
+ 
+        console.log(this.select, txt)
+         
+        return
+        
+        
+        
+        
+    }
 }; // end 
 
 
-let select_box = document.querySelector("#select_box");
-
-async function getDataFromDB (url) {
-    let fetched = await fetch(url)
-    let datas = await fetched.json()
-    console.log(datas)
-    return datas;
-}
-
-
-let datas = getDataFromDB(`/get_project_list`)
-    .then((datas)=>{
-    
-    console.log(datas)
-    
-        
-    if (datas.length  > 0) {
-        let task = new SELECT_ITEM(datas);
-        task.appendTo(select_box);
-    }
-    else{
-        alert('pppppPas de projet pour linstant.');
-    }
-    
-    
-})
 
 
 

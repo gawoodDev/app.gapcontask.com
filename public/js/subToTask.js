@@ -291,7 +291,6 @@ function On_Click(e, self) {
 
 function auto_reset() {
   form.title.value = "";
-  form.title.value = "";
   form.body.value = "";
   form.isdone.checked = false;
   form.title.focus();
@@ -444,15 +443,7 @@ class TASK_ITEM {
 };
 
 
-
-
-
-
 let thisVal = null;
-
-
-
-
 
 
 form.addEventListener("submit", function (e) {
@@ -463,11 +454,8 @@ form.addEventListener("submit", function (e) {
 
 
 
-
-
-
 function modifItem() {
-
+  
   let modItem = document.querySelector(`div#task_${liveId}`);
   let data = {
     id: liveId, title: form.title.value, body: form.body.value, isdone: form.isdone.checked, ref: form.select.value, state: Number(modItem.getAttribute("state"))
@@ -498,8 +486,6 @@ function modifItem() {
     }).catch((err) => { console.log(err) })
   auto_reset();
 }
-
-
 
 
 
@@ -543,9 +529,6 @@ function deleteItem(e) {
     .catch((err) => { })
 }
 
-
-
-
 function addItem() {
 
   let title = form.title.value;
@@ -579,7 +562,6 @@ function addItem() {
 
 
 
-
 function getCookies(name) {
   let cookies = document.cookie.split("; ");
   let values = cookies.find((c) => c.startsWith(name));
@@ -587,7 +569,6 @@ function getCookies(name) {
   let val = JSON.parse(splited[1]);
   return val
 }
-
 
 
 
@@ -634,11 +615,6 @@ function setCookies(data) {
     console.log("After", lastValue);
   }
 }
-
-
-
-
-
 
 function getHighestID() {
 
@@ -1370,5 +1346,3 @@ export default TASK_ITEM;
 
 
 ** */
-
-

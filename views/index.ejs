@@ -15,10 +15,13 @@
 
     <%- include("composant/bottomBar") %>
     <%- include("composant/bottomAddTask") %>
-
-
-
-
+    <%- include("composant/floatRightMenu")%>
+    <%- include("composant/headOptions")%>
+    <%- include("composant/bottomOptions")%>
+    <%- include("composant/englobPopUp")%>
+    <%- include("composant/bottomModProd")%>
+    
+   
     <header>
 
         <div class="top">
@@ -27,7 +30,7 @@
                 <h5> Hello <%= username %></h5>
             </div>
             <div>
-                <button id="modProd" type="button">
+                <button id="prod_tools" type="button">
                     Modif
                 </button>
             </div>
@@ -35,30 +38,24 @@
         
         
 
-
-        <div style="display: no" class="middle">
-
-
+        <div style="display: none" class="middle">
             <div>
                 <strong>124</strong>
                 <span>En cours</span>
             </div>
-
             <div>
                 <strong>12 Fév 2024</strong>
                 <span>Today</span>
             </div>
-
             <div>
                 <strong>330</strong>
                 <span>Achevée</span>
             </div>
-
-
         </div>
+ 
+ 
 
-
-        <div style="display: no" class="bottom">
+        <div style="display: none" class="bottom">
             <div class="scrollCont">
                 <button type="button">All</button>
                 <button type="button">Today</button>
@@ -69,21 +66,7 @@
 
     </header>
 
-
-
-
-
     <div class="assembly">
-    
-    
-    <div>
-        <h1>La derniere valeur recus est : </h1>
-        <p></p>
-        <button id="start">
-            Start
-        </button>
-        
-    </div>
     
         <h3> URGENT </h3>
         <div id="affichage" class="container">
@@ -122,9 +105,10 @@
         
 
     </div>
-
-
-
+    
+    
+    
+    
     <div class="btn-group-vertical alter_prod_box">
         <button class="btn btn-primary" type="button" id="modifProd">
             Modifier
