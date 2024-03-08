@@ -8,19 +8,19 @@ const {
     addTask,
     updateTask,
     deleteTask,
-    getAllTask
+    getAllTask,
+    doneTask
 } = require("../api/taskApi.js")
 
 
 
 
 routes.post("/addTask", (req, res) => {
-    let {
-        user_id
-    } = req.session.user || req.user;
-    addTask(req.body, user_id, function (err, success) {
+    addTask(req.body, req.user.user_id, function (err, success, task_id) {
         if (err) throw err;
-        res.send("Ajouter avec success !").end()
+        res.status(200).json({
+            task_id
+        })
     })
 })
 
@@ -29,25 +29,36 @@ routes.post("/addTask", (req, res) => {
 
 
 routes.post("/deleteTask", (req, res) => {
-    let {
-        user_id
-    } = req.user;
-    let data = req.body.data;
-
-    console.log("Every",
-        data);
+    
+    console.log(req.body)
+    
+    if(req.body.id){
+        deleteTask({
+            id: req.body.id
+        }, req.user.user_id, function (err, success) {
+            if (err) throw err;
+            console.log("Delete unique")
+            res.status(200).end();
+        })
+        return
+    }
+    
+    
+    
+    if(!req.body.data) return 
+    
+    let data = req.body.data
 
     data.forEach((id, index) => {
         console.log(id);
         deleteTask({
             id: id
-        }, user_id, function (err, success) {
+        }, req.user.user_id, function (err, success) {
             if (err) throw err;
-
+            console.log("Delete multiples")
             if (index === (data.length - 1)) {
                 res.status(200).send("Delete avec success !");
             }
-
         })
     })
 });
@@ -57,15 +68,9 @@ routes.post("/deleteTask", (req, res) => {
 
 
 
-routes.post("/modifTask", (req, res) => {
 
-    let {
-        user_id
-    } = req.user;
-    
-    console.log("modification user_id", req.body)
-    
-    updateTask(req.body, user_id, function (err,
+routes.post("/modifTask", (req, res) => {
+    updateTask(req.body, req.user.user_id, function (err,
         success) {
         if (err) throw err;
         res.status(200).send("Modif avec success !");
@@ -75,18 +80,32 @@ routes.post("/modifTask", (req, res) => {
 
 
 routes.get("/getDatas", (req, res) => {
-    let {
-        user_id
-    } = req.session.user || req.user;
-
     getAllTask({},
-        user_id,
+        req.user.user_id,
         function (err, success, data) {
             if (err) throw err;
             res.json(data);
         })
 
 })
+
+
+
+
+
+
+routes.post("/doneTask", (req, res) => {
+
+    doneTask(req.body,
+        req.user.user_id,
+        function (err,
+            success) {
+            if (err) throw err;
+            res.status(200).send("success !");
+        })
+
+})
+
 
 
 

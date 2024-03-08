@@ -1,10 +1,16 @@
+import SELECT_ITEM from './component/select_prod_proto.js';
+import moment from './minified/moment.js';
+
+import HOOK from './component/hooks_proto.js';
+
+
+
+
+
+
 const id_page = document.querySelector('div#forIDcheck') // null
 let id;
 let ref_key;
-if (id_page) {
-  id = id_page.getAttribute("data-id");
-  ref_key = id_page.getAttribute("data-ref-key");
-}
 
 console.log(id_page)
 
@@ -13,11 +19,24 @@ let selectewd = [],
   list_id = [],
   a = 0,
   START_X = null,
+  PROJECT_LIST = null,
   isDragging = true;
 
 
 
 
+
+
+
+if (id_page) {
+  id = id_page.getAttribute("data-id");
+  ref_key = id_page.getAttribute("data-ref-key");
+}
+
+
+
+
+let select_box = document.querySelector("#select_box");
 let headOptions = document.querySelector('.headOptions')
 let close_selected = document.querySelector('#close_selected')
 let remove_selected = document.querySelector('#remove_selected')
@@ -38,6 +57,8 @@ let title_prod = document.querySelector('#title_prod');
 
 let section_container = document.querySelector("#affichage");
 let form = document.querySelector("form");
+let deleteItemBtn = form.querySelector("#deleteItemBtn")
+
 let liveId = null;
 let cookiesArray = []
 let existing = document.querySelector("#existing");
@@ -51,6 +72,7 @@ let closePanel = document.querySelector(".closePanel");
 
 let addNewTaskBtn = document.querySelector("#addNewTaskBtn");
 
+let selectDate = document.querySelector("#selectDate");
 
 
 
@@ -58,6 +80,16 @@ let addNewTaskBtn = document.querySelector("#addNewTaskBtn");
 
 
 
+
+let hooks = new HOOK({
+  id: 10,
+  self: {
+    body: "Give me one new time up", title: "Hello"
+  },
+  form: document.querySelector("form"),
+  pannelAddTask
+})
+console.log(hooks);
 
 
 englob_popUp.querySelectorAll('button')
@@ -89,15 +121,12 @@ englob_popUp.querySelectorAll('button')
 
   });
 
-
 englob_popUp.querySelector('.popUp_modal').addEventListener('click', (event) => {
   event.preventDefault()
   event.stopPropagation()
   console.log('Stop')
 
 });
-
-
 
 englob_popUp.addEventListener('click', (event) => {
   event.preventDefault()
@@ -108,13 +137,11 @@ englob_popUp.addEventListener('click', (event) => {
 
 });
 
-
-
-
 prod_tools.addEventListener('click', (event) => {
   event.preventDefault()
   modeme.classList.toggle('active');
 });
+
 select_tasks.addEventListener('click', function (event) {
   event.preventDefault()
   modeme.classList.remove('active');
@@ -128,7 +155,6 @@ select_tasks.addEventListener('click', function (event) {
 
 close_selected.addEventListener('click', function (event) {
   event.preventDefault()
-
   select_tasks.classList.remove('active');
   headOptions.classList.remove('active');
   bottom_options.classList.remove('active');
@@ -136,7 +162,6 @@ close_selected.addEventListener('click', function (event) {
   onSelected = false;
   isDragging = true;
   list_id = []
-
   document.querySelectorAll('.card.added').forEach(item => {
     item.classList.remove("added");
     item.setAttribute('state',
@@ -161,8 +186,6 @@ modif_elprod.addEventListener('click', function (event) {
   bottom_modProd.classList.add('active');
   bottom_modProd_input.focus();
   bottom_modProd_input.value = title_prod.innerText;
-
-
 
 });
 
@@ -190,9 +213,6 @@ delete_prod.addEventListener('click', function (event) {
 
 });
 
-
-
-
 bottom_modProd_button.addEventListener('click', function (event) {
   event.preventDefault();
 
@@ -216,15 +236,9 @@ bottom_modProd_button.addEventListener('click', function (event) {
     .then((rem) => {
       bottom_modProd.classList.remove('active');
     })
-
   bottom_modProd_input.value = '';
 
 });
-
-
-
-
-
 
 remove_selected.addEventListener('click', (event) => {
   console.log(onSelected);
@@ -232,7 +246,8 @@ remove_selected.addEventListener('click', (event) => {
 
   event.preventDefault()
   let listToServer = list_id.map((elem) => {
-    return Number(elem.replace("task_", ""))
+    return elem.replace("task_",
+      "")
   });
 
   console.log(listToServer, list_id)
@@ -243,28 +258,22 @@ remove_selected.addEventListener('click', (event) => {
     item.remove()
   })
 
-  postToServer("/deleteTask", JSON.stringify({
-    data: listToServer
-  })).then((res) => {
-    console.log(res);
-  }).catch((e) => { })
+  hooks.DELETE_TASK(listToServer)
+
 
 })
 
 
 
 
+
+
+
 function setPopUpContent({
-  title, body
-}) {
+  title, body }) {
   englob_popUp.querySelector(".popUp_modal > div h5").innerHTML = title;
   englob_popUp.querySelector(".popUp_modal > div p").innerHTML = body;
 }
-
-
-
-
-
 
 
 function On_Click(e, self) {
@@ -289,47 +298,20 @@ function On_Click(e, self) {
 }
 
 
-function auto_reset() {
-  form.title.value = "";
-  form.title.value = "";
-  form.body.value = "";
-  form.isdone.checked = false;
-  form.title.focus();
-}
 
 
-let onFucusExisting = () => {
-  pannelAddTask.classList.add("open");
-  console.log(liveId);
-}
-let FucusNoExisting = () => {
-  pannelAddTask.classList.add("open");
-  auto_reset();
-  console.log(liveId);
-}
-let onLoseFucusExisting = () => {
-  pannelAddTask.classList.remove("open");
-  auto_reset()
-  liveId = null;
-  thisVal = null;
-}
 
-let o = 0;
+let thisVal = null
 
-closePanel.addEventListener("click", function (e) {
-  e.preventDefault();
-  e.stopImmediatePropagation();
-  onLoseFucusExisting();
-});
+getDataFromDB(`/get_project_list`)
+  .then((datas) => {
+    PROJECT_LIST = datas;
 
-addNewTaskBtn.addEventListener("click", function (e) {
-  e.preventDefault();
-  e.stopImmediatePropagation();
-  FucusNoExisting();
-  liveId = null;
-});
+    console.log("Sssss", PROJECT_LIST)
 
-
+  }).catch((err) => {
+    console.error(err)
+  })
 
 
 
@@ -337,25 +319,26 @@ class TASK_ITEM {
 
   isMoving = true;
   #isFocus = false;
-  START_X = null
+  START_X = null;
   /*
-    state : {type : Number} 4 etats possible
-        0 : la tache a ete enregistre dans la base de donner
-        1 : une tache deja enregistre dans la base de donner mais qui a éte modifier
-        2: Une nouvelle tache pas encore enregistre dans la base de donner cote Server
-        3 : Cette tache va etre suprimer dans la base de donneés
+state : {type : Number} 4 etats possible
+    0 : la tache a ete enregistre dans la base de donner
+    1 : une tache deja enregistre dans la base de donner mais qui a éte modifier
+    2: Une nouvelle tache pas encore enregistre dans la base de donner cote Server
+    3 : Cette tache va etre suprimer dans la base de donneés
 */
   constructor(data) {
     this.data = data;
     this.title = this.data.title;
-    this.id = this.data.id;
+    this.task_id = this.data.task_id === null ? this.data.id : this.data.task_id;
     this.body = this.data.body;
     this.isdone = this.data.isdone;
     this.ref = this.data.ref;
     this.state = data.state;
+    this.finish_at = moment(this.data.finish_at).format("YYYY-MM-DDTHH:mm");
     /////////////////////
-    this.create_item()
-    this.handle_click()
+    this.create_item();
+    this.handle_click();
   }
 
   CREATE_ELEMENT(type, className, text) {
@@ -369,13 +352,18 @@ class TASK_ITEM {
     return elem
   }
 
-
   create_item() {
 
+
+
     this.box = this.CREATE_ELEMENT("div", "card");
-    this.box.id = `task_${this.id}`;
+    this.box.id = `task_${this.task_id}`;
     this.box.setAttribute("state", this.state)
     this.box.setAttribute("data-ref", this.ref)
+    this.box.setAttribute("data-date", this.finish_at)
+
+
+
     this.div1 = this.CREATE_ELEMENT("div", null, null);
     this.checkbox = this.CREATE_ELEMENT("input", "form-check-input");
     this.checkbox.setAttribute("type", "checkbox");
@@ -386,9 +374,9 @@ class TASK_ITEM {
 
     this.div1.append(this.checkbox)
     this.cardBox = this.CREATE_ELEMENT("div", "card-body");
-    this.div2div = this.CREATE_ELEMENT("div", null, null)
+    this.div2div = this.CREATE_ELEMENT("div", null, null);
     this.div2div.innerHTML = `
-        <p>10:00 PM </p>
+        <p class="date_time" > ${moment(this.data.finish_at, "YYYY-MM-DD HH:mm").format("DD MMMM YYYY")} </p>
         &nbsp; • &nbsp;
         <span> Repeat </span>
         `;
@@ -401,8 +389,22 @@ class TASK_ITEM {
 
     this.div3 = this.CREATE_ELEMENT("div", null);
 
+
+    let title_ref, ownerProject;
+
+    if (PROJECT_LIST) {
+      ownerProject = PROJECT_LIST.find((prod) => prod.ref_key == this.ref);
+    }
+
+    if (!ownerProject) {
+      title_ref = "Default";
+    } else {
+      title_ref = ownerProject.title.toLowerCase().slice(0, 6) + "...";
+    }
+    
+
     this.prodGP = this.CREATE_ELEMENT("div", "prodGP");
-    this.prodGP.innerHTML = "Home"
+    this.prodGP.innerHTML = title_ref;
     this.dropDown = this.CREATE_ELEMENT("button", null);
     this.dropDown.id = "dropDown";
     this.dropDown.innerHTML = "__"
@@ -411,15 +413,14 @@ class TASK_ITEM {
     this.div3.append(this.prodGP);
     this.div3.append(this.dropDown);
 
-    this.box.append(this.div1)
-    this.box.append(this.cardBox)
-    this.box.append(this.div3)
+    this.box.append(this.div1);
+    this.box.append(this.cardBox);
+    this.box.append(this.div3);
   }
-
-
 
   handle_click() {
     this.cardBox.addEventListener("click", this.onClicked.bind(this));
+    this.checkbox.addEventListener("change", this.onCHANGE.bind(this));
   }
 
   onClicked(e) {
@@ -427,15 +428,38 @@ class TASK_ITEM {
       On_Click(e, this.box);
       return
     }
+
     e.preventDefault();
     e.stopImmediatePropagation()
+
     try {
-      let other = this.box.parentElement.querySelector(`.card.focusBox:not(#task_${this.id})`);
+      let other = this.box.parentElement.querySelector(`.card.focusBox:not(#task_${this.task_id})`);
       other.classList.remove("focusBox");
     } catch (e) { }
-    liveId = this.id;
-    onFucusExisting();
-    auto_fill(this)
+
+    hooks.setters(this);
+    hooks.onFucusExisting();
+    hooks.auto_fill();
+  }
+
+  onCHANGE(e) {
+    liveId = this.task_id;
+
+    let data = {
+      id: this.task_id,
+      isdone: e.currentTarget.checked,
+      ref: this.ref
+    }
+
+    postToServer("/doneTask", JSON.stringify(data), "POST")
+      .then((res) => {
+        if (res.status !== 200) return;
+
+      }).catch((err) => {
+        console.log(err)
+      })
+    auto_reset();
+
   }
 
   appendTo(section) {
@@ -448,218 +472,75 @@ class TASK_ITEM {
 
 
 
-let thisVal = null;
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+closePanel.addEventListener("click", function (e) {
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  hooks.onLoseFucusExisting();
+});
+
+addNewTaskBtn.addEventListener("click", function (e) {
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  hooks.focusNoExisting();
+  //liveId = null;
+});
 
 form.addEventListener("submit", function (e) {
   e.preventDefault();
-  if (liveId === null) return addItem();
-  modifItem();
+  if (hooks.liveId === null) {
+    hooks.setTask(TASK_ITEM)
+    return hooks.addItem();
+  }
+  hooks.modifItem();
 });
 
+deleteItemBtn.addEventListener("click", function (e) {
+  e.preventDefault();
 
+  hooks.deleteItem()
 
+});
 
-
-
-function modifItem() {
-
-  let modItem = document.querySelector(`div#task_${liveId}`);
-  let data = {
-    id: liveId, title: form.title.value, body: form.body.value, isdone: form.isdone.checked, ref: form.select.value, state: Number(modItem.getAttribute("state"))
-  }
-
-  modItem.querySelector("h5").innerText = form.title.value;
-  modItem.querySelector("p.card-text").innerText = form.body.value;
-  modItem.querySelector("input").checked = form.isdone.checked;
-
-  if (data.state !== 2) {
-    modItem.setAttribute("state", "1");
-    data.state = 1;
-  }
-
-  if (thisVal !== null) {
-    thisVal.title = form.title.value;
-    thisVal.body = form.body.value;
-    thisVal.isdone = form.isdone.checked;
-    thisVal.ref = form.select.value;
-    thisVal.state = data.state;
-  }
-
-
-  postToServer("/modifTask", JSON.stringify(data), "POST")
-    .then((res) => {
-      if (res.status !== 200) return;
-
-    }).catch((err) => { console.log(err) })
-  auto_reset();
-}
-
-
-
-
-
-
-document.querySelector("#addNewTaskBtn")
-  .addEventListener("click",
-    (e) => {
-      e.preventDefault();
-      onLoseFucusExisting()
-    }); document.querySelector("#addNewTaskBtn")
-      .addEventListener("click",
-        (e) => {
-          e.preventDefault();
-          onLoseFucusExisting()
-        }); function auto_fill(sel) {
-          thisVal = sel;
-          console.log(thisVal);
-          let modItem = document.querySelector(`div#task_${liveId}`);
-          let ref = modItem.getAttribute("data-ref");
-          form.title.value = modItem.querySelector("h5").innerText;
-          form.body.value = modItem.querySelector("p.card-text").innerText;
-          form.isdone.checked = modItem.querySelector("input").checked;
-
-          try {
-            form.select.querySelector(`option[value="${thisVal.ref}"]`).selected = true;
-          } catch (err) { console.log(err) }
-
-          form.title.focus()
-        }
-
-function deleteItem(e) {
+selectDate.addEventListener("change", (e) => {
   e.preventDefault()
 
-  document.querySelector(`div#task_${liveId}`).remove();
-  postToServer("deleteTask",
-    JSON.stringify({
-      id: liveId
-    }),
-    "POST")
-    .then((res) => { })
-    .catch((err) => { })
+  let date = moment(e.target.value, "YYYY-MM-DD HH:mm").format("YYYY-MM-DD HH:mm")
+
+  hooks.data.date = date;
+
+  console.log(hooks);
+
+})
+
+
+
+
+async function getDataFromDB(url) {
+  let fetched = await fetch(url)
+  let datas = await fetched.json()
+  console.log(datas)
+  return datas;
 }
-
-
-
-
-function addItem() {
-
-  let title = form.title.value;
-  let body = form.body.value
-  let isdone = form.isdone.checked === true ? 1 : 0;
-  let select = form.select;
-  let ref = select.value;
-  let state = 2;
-  let currentID = getHighestID() + 1;
-  let task = new TASK_ITEM({ title, body, isdone, ref, id: currentID, state });
-
-  task.appendTo(document.querySelector("#affichage"));
-
-  let obj = { title, body, isdone, ref, id: currentID, state };
-
-
-  postToServer("/addTask",
-    JSON.stringify({
-      title, body, isdone, ref
-    }),
-    "POST")
-    .then((res) => {
-      if (res.status !== 200) return
-
-    })
-    .catch((err) => { });
-  auto_reset()
-
-}
-
-
-
-
-
-function getCookies(name) {
-  let cookies = document.cookie.split("; ");
-  let values = cookies.find((c) => c.startsWith(name));
-  let splited = values.split("=");
-  let val = JSON.parse(splited[1]);
-  return val
-}
-
-
-
-
-
-function setCookies(data) {
-
-  if (liveId === null) {
-    cookiesArray.push(data);
-    document.cookie = `values=${JSON.stringify(cookiesArray)}`;
-    console.log("Not from db , added", liveId, data, document.cookie)
-    return
-  }
-
-  let val = getCookies("values");
-  let lastValue = val.find((item) => item.id === liveId);
-
-
-  if (lastValue === undefined || data.state === 1) {
-    cookiesArray.push(data);
-    document.cookie = `values=${JSON.stringify(cookiesArray)}`;
-    console.log("Its from db, added", liveId, data, document.cookie)
-    return
-  }
-
-
-  console.log("il existe deja", lastValue)
-  if (lastValue && data.state === 2 && liveId !== null) {
-
-    console.log("Not added to db, from front Before", lastValue)
-    let keys = Object.entries(lastValue)
-    for (let array of keys) {
-      let key = array[0];
-      let val = array[1];
-      lastValue[key] = data[key];
-      if (lastValue[key] !== data[key]) {
-        lastValue[key] = data[key];
-      }
-    }
-
-    cookiesArray = cookiesArray.filter((item) => item.id !== lastValue.id)
-    cookiesArray.push(lastValue);
-
-    document.cookie = `values=${JSON.stringify(cookiesArray)}`;
-    console.log("After", lastValue);
-  }
-}
-
-
-
-
-
-
-function getHighestID() {
-
-  return Array.from(document.querySelectorAll(".card"))
-    .map((item) => {
-      if (!item.id) return undefined
-      return Number(item.id.split("_")[1]);
-    })
-    .filter((item) => item !== undefined)
-    .sort((a, b) => {
-      return b - a
-    })[0];
-
-}
-
-
-
-
-
-
-
 
 
 function postToServer(url, body, method) {
@@ -693,22 +574,215 @@ export default TASK_ITEM;
 /*
 
 
+function DELETE_TASK(LIST) {
+postToServer("/deleteTask",
+    JSON.stringify({
+        data: LIST
+    })).then((res) => {
+        console.log(res);
+    }).catch((e) => {})
+}
+function modifItem() {
+
+let modItem = document.querySelector(`div#task_${liveId}`);
+let data = {
+    id: liveId, title: form.title.value, body: form.body.value, isdone: form.isdone.checked, ref: form.select.value, state: Number(modItem.getAttribute("state"))
+}
+
+modItem.querySelector("h5").innerText = form.title.value;
+modItem.querySelector("p.card-text").innerText = form.body.value;
+modItem.querySelector("input").checked = form.isdone.checked;
+
+if (data.state !== 2) {
+    modItem.setAttribute("state", "1");
+    data.state = 1;
+}
+
+if (thisVal !== null) {
+    thisVal.title = form.title.value;
+    thisVal.body = form.body.value;
+    thisVal.isdone = form.isdone.checked;
+    thisVal.ref = form.select.value;
+    thisVal.state = data.state;
+}
+
+postToServer("/modifTask", JSON.stringify(data), "POST")
+.then((res) => {
+    if (res.status !== 200) return;
+
+}).catch((err) => {
+    console.log(err)
+})
+auto_reset();
+}
+function auto_reset() {
+form.title.value = "";
+form.title.value = "";
+form.body.value = "";
+form.isdone.checked = false;
+form.title.focus();
+}
+function auto_fill(sel) {
+thisVal = sel;
+console.log(thisVal);
+let modItem = document.querySelector(`div#task_${liveId}`);
+let ref = modItem.getAttribute("data-ref");
+form.title.value = modItem.querySelector("h5").innerText;
+form.body.value = modItem.querySelector("p.card-text").innerText;
+form.isdone.checked = modItem.querySelector("input").checked;
+
+try {
+    form.select.querySelector(`option[value="${thisVal.ref}"]`).selected = true;
+} catch (err) {
+    console.log(err)
+}
+form.title.focus()
+}
+
+
+function deleteItem(e) {
+e.preventDefault()
+
+postToServer("deleteTask",
+    JSON.stringify({
+        id: liveId
+    }),
+    "POST")
+.then((res) => {})
+.catch((err) => {})
+}
+function addItem() {
+
+let title = form.title.value;
+let body = form.body.value
+let isdone = form.isdone.checked === true ? 1: 0;
+let select = form.select;
+let ref = select.value;
+let state = 2;
+let currentID = getHighestID() + 1;
+
+let task = new TASK_ITEM({
+    title,
+    body,
+    isdone,
+    ref,
+    id: currentID,
+    state
+});
+
+
+task.appendTo(document.querySelector("#affichage"));
+
+let obj = {
+    title, body, isdone, ref, id: currentID, state
+};
+
+
+postToServer("/addTask",
+    JSON.stringify({
+        title, body, isdone, ref
+    }),
+    "POST")
+.then((res) => {
+    if (res.status !== 200) return
+
+})
+.catch((err) => {});
+auto_reset()
+
+}
+function getCookies(name) {
+let cookies = document.cookie.split("; ");
+let values = cookies.find((c) => c.startsWith(name));
+let splited = values.split("=");
+let val = JSON.parse(splited[1]);
+return val
+}
+function setCookies(data) {
+
+if (liveId === null) {
+    cookiesArray.push(data);
+    document.cookie = `values=${JSON.stringify(cookiesArray)}`;
+    console.log("Not from db , added", liveId, data, document.cookie)
+    return
+}
+
+let val = getCookies("values");
+let lastValue = val.find((item) => item.id === liveId);
+
+
+if (lastValue === undefined || data.state === 1) {
+    cookiesArray.push(data);
+    document.cookie = `values=${JSON.stringify(cookiesArray)}`;
+    console.log("Its from db, added", liveId, data, document.cookie)
+    return
+}
+
+
+console.log("il existe deja", lastValue)
+if (lastValue && data.state === 2 && liveId !== null) {
+
+    console.log("Not added to db, from front Before", lastValue)
+    let keys = Object.entries(lastValue)
+    for (let array of keys) {
+        let key = array[0];
+        let val = array[1];
+        lastValue[key] = data[key];
+        if (lastValue[key] !== data[key]) {
+            lastValue[key] = data[key];
+        }
+    }
+
+    cookiesArray = cookiesArray.filter((item) => item.id !== lastValue.id)
+    cookiesArray.push(lastValue);
+
+    document.cookie = `values=${JSON.stringify(cookiesArray)}`;
+    console.log("After", lastValue);
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+function getHighestID() {
+
+return Array.from(document.querySelectorAll(".card"))
+.map((item) => {
+    if (!item.id) return undefined
+    return Number(item.id.split("_")[1]);
+})
+.filter((item) => item !== undefined)
+.sort((a, b) => {
+    return b - a
+})[0];
+
+}
+
+
+
 const id_page = document.querySelector('div#forIDcheck') // null
 let id;
 let ref_key;
 if (id_page) {
-  id = id_page.getAttribute("data-id");
-  ref_key = id_page.getAttribute("data-ref-key");
+id = id_page.getAttribute("data-id");
+ref_key = id_page.getAttribute("data-ref-key");
 }
 
 console.log(id_page)
 
 let selectewd = [],
-  onSelected = false,
-  list_id = [],
-  a = 0,
-  START_X = null,
-  isDragging = true;
+onSelected = false,
+list_id = [],
+a = 0,
+START_X = null,
+isDragging = true;
 
 
 
@@ -756,50 +830,50 @@ let addNewTaskBtn = document.querySelector("#addNewTaskBtn");
 
 
 englob_popUp.querySelectorAll('button')
-  .forEach((button) => {
-    button.addEventListener('click', function (event) {
-      event.preventDefault()
-      event.stopPropagation()
-      let ret = this.getAttribute('data-return')
+.forEach((button) => {
+button.addEventListener('click', function (event) {
+event.preventDefault()
+event.stopPropagation()
+let ret = this.getAttribute('data-return')
 
-      if (ret == 'false') {
-        englob_popUp.classList.remove('active');
-      }
+if (ret == 'false') {
+englob_popUp.classList.remove('active');
+}
 
-      if (ret === "true") {
-        alert("Supprimer")
-        postToServer("/deleteProd", JSON.stringify({
-          id, ref_key
-        })).then((res) => {
-          if (res.status === 200) {
-            let a = document.createElement("a");
-            a.href = "/project";
-            a.click();
-          }
-        })
-      }
+if (ret === "true") {
+alert("Supprimer")
+postToServer("/deleteProd", JSON.stringify({
+  id, ref_key
+})).then((res) => {
+  if (res.status === 200) {
+    let a = document.createElement("a");
+    a.href = "/project";
+    a.click();
+  }
+})
+}
 
-      console.log(ret)
-    });
+console.log(ret)
+});
 
-  });
+});
 
 
 englob_popUp.querySelector('.popUp_modal').addEventListener('click', (event) => {
-  event.preventDefault()
-  event.stopPropagation()
-  console.log('Stop')
+event.preventDefault()
+event.stopPropagation()
+console.log('Stop')
 
 });
 
 
 
 englob_popUp.addEventListener('click', (event) => {
-  event.preventDefault()
-  event.stopPropagation()
+event.preventDefault()
+event.stopPropagation()
 
-  englob_popUp.classList.remove('active');
-  console.log('Close')
+englob_popUp.classList.remove('active');
+console.log('Close')
 
 });
 
@@ -807,80 +881,80 @@ englob_popUp.addEventListener('click', (event) => {
 
 
 prod_tools.addEventListener('click', (event) => {
-  event.preventDefault()
-  modeme.classList.toggle('active');
+event.preventDefault()
+modeme.classList.toggle('active');
 });
 select_tasks.addEventListener('click', function (event) {
-  event.preventDefault()
-  modeme.classList.remove('active');
-  this.classList.add('active');
-  headOptions.classList.add('active');
-  bottom_options.classList.add('active');
-  onSelected = true;
-  isDragging = false;
-  bottom_modProd.classList.remove('active');
+event.preventDefault()
+modeme.classList.remove('active');
+this.classList.add('active');
+headOptions.classList.add('active');
+bottom_options.classList.add('active');
+onSelected = true;
+isDragging = false;
+bottom_modProd.classList.remove('active');
 });
 
 close_selected.addEventListener('click', function (event) {
-  event.preventDefault()
+event.preventDefault()
 
-  select_tasks.classList.remove('active');
-  headOptions.classList.remove('active');
-  bottom_options.classList.remove('active');
+select_tasks.classList.remove('active');
+headOptions.classList.remove('active');
+bottom_options.classList.remove('active');
 
-  onSelected = false;
-  isDragging = true;
-  list_id = []
+onSelected = false;
+isDragging = true;
+list_id = []
 
-  document.querySelectorAll('.card.added').forEach(item => {
-    item.classList.remove("added");
-    item.setAttribute('state',
-      "0");
-  });
+document.querySelectorAll('.card.added').forEach(item => {
+item.classList.remove("added");
+item.setAttribute('state',
+"0");
+});
 
-  show_up.innerHTML = ` 0 tâches sélectionner`
+show_up.innerHTML = ` 0 tâches sélectionner`
 });
 
 modif_elprod.addEventListener('click', function (event) {
-  event.preventDefault();
+event.preventDefault();
 
-  select_tasks.classList.remove('active');
-  headOptions.classList.remove('active');
-  bottom_options.classList.remove('active');
-  modeme.classList.remove('active');
+select_tasks.classList.remove('active');
+headOptions.classList.remove('active');
+bottom_options.classList.remove('active');
+modeme.classList.remove('active');
 
-  onSelected = false;
-  isDragging = false;
-  list_id = [];
+onSelected = false;
+isDragging = false;
+list_id = [];
 
-  bottom_modProd.classList.add('active');
-  bottom_modProd_input.focus();
-  bottom_modProd_input.value = title_prod.innerText;
+bottom_modProd.classList.add('active');
+bottom_modProd_input.focus();
+bottom_modProd_input.value = title_prod.innerText;
 
 
 
 });
 
 delete_prod.addEventListener('click', function (event) {
-  event.preventDefault();
+event.preventDefault();
 
-  select_tasks.classList.remove('active');
-  headOptions.classList.remove('active');
-  bottom_options.classList.remove('active');
-  bottom_modProd.classList.remove('active');
-  modeme.classList.remove('active');
+select_tasks.classList.remove('active');
+headOptions.classList.remove('active');
+bottom_options.classList.remove('active');
+bottom_modProd.classList.remove('active');
+modeme.classList.remove('active');
 
-  onSelected = false;
-  isDragging = false;
-  list_id = [];
+onSelected = false;
+isDragging = false;
+list_id = [];
 
-  englob_popUp.classList.add('active')
+englob_popUp.classList.add('active')
 
-  setPopUpContent({
-    title: 'Supprimer le projet ?',
-    body: `Cette action définitive et irréversible
-        supprimera le projet ${title_prod.innerText} y compris les tâches incluse.`
-  })
+setPopUpContent({
+title: 'Supprimer le projet ?',
+body: `Cette action définitive et irréversible
+supprimera le projet ${title_prod.innerText} y compris les tâches incluse.`
+})
 
 
 });
@@ -889,30 +963,30 @@ delete_prod.addEventListener('click', function (event) {
 
 
 bottom_modProd_button.addEventListener('click', function (event) {
-  event.preventDefault();
+event.preventDefault();
 
-  select_tasks.classList.remove('active');
-  headOptions.classList.remove('active');
-  bottom_options.classList.remove('active');
-  modeme.classList.remove('active');
+select_tasks.classList.remove('active');
+headOptions.classList.remove('active');
+bottom_options.classList.remove('active');
+modeme.classList.remove('active');
 
-  onSelected = false;
-  isDragging = false;
-  list_id = [];
+onSelected = false;
+isDragging = false;
+list_id = [];
 
-  bottom_modProd.classList.remove('active');
-  bottom_modProd_input.blur();
-  title_prod.innerText = bottom_modProd_input.value
+bottom_modProd.classList.remove('active');
+bottom_modProd_input.blur();
+title_prod.innerText = bottom_modProd_input.value
 
-  postToServer("/modifProd", JSON.stringify({
-    id: Number(id),
-    title: bottom_modProd_input.value
-  }))
-    .then((rem) => {
-      bottom_modProd.classList.remove('active');
-    })
+postToServer("/modifProd", JSON.stringify({
+id: Number(id),
+title: bottom_modProd_input.value
+}))
+.then((rem) => {
+bottom_modProd.classList.remove('active');
+})
 
-  bottom_modProd_input.value = '';
+bottom_modProd_input.value = '';
 
 });
 
@@ -922,27 +996,27 @@ bottom_modProd_button.addEventListener('click', function (event) {
 
 
 remove_selected.addEventListener('click', (event) => {
-  console.log(onSelected);
-  isDragging = false;
+console.log(onSelected);
+isDragging = false;
 
-  event.preventDefault()
-  let listToServer = list_id.map((elem) => {
-    return Number(elem.replace("task_", ""))
-  });
+event.preventDefault()
+let listToServer = list_id.map((elem) => {
+return Number(elem.replace("task_", ""))
+});
 
-  console.log(listToServer, list_id)
+console.log(listToServer, list_id)
 
-  document.querySelectorAll('div.card.added').forEach(item => {
-    list_id = list_id.filter((elem) => elem !== item.id);
-    show_up.innerHTML = `${list_id.length} tâches sélectionner !`
-    item.remove()
-  })
+document.querySelectorAll('div.card.added').forEach(item => {
+list_id = list_id.filter((elem) => elem !== item.id);
+show_up.innerHTML = `${list_id.length} tâches sélectionner !`
+item.remove()
+})
 
-  postToServer("/deleteTask", JSON.stringify({
-    data: listToServer
-  })).then((res) => {
-    console.log(res);
-  }).catch((e) => { })
+postToServer("/deleteTask", JSON.stringify({
+data: listToServer
+})).then((res) => {
+console.log(res);
+}).catch((e) => { })
 
 })
 
@@ -950,10 +1024,10 @@ remove_selected.addEventListener('click', (event) => {
 
 
 function setPopUpContent({
-  title, body
+title, body
 }) {
-  englob_popUp.querySelector(".popUp_modal > div h5").innerHTML = title;
-  englob_popUp.querySelector(".popUp_modal > div p").innerHTML = body;
+englob_popUp.querySelector(".popUp_modal > div h5").innerHTML = title;
+englob_popUp.querySelector(".popUp_modal > div p").innerHTML = body;
 }
 
 
@@ -964,182 +1038,182 @@ function setPopUpContent({
 
 function On_Click(e, self) {
 
-  e.preventDefault();
-  self.classList.toggle('added');
-  if (self.classList.contains('added')) {
+e.preventDefault();
+self.classList.toggle('added');
+if (self.classList.contains('added')) {
 
-    self.setAttribute('state', 3)
-    list_id = list_id
-      .filter((item) => item !== self.id);
-    list_id.push(self.id)
+self.setAttribute('state', 3)
+list_id = list_id
+.filter((item) => item !== self.id);
+list_id.push(self.id)
 
-  } else {
-    self.setAttribute('state', 0);
+} else {
+self.setAttribute('state', 0);
 
-    list_id = list_id
-      .filter((item) => item !== self.id);
-  }
+list_id = list_id
+.filter((item) => item !== self.id);
+}
 
-  show_up.innerHTML = `${list_id.length} tâches sélectionner !`
+show_up.innerHTML = `${list_id.length} tâches sélectionner !`
 }
 
 
 function auto_reset() {
-  form.title.value = "";
-  form.body.value = "";
-  form.isdone.checked = false;
-  form.title.focus();
+form.title.value = "";
+form.body.value = "";
+form.isdone.checked = false;
+form.title.focus();
 }
 
 
 let onFucusExisting = () => {
-  pannelAddTask.classList.add("open");
-  console.log(liveId);
+pannelAddTask.classList.add("open");
+console.log(liveId);
 }
 let FucusNoExisting = () => {
-  pannelAddTask.classList.add("open");
-  auto_reset();
-  console.log(liveId);
+pannelAddTask.classList.add("open");
+auto_reset();
+console.log(liveId);
 }
 let onLoseFucusExisting = () => {
-  pannelAddTask.classList.remove("open");
-  auto_reset()
-  liveId = null;
-  thisVal = null;
+pannelAddTask.classList.remove("open");
+auto_reset()
+liveId = null;
+thisVal = null;
 }
 
 let o = 0;
 
 closePanel.addEventListener("click", function (e) {
-  e.preventDefault();
-  e.stopImmediatePropagation();
-  onLoseFucusExisting();
+e.preventDefault();
+e.stopImmediatePropagation();
+onLoseFucusExisting();
 });
 
 addNewTaskBtn.addEventListener("click", function (e) {
-  e.preventDefault();
-  e.stopImmediatePropagation();
-  FucusNoExisting();
-  liveId = null;
+e.preventDefault();
+e.stopImmediatePropagation();
+FucusNoExisting();
+liveId = null;
 });
 
 
 
 
 document.querySelector("#addNewTaskBtn")
-    .addEventListener("click",
-      (e) => {
-        e.preventDefault();
-        onLoseFucusExisting()
-      });
+.addEventListener("click",
+(e) => {
+e.preventDefault();
+onLoseFucusExisting()
+});
 
 class TASK_ITEM {
 
-  isMoving = true;
-  #isFocus = false;
-  START_X = null
-  /*
-    state : {type : Number} 4 etats possible
-        0 : la tache a ete enregistre dans la base de donner
-        1 : une tache deja enregistre dans la base de donner mais qui a éte modifier
-        2: Une nouvelle tache pas encore enregistre dans la base de donner cote Server
-        3 : Cette tache va etre suprimer dans la base de donneés
+isMoving = true;
+#isFocus = false;
+START_X = null
+/*
+state : {type : Number} 4 etats possible
+0 : la tache a ete enregistre dans la base de donner
+1 : une tache deja enregistre dans la base de donner mais qui a éte modifier
+2: Une nouvelle tache pas encore enregistre dans la base de donner cote Server
+3 : Cette tache va etre suprimer dans la base de donneés
 
 constructor(data) {
-  this.data = data;
-  this.title = this.data.title;
-  this.id = this.data.id;
-  this.body = this.data.body;
-  this.isdone = this.data.isdone;
-  this.ref = this.data.ref;
-  this.state = data.state;
-  /////////////////////
-  this.create_item()
-  this.handle_click()
+this.data = data;
+this.title = this.data.title;
+this.id = this.data.id;
+this.body = this.data.body;
+this.isdone = this.data.isdone;
+this.ref = this.data.ref;
+this.state = data.state;
+/////////////////////
+this.create_item()
+this.handle_click()
 }
 
 CREATE_ELEMENT(type, className, text) {
-  let elem = document.createElement(type);
-  if (className) {
-    elem.classList.add(className)
-  }
-  if (text) {
-    elem.innerText = text
-  }
-  return elem
+let elem = document.createElement(type);
+if (className) {
+elem.classList.add(className)
+}
+if (text) {
+elem.innerText = text
+}
+return elem
 }
 
 
 create_item() {
 
-  this.box = this.CREATE_ELEMENT("div", "card");
-  this.box.id = `task_${this.id}`;
-  this.box.setAttribute("state", this.state)
-  this.box.setAttribute("data-ref", this.ref)
-  this.div1 = this.CREATE_ELEMENT("div", null, null);
-  this.checkbox = this.CREATE_ELEMENT("input", "form-check-input");
-  this.checkbox.setAttribute("type", "checkbox");
+this.box = this.CREATE_ELEMENT("div", "card");
+this.box.id = `task_${this.id}`;
+this.box.setAttribute("state", this.state)
+this.box.setAttribute("data-ref", this.ref)
+this.div1 = this.CREATE_ELEMENT("div", null, null);
+this.checkbox = this.CREATE_ELEMENT("input", "form-check-input");
+this.checkbox.setAttribute("type", "checkbox");
 
-  if (Number(this.isdone) === 1) {
-    this.checkbox.checked = true;
-  }
+if (Number(this.isdone) === 1) {
+this.checkbox.checked = true;
+}
 
-  this.div1.append(this.checkbox)
-  this.cardBox = this.CREATE_ELEMENT("div", "card-body");
-  this.div2div = this.CREATE_ELEMENT("div", null, null)
-  this.div2div.innerHTML = `
-        <p>10:00 PM </p>
-        &nbsp; • &nbsp;
-        <span> Repeat </span>
-        `;
-  this.p = this.CREATE_ELEMENT("p", "card-text", this.body);
-  this.h5 = this.CREATE_ELEMENT("h5", "card-title", this.title);
+this.div1.append(this.checkbox)
+this.cardBox = this.CREATE_ELEMENT("div", "card-body");
+this.div2div = this.CREATE_ELEMENT("div", null, null)
+this.div2div.innerHTML = `
+<p>10:00 PM </p>
+&nbsp; • &nbsp;
+<span> Repeat </span>
+`;
+this.p = this.CREATE_ELEMENT("p", "card-text", this.body);
+this.h5 = this.CREATE_ELEMENT("h5", "card-title", this.title);
 
-  this.cardBox.append(this.h5);
-  this.cardBox.append(this.div2div);
-  this.cardBox.append(this.p);
+this.cardBox.append(this.h5);
+this.cardBox.append(this.div2div);
+this.cardBox.append(this.p);
 
-  this.div3 = this.CREATE_ELEMENT("div", null);
+this.div3 = this.CREATE_ELEMENT("div", null);
 
-  this.prodGP = this.CREATE_ELEMENT("div", "prodGP");
-  this.prodGP.innerHTML = "Home"
-  this.dropDown = this.CREATE_ELEMENT("button", null);
-  this.dropDown.id = "dropDown";
-  this.dropDown.innerHTML = "__"
-  this.dropDown.id = "dropDown";
+this.prodGP = this.CREATE_ELEMENT("div", "prodGP");
+this.prodGP.innerHTML = "Home"
+this.dropDown = this.CREATE_ELEMENT("button", null);
+this.dropDown.id = "dropDown";
+this.dropDown.innerHTML = "__"
+this.dropDown.id = "dropDown";
 
-  this.div3.append(this.prodGP);
-  this.div3.append(this.dropDown);
+this.div3.append(this.prodGP);
+this.div3.append(this.dropDown);
 
-  this.box.append(this.div1)
-  this.box.append(this.cardBox)
-  this.box.append(this.div3)
+this.box.append(this.div1)
+this.box.append(this.cardBox)
+this.box.append(this.div3)
 }
 
 
 
 handle_click() {
-  this.cardBox.addEventListener("click", this.onClicked.bind(this));
+this.cardBox.addEventListener("click", this.onClicked.bind(this));
 }
 
 onClicked(e) {
-  if (onSelected) {
-    On_Click(e, this.box);
-    return
-  }
-  e.preventDefault();
-  e.stopImmediatePropagation()
-  try {
-    let other = this.box.parentElement.querySelector(`.card.focusBox:not(#task_${this.id})`);
-    other.classList.remove("focusBox");
-  } catch (e) { }
-  liveId = this.id;
-  onFucusExisting();
-  auto_fill(this)
+if (onSelected) {
+On_Click(e, this.box);
+return
+}
+e.preventDefault();
+e.stopImmediatePropagation()
+try {
+let other = this.box.parentElement.querySelector(`.card.focusBox:not(#task_${this.id})`);
+other.classList.remove("focusBox");
+} catch (e) { }
+liveId = this.id;
+onFucusExisting();
+auto_fill(this)
 }
 
 appendTo(section) {
-  section.append(this.box)
+section.append(this.box)
 }
 
 };
@@ -1149,191 +1223,191 @@ let thisVal = null;
 
 
 document.querySelector("#addNewTaskBtn")
-  .addEventListener("click",
-    (e) => {
-      e.preventDefault();
-      onLoseFucusExisting()
-      ss
-    });
+.addEventListener("click",
+(e) => {
+e.preventDefault();
+onLoseFucusExisting()
+ss
+});
 
 document.querySelector("#addNewTaskBtn")
-  .addEventListener("click",
-    (e) => {
-      e.preventDefault();
-      onLoseFucusExisting()
-    });    .addEventListener("click",
-      (e) => {
-        e.preventDefault();
-        onLoseFucusExisting()
-      }); form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        if (liveId === null) return addItem();
-        modifItem();
-      });
+.addEventListener("click",
+(e) => {
+e.preventDefault();
+onLoseFucusExisting()
+});    .addEventListener("click",
+(e) => {
+e.preventDefault();
+onLoseFucusExisting()
+}); form.addEventListener("submit", function (e) {
+e.preventDefault();
+if (liveId === null) return addItem();
+modifItem();
+});
 
 function modifItem() {
-  let modItem = document.querySelector(`div#task_${liveId}`);
-  let data = {
-    id: liveId, title: form.title.value, body: form.body.value, isdone: form.isdone.checked, ref: form.select.value, state: Number(modItem.getAttribute("state"))
-  }
+let modItem = document.querySelector(`div#task_${liveId}`);
+let data = {
+id: liveId, title: form.title.value, body: form.body.value, isdone: form.isdone.checked, ref: form.select.value, state: Number(modItem.getAttribute("state"))
+}
 
-  modItem.querySelector("h5").innerText = form.title.value;
-  modItem.querySelector("p.card-text").innerText = form.body.value;
-  modItem.querySelector("input").checked = form.isdone.checked;
+modItem.querySelector("h5").innerText = form.title.value;
+modItem.querySelector("p.card-text").innerText = form.body.value;
+modItem.querySelector("input").checked = form.isdone.checked;
 
-  if (data.state !== 2) {
-    modItem.setAttribute("state", "1");
-    data.state = 1;
-  }
+if (data.state !== 2) {
+modItem.setAttribute("state", "1");
+data.state = 1;
+}
 
-  if (thisVal !== null) {
-    thisVal.title = form.title.value;
-    thisVal.body = form.body.value;
-    thisVal.isdone = form.isdone.checked;
-    thisVal.ref = form.select.value;
-    thisVal.state = data.state;
-  }
+if (thisVal !== null) {
+thisVal.title = form.title.value;
+thisVal.body = form.body.value;
+thisVal.isdone = form.isdone.checked;
+thisVal.ref = form.select.value;
+thisVal.state = data.state;
+}
 
 
-  postToServer("/modifTask", JSON.stringify(data), "POST")
-    .then((res) => {
-      if (res.status !== 200) return;
+postToServer("/modifTask", JSON.stringify(data), "POST")
+.then((res) => {
+if (res.status !== 200) return;
 
-    }).catch((err) => { console.log(err) })
-  auto_reset();
+}).catch((err) => { console.log(err) })
+auto_reset();
 }
 
 document.querySelector("#addNewTaskBtn")
-  .addEventListener("click",
-    (e) => {
-      e.preventDefault();
-      onLoseFucusExisting()
-    }); document.querySelector("#addNewTaskBtn")
-      .addEventListener("click",
-        (e) => {
-          e.preventDefault();
-          onLoseFucusExisting()
-        }); function auto_fill(sel) {
-          thisVal = sel;
-          console.log(thisVal);
-          let modItem = document.querySelector(`div#task_${liveId}`);
-          let ref = modItem.getAttribute("data-ref");
-          form.title.value = modItem.querySelector("h5").innerText;
-          form.body.value = modItem.querySelector("p.card-text").innerText;
-          form.isdone.checked = modItem.querySelector("input").checked;
+.addEventListener("click",
+(e) => {
+e.preventDefault();
+onLoseFucusExisting()
+}); document.querySelector("#addNewTaskBtn")
+.addEventListener("click",
+(e) => {
+  e.preventDefault();
+  onLoseFucusExisting()
+}); function auto_fill(sel) {
+  thisVal = sel;
+  console.log(thisVal);
+  let modItem = document.querySelector(`div#task_${liveId}`);
+  let ref = modItem.getAttribute("data-ref");
+  form.title.value = modItem.querySelector("h5").innerText;
+  form.body.value = modItem.querySelector("p.card-text").innerText;
+  form.isdone.checked = modItem.querySelector("input").checked;
 
-          try {
-            form.select.querySelector(`option[value="${thisVal.ref}"]`).selected = true;
-          } catch (err) { console.log(err) }
+  try {
+    form.select.querySelector(`option[value="${thisVal.ref}"]`).selected = true;
+  } catch (err) { console.log(err) }
 
-          form.title.focus()
-        }
+  form.title.focus()
+}
 
 function deleteItem(e) {
-  e.preventDefault()
+e.preventDefault()
 
-  document.querySelector(`div#task_${liveId}`).remove();
-  postToServer("deleteTask",
-    JSON.stringify({
-      id: liveId
-    }),
-    "POST")
-    .then((res) => { })
-    .catch((err) => { })
+document.querySelector(`div#task_${liveId}`).remove();
+postToServer("deleteTask",
+JSON.stringify({
+id: liveId
+}),
+"POST")
+.then((res) => { })
+.catch((err) => { })
 }
 
 function addItem() {
 
-  let title = form.title.value
-  let body = form.body.value
-  let isdone = form.isdone.checked === true ? 1 : 0;
-  let select = form.select;
-  let ref = select.value;
-  let state = 2;
-  let currentID = getHighestID() + 1;
-  let task = new TASK_ITEM({ title, body, isdone, ref, id: currentID, state });
+let title = form.title.value
+let body = form.body.value
+let isdone = form.isdone.checked === true ? 1 : 0;
+let select = form.select;
+let ref = select.value;
+let state = 2;
+let currentID = getHighestID() + 1;
+let task = new TASK_ITEM({ title, body, isdone, ref, id: currentID, state });
 
-  task.appendTo(document.querySelector("#affichage"));
+task.appendTo(document.querySelector("#affichage"));
 
-  let obj = { title, body, isdone, ref, id: currentID, state };
+let obj = { title, body, isdone, ref, id: currentID, state };
 
 
-  postToServer("/addTask",
-    JSON.stringify({
-      title, body, isdone, ref
-    }),
-    "POST")
-    .then((res) => {
-      if (res.status !== 200) return
+postToServer("/addTask",
+JSON.stringify({
+title, body, isdone, ref
+}),
+"POST")
+.then((res) => {
+if (res.status !== 200) return
 
-    })
-    .catch((err) => { });
-  auto_reset()
+})
+.catch((err) => { });
+auto_reset()
 
 }
 
 function getCookies(name) {
-  let cookies = document.cookie.split("; ");
-  let values = cookies.find((c) => c.startsWith(name));
-  let splited = values.split("=");
-  let val = JSON.parse(splited[1]);
-  return val
+let cookies = document.cookie.split("; ");
+let values = cookies.find((c) => c.startsWith(name));
+let splited = values.split("=");
+let val = JSON.parse(splited[1]);
+return val
 }
 
 function setCookies(data) {
 
-  if (liveId === null) {
-    cookiesArray.push(data);
-    document.cookie = `values=${JSON.stringify(cookiesArray)}`;
-    console.log("Not from db , added", liveId, data, document.cookie)
-    return
-  }
+if (liveId === null) {
+cookiesArray.push(data);
+document.cookie = `values=${JSON.stringify(cookiesArray)}`;
+console.log("Not from db , added", liveId, data, document.cookie)
+return
+}
 
-  let val = getCookies("values");
-  let lastValue = val.find((item) => item.id === liveId);
-
-
-  if (lastValue === undefined || data.state === 1) {
-    cookiesArray.push(data);
-    document.cookie = `values=${JSON.stringify(cookiesArray)}`;
-    console.log("Its from db, added", liveId, data, document.cookie)
-    return
-  }
+let val = getCookies("values");
+let lastValue = val.find((item) => item.id === liveId);
 
 
-  console.log("il existe deja", lastValue)
-  if (lastValue && data.state === 2 && liveId !== null) {
+if (lastValue === undefined || data.state === 1) {
+cookiesArray.push(data);
+document.cookie = `values=${JSON.stringify(cookiesArray)}`;
+console.log("Its from db, added", liveId, data, document.cookie)
+return
+}
 
-    console.log("Not added to db, from front Before", lastValue)
-    let keys = Object.entries(lastValue)
-    for (let array of keys) {
-      let key = array[0];
-      let val = array[1];
-      lastValue[key] = data[key];
-      if (lastValue[key] !== data[key]) {
-        lastValue[key] = data[key];
-      }
-    }
 
-    cookiesArray = cookiesArray.filter((item) => item.id !== lastValue.id)
-    cookiesArray.push(lastValue);
+console.log("il existe deja", lastValue)
+if (lastValue && data.state === 2 && liveId !== null) {
 
-    document.cookie = `values=${JSON.stringify(cookiesArray)}`;
-    console.log("After", lastValue);
-  }
+console.log("Not added to db, from front Before", lastValue)
+let keys = Object.entries(lastValue)
+for (let array of keys) {
+let key = array[0];
+let val = array[1];
+lastValue[key] = data[key];
+if (lastValue[key] !== data[key]) {
+lastValue[key] = data[key];
+}
+}
+
+cookiesArray = cookiesArray.filter((item) => item.id !== lastValue.id)
+cookiesArray.push(lastValue);
+
+document.cookie = `values=${JSON.stringify(cookiesArray)}`;
+console.log("After", lastValue);
+}
 }
 
 function getHighestID() {
 
-  return Array.from(document.querySelectorAll(".card"))
-    .map((item) => {
-      if (!item.id) return undefined
-      return Number(item.id.split("_")[1]);
-    })
-    .filter((item) => item !== undefined)
-    .sort((a, b) => {
-      return b - a
-    })[0];
+return Array.from(document.querySelectorAll(".card"))
+.map((item) => {
+if (!item.id) return undefined
+return Number(item.id.split("_")[1]);
+})
+.filter((item) => item !== undefined)
+.sort((a, b) => {
+return b - a
+})[0];
 
 }
 
@@ -1347,14 +1421,14 @@ function getHighestID() {
 
 function postToServer(url, body, method) {
 
-  return fetch(url,
-    {
-      headers: {
-        "Content-type": "application/json;charset=UTF-8"
-      },
-      method: "POST",
-      body: body
-    })
+return fetch(url,
+{
+headers: {
+"Content-type": "application/json;charset=UTF-8"
+},
+method: "POST",
+body: body
+})
 
 }
 
@@ -1370,5 +1444,3 @@ export default TASK_ITEM;
 
 
 ** */
-
-

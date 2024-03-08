@@ -1,5 +1,6 @@
 
  class SELECT_ITEM {
+     
     constructor(data){
         this.data = data || [];
         this.createSelect();
@@ -31,20 +32,12 @@
         section.append(this.select);
     }
     
-    
     defaultSelected(txt){
-        
         this.select.value = txt;
         this.select.querySelector(`option[value="${txt}"]`).selected = true;
- 
-        console.log(this.select, txt)
-         
-        return
-        
-        
-        
-        
+        console.log(this.select, txt);
     }
+    
 }; // end 
 
 

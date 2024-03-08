@@ -33,7 +33,7 @@ app.get("/signup", UNACCESS_LOGGIN_SIGNUP, onSignup);
 
 
 function onLoggin (req, res, next){
-  console.log("Loggin")
+  console.log("Loggin .... page rended !")
   
   
   res.cookie("referer", req.headers.referer)

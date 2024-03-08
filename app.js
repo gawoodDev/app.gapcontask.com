@@ -1,17 +1,18 @@
 const express = require("express");
 const app = express();
-const db = require("./db/db.js");
+//const db = require("./db/db.js");
 const Joi = require("joi");
 const validation = require("./midelware/model.js");
 const cookieParser = require("cookie-parser");
-const jwt = require("jsonwebtoken")
-let passport = require("passport")
+const jwt = require("jsonwebtoken");
+let passport = require("passport");
 
 
-const router = require("./routes/routes")
+const router = require("./routes/routes");
+
 const taskRoutes = require('./routes/taskRoutes.js')
-const projectRoutes = require('./routes/projectRoutes.js')
-const authRoutes = require('./routes/authRoutes.js')
+const projectRoutes = require('./routes/projectRoutes.js');
+const authRoutes = require('./routes/authRoutes.js');
 
 const { addTask, updateTask, deleteTask } = require("./api/taskApi.js");
 
@@ -27,8 +28,14 @@ app.use(require("express-session")({
   saveUninitialized: true,
   maxAge: 3 * 60 * 1000
 }))
+
+
+
+
+
 app.use(passport.initialize())
 app.use(passport.session());
+
 
 app.get('/get', (req, res) => {
   let mode = req.headers['sec-fetch-mode'];
@@ -40,10 +47,7 @@ app.get('/get', (req, res) => {
 });
 
 
-
-
 app.use(authRoutes);
-
 app.use(function (req, res, next) {
 
   if (req.isAuthenticated() && (req.user || req.session.user)) {
@@ -54,16 +58,23 @@ app.use(function (req, res, next) {
 
 })
 
-
 app.use(router);
+
 app.use(taskRoutes);
 app.use(projectRoutes);
 
+app.listen(8000, () => console.log("Ist ok running at 8000"));
+
+
+
+/***
 app.use(function (req, res, next) {
 
   return next()
 
   if (!req.isAuthenticated() && !req.user) return res.redirect("/loggin")
+  
+  
   let c = req.cookies.values || [];
   console.log(c)
   if (c.length < 1) return next()
@@ -116,11 +127,7 @@ app.use(function (req, res, next) {
 
   next()
 });
-
-
-
-
-app.listen(8000, () => console.log("Ist ok running at 8000"));
-
-
+ * 
+ 
+ */
 
