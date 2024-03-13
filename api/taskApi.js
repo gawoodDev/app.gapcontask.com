@@ -1,16 +1,9 @@
 const db = require("../db/db.js");
-const validation = require("../midelware/model.js");
-
-function getRandom(min, max){
-    return Math.ceil(Math.random() * (max - min ) + min);
-}
-
-
-
-function generateID (user_id){
-    let timeStamp = Date.now()
-    return timeStamp.toString().slice(4, 13) + `_${user_id}_` + getRandom(0, 1000);
-}
+const validation = require("../midelware/model.js"),
+{
+    getRandom,
+    generateID
+} = require("../function/ids.js")
 
 //console.log(generateID("001A"));
 
@@ -35,13 +28,12 @@ exports.addTask = function (data, user_id, done) {
     } = value
 
     isdone = isdone === true ? 1: 0;
-    
-    
-    let task_id = generateID(user_id)
+
+
+    let task_id = generateID("task_id", user_id)
 
 
     console.log("Api data _________", task_id, value);
-
 
 
     let query = `INSERT INTO tasklist (title,body,isdone,ref,user_id, task_id) VALUES    ("${title}","${body}","${isdone}","${ref}", "${user_id}", "${task_id}")`;
@@ -58,22 +50,41 @@ exports.addTask = function (data, user_id, done) {
 
 }
 
+exports.REMOVE_SELECTED = function (content, user_id, done) {
+    
+    console.log(content)
+    
+    let {data} = content;
 
+    data.forEach((id, index)=> {
+        let query = `DELETE FROM tasklist WHERE task_id=? AND user_id=?`;
+
+        db.query(query,[id, user_id],
+            (err) => {
+                if (err) return done(err, false)
+                
+                console.log("La tache " + id + " a ete supprimer  avec succes !")
+                if(index === (data.length - 1)) return done(null, true)
+            })
+    })
+
+
+}
 
 
 exports.deleteTask = function (data, user_id, done) {
-    
+
     let id = Number(data.id);
 
 
     let query = `DELETE FROM tasklist WHERE id=${id} AND user_id="${user_id}"`;
 
 
-    if(isNaN(id)){
+    if (isNaN(id)) {
         query = `DELETE FROM tasklist WHERE task_id="${data.id}" AND user_id="${user_id}"`;
     }
 
-    
+
 
     db.query(query,
         (err) => {
@@ -133,9 +144,17 @@ exports.doneTask = function (data, user_id, done) {
     } = data;
     isdone = isdone === true ? 1: 0;
 
-    let query = `UPDATE tasklist SET isdone='${isdone}'  WHERE id='${id}' AND  user_id="${user_id}"`;
+    let query = `UPDATE tasklist SET isdone=?  WHERE user_id=?  AND task_id=? `;
+
+
+
+    console.log(id)
 
     db.query(query,
+        [isdone,
+            user_id,
+            id,
+            id],
         (err) => {
             if (err) done(err, false)
             console.log("Its again working Done " + id + "! UPDATED ...");
@@ -144,6 +163,14 @@ exports.doneTask = function (data, user_id, done) {
 
 
 }
+
+
+
+
+
+
+
+
 
 
 

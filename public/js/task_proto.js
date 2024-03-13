@@ -444,21 +444,23 @@ state : {type : Number} 4 etats possible
 
   onCHANGE(e) {
     liveId = this.task_id;
-
+									
     let data = {
       id: this.task_id,
       isdone: e.currentTarget.checked,
       ref: this.ref
     }
-
+									
     postToServer("/doneTask", JSON.stringify(data), "POST")
       .then((res) => {
         if (res.status !== 200) return;
-
+									
       }).catch((err) => {
         console.log(err)
       })
-    auto_reset();
+      
+      console.log(this)
+
 
   }
 

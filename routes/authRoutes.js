@@ -1,51 +1,69 @@
-const express =  require("express");
+const express = require("express");
 const app = express.Router();
+const api = require("../api/userApi.js");
 
-const {UNACCESS_LOGGIN_SIGNUP} = require("../midelware/auth_midelware.js")
-
-const {FIND_USER_BY} = require("../api/authApi.js");
-
-const {authenticate, loggin, signup} = require("../controllers/ctrlsAuth.js");
+const {
+	UNACCESS_LOGGIN_SIGNUP
+} = require("../midelware/auth_midelware.js")
 
 
-                
+
+
+const {
+	authenticate,
+	loggin,
+	signup
+} = require("../api/authApi.js");
+
+
+
+
+
+
+
 authenticate(
-        (email)=>
-    {
-        console.log("Authentication by email")
-        return FIND_USER_BY("email", email)
-        
-    },
-        (id)=>
-    {
-        console.log("Authentication by id")
-        return FIND_USER_BY("user_id", id)
-    }
+	async (email) => await api.findBy({
+		key: "email", value: email
+	}),
+	async (id) => await api.findBy({
+		key: "user_id", value: id
+	})
+
 );
 
 
 
+
+app.get("/logout", logout);
+
 app.post("/loggin", loggin);
+
 app.post("/signup", signup);
 
-app.get("/loggin", UNACCESS_LOGGIN_SIGNUP,  onLoggin);
+app.get("/loggin", UNACCESS_LOGGIN_SIGNUP, onLoggin);
 app.get("/signup", UNACCESS_LOGGIN_SIGNUP, onSignup);
 
 
-function onLoggin (req, res, next){
-  console.log("Loggin .... page rended !")
-  
-  
-  res.cookie("referer", req.headers.referer)
-  res.render("loggin")
-  
+function onLoggin(req, res, next) {
+
+	res.cookie("referer", req.headers.referer)
+	res.render("loggin");
+
 }
 
-function onSignup (req, res, next){
-  console.log("SignUp")
-  res.render("signup")
-  
+function onSignup(req, res, next) {
+
+	res.render("signup");
 }
+
+
+
+function logout(req, res) {
+	req.logOut(() => res.redirect("/loggin"));
+}
+
+
+
 
 
 

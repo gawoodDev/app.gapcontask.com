@@ -9,7 +9,8 @@ const {
     updateTask,
     deleteTask,
     getAllTask,
-    doneTask
+    doneTask,
+    REMOVE_SELECTED
 } = require("../api/taskApi.js")
 
 
@@ -29,10 +30,10 @@ routes.post("/addTask", (req, res) => {
 
 
 routes.post("/deleteTask", (req, res) => {
-    
+
     console.log(req.body)
-    
-    if(req.body.id){
+
+    if (req.body.id) {
         deleteTask({
             id: req.body.id
         }, req.user.user_id, function (err, success) {
@@ -42,25 +43,21 @@ routes.post("/deleteTask", (req, res) => {
         })
         return
     }
-    
-    
-    
-    if(!req.body.data) return 
-    
-    let data = req.body.data
 
-    data.forEach((id, index) => {
-        console.log(id);
-        deleteTask({
-            id: id
-        }, req.user.user_id, function (err, success) {
-            if (err) throw err;
-            console.log("Delete multiples")
-            if (index === (data.length - 1)) {
-                res.status(200).send("Delete avec success !");
-            }
-        })
+
+    if (!req.body.data) return
+
+    let data = req.body.data
+    
+    console.log(data)
+
+    REMOVE_SELECTED({
+        data : data
+    }, req.user.user_id, function (err, success) {
+        if (err) throw err;
+        console.log("Delete multiples")
     })
+
 });
 
 
@@ -70,11 +67,13 @@ routes.post("/deleteTask", (req, res) => {
 
 
 routes.post("/modifTask", (req, res) => {
-    updateTask(req.body, req.user.user_id, function (err,
-        success) {
-        if (err) throw err;
-        res.status(200).send("Modif avec success !");
-    })
+    updateTask(req.body,
+        req.user.user_id,
+        function (err,
+            success) {
+            if (err) throw err;
+            res.status(200).send("Modif avec success !");
+        })
 
 })
 

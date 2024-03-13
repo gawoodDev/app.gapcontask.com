@@ -67,7 +67,6 @@ const form = document.querySelector("form");
 form.addEventListener("submit",(e)=>{
   e.preventDefault()
   
-  
   let { password, email } = form;
   /*
   let id = "1707852220546Ma"
@@ -83,16 +82,27 @@ form.addEventListener("submit",(e)=>{
   return
   
   */
-  
-  
-  
   let body = { password: password.value, email: email.value };
-  
-  
-  
   form.submit()
   
-  /*
+});
+  
+  
+  
+  
+  
+function POST_TO_SERVER (url, body){
+    body = JSON.stringify(body);
+    return fetch(url,{
+      headers: {
+        "Content-type": "application/json;charset=UTF-8"
+      },
+      method: "POST",
+      body
+    } )
+  }
+  
+    /*
   POST_TO_SERVER("/loggin", body)
   .then((res) => res.json())
   .then((res) => { 
@@ -116,25 +126,6 @@ form.addEventListener("submit",(e)=>{
     
   })
   */
-  
-  
-});
-  
-  
-  
-  
-  
-function POST_TO_SERVER (url, body){
-    body = JSON.stringify(body);
-    return fetch(url,{
-      headers: {
-        "Content-type": "application/json;charset=UTF-8"
-      },
-      method: "POST",
-      body
-    } )
-  }
-  
   
   
 </script>

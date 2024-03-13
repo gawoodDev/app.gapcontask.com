@@ -96,6 +96,7 @@ function addItem() {
             task_id: data.task_id, ...this.data
         });
         _task.appendTo(document.querySelector("#affichage"));
+        this.auto_reset()
     })
     .catch((err)=> {
         console.error(err)

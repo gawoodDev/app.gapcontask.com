@@ -22,13 +22,15 @@
     <%- include("composant/bottomOptions")%>
     <%- include("composant/englobPopUp")%>
     <%- include("composant/bottomModProd")%>
-    
-   
+
+
+
+
     <header>
 
         <div class="top">
             <div>
-        
+
                 <h5> Hello <%= username %></h5>
             </div>
             <div>
@@ -37,8 +39,8 @@
                 </button>
             </div>
         </div>
-        
-        
+
+
 
         <div style="display: none" class="middle">
             <div>
@@ -54,8 +56,8 @@
                 <span>Achevée</span>
             </div>
         </div>
- 
- 
+
+
 
         <div style="display: none" class="bottom">
             <div class="scrollCont">
@@ -69,7 +71,20 @@
     </header>
 
     <div class="assembly">
-    
+
+        <div>
+            
+            <a href="/logout">
+                <button>LogOut</button>
+            </a>
+            
+            <a href="/removeuser">
+                <button>Sprimer le compte.</button>
+            </a>
+            
+            
+        </div>
+
         <h3> URGENT </h3>
         <div id="affichage" class="container">
 
@@ -104,30 +119,17 @@
 
         </div>
 
-        
+
 
     </div>
-    
-    
-    
-    
-    <div class="btn-group-vertical alter_prod_box">
-        <button class="btn btn-primary" type="button" id="modifProd">
-            Modifier
-        </button>
-        <button class="btn btn-danger" type="button" id="deleteProd">
-            Suprimer
-        </button>
-    </div>
-
 
 
 
 
 
     <script src="./js/jquery.min.js"></script>
-    
-    
+
+
     <script src="./js/minified/swiped-events.js"></script>
     <script type="module" src="./js/main.js"></script>
 
