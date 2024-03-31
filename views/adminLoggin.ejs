@@ -1,0 +1,31 @@
+<%- include("layout/head", {css: ["./../css/bootstrap.min.css"], title: "INDEX PAGE" }) %>
+
+
+
+
+<div class="container">
+  
+  <form class="form" action="/loggin" method="POST">
+    <div class="form-group">
+      <input name="email" value="a@a.com" placeholder="Email" type="text" class="form-control"/>
+    </div>
+    
+    <div class="form-group">
+      <input name="password" placeholder="Password" value="a" type="text" class="form-control"/>
+    </div>
+  
+    <div class="form-group">
+      <input class="btn btn-primary" placeholder="Username" type="submit" class="form-control"/>
+    </div>
+    
+  </form>
+  
+  
+  
+</div>
+
+
+
+<%- include("layout/footer", {js: ["./../js/bootstrap.min.js"], title: "URGENT CARE" }) %>
+
+

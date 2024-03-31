@@ -29,8 +29,9 @@
     }
     
     appendTo(section){
+       console.log(this.select)
         section.append(this.select);
-    }
+    } 
     
     defaultSelected(txt){
         this.select.value = txt;

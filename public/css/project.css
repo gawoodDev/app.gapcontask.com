@@ -1,159 +1,165 @@
-
-
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
-body{
-  height: 100vh;
-  width: 100vw;
-  background: #fff;
-
+body {
+	height: 100vh;
+	width: 100vw;
+	background: #eee;
+	font-size: 15px;
 }
 
-@font-face {  font-family: RedHatDisplay_Bold;  src: url("../font/RedHatDisplay-Bold.ttf"); }
-@font-face {  font-family: Montserrat-Regular;  src: url("../font/Montserrat-Regular.ttf"); }
-@font-face { font-family: Lato-Regular ; src: url("../font/Lato-Regular.ttf"); }
-@font-face {  font-family: OpenSans ; src: url("../font/OpenSans-Regular.ttf"); }
-@font-face {  font-family: OpenSans-Bold ; src: url("../font/OpenSans-Bold.ttf"); }
-@font-face { font-family: Poppins-Regular ;  src: url("../font/Poppins-Regular.ttf"); }
-
-
-main h2{
-  margin-bottom: 30px;
-  font-family: RedHatDisplay_Bold;
-}
-.container{
-  padding: 20px 15px 100px;
-  margin: 15px 0;
-  height: auto;
-  width: 100%;
-  position : relative;
+@font-face {
+	font-family: RedHatDisplay_Bold;
+	src: url("../font/RedHatDisplay-Bold.ttf");
 }
 
+@font-face {
+	font-family: Montserrat-Regular;
+	src: url("../font/Montserrat-Regular.ttf");
+}
 
-.card_prod{
-  width: 100%;
-  height: 160px;
-  background: #5555dd;
-  padding: 20px 20px;
-  border-radius: 7px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 20px;
-  
+@font-face {
+	font-family: Lato-Regular;
+	src: url("../font/Lato-Regular.ttf");
+}
+
+@font-face {
+	font-family: OpenSans;
+	src: url("../font/OpenSans-Regular.ttf");
+}
+
+@font-face {
+	font-family: OpenSans-Bold;
+	src: url("../font/OpenSans-Bold.ttf");
+}
+
+@font-face {
+	font-family: Poppins-Regular;
+	src: url("../font/Poppins-Regular.ttf");
 }
 
 
-
-.card_prod > h5 {
-  font-size: 20px;
-  font-family: Montserrat-Regular;
-  color: #E5E5E5;
-  letter-spacing: 1px;
+main h2 {
+	margin-bottom: 10px;
+	font-weight: 800;
+	font-size: 20px;
+	font-family: RedHatDisplay_Bold;
 }
 
-.card_prod > p {
-  font-size: 10px;
-  font-family: Montserrat-Regular;
-  color: #ddd;
-  letter-spacing: 1px;
+main {
+	padding: 20px 15px 100px;
+	margin: 10px 0 0;
+	height: auto;
+	width: 100%;
+	position: relative;
 }
 
-.card_prod > p strong {
-  margin-right: 10px;
-  font-family: Montserrat-Regular;
-  color: #E5E5E5;
-  letter-spacing: 1px;
+
+.card_prod {
+	width: 100%;
+	height: 80px;
+	background: #fff;
+	padding: 20px 20px;
+	border-radius: 7px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: flex-start;
+	margin-bottom: 10px;
+	border: .8px solid #ccc;
 }
+
+
+
+.card_prod>h5 {
+	font-size: 15px;
+	font-family: Montserrat-Regular;
+	color: #323232;
+	letter-spacing: 1px;
+	font-weight: 800;
+	text-transform: capitalize;
+}
+
+.card_prod>p {
+	font-size: 10px;
+	font-family: Montserrat-Regular;
+	color: #565656;
+	letter-spacing: 1px;
+}
+
+.card_prod>p strong {
+	margin-right: 10px;
+	font-family: Montserrat-Regular;
+	color: #666;
+	letter-spacing: 1px;
+}
+
+
 
 
 
 header .top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: 70px;
-  padding: 20px 15px;
-  background: #0000dd;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	height: 50px;
+	padding: 20px 15px;
+	background: #fff;
+	
 }
 
-header .top h5{
-  font-size: 20px;
-  font-weight: 500;
-  font-family: RedHatDisplay_Bold;
-  color: #fff;
+header .top h5 {
+	font-size: 20px;
+	font-weight: 500;
+	font-family: RedHatDisplay_Bold;
+	color: #323232;
 }
 
-header .top > div > button{
-  width: 40px;
-  height: 40px;
-  border-radius: 50em;
-  border: none;
-  font-size: 10px;
-  background: #FFFFFFA6;
-  
-}
-
-.bottom_bar{
-  position: fixed;
-  background: #0000dd;
-  bottom: 0;
-  width: 100%;
-  height: 60px;
-  padding: 0 0px;
-  z-index: 13;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.bottom_bar > div{
-  width: 20%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.bottom_bar > div button {
-  width: 40px;
-  height: 40px;
-  border: 0;
-  border-radius: 50em;
-  font-size: 10px;
-  background: none;
-  color: #fff;
+header .top>div>button {
+	width: 40px;
+	height: 40px;
+	border-radius: 50em;
+	border: none;
+	font-size: 10px;
+	background: #FFFFFFA6;
+	
 }
 
 
-.createProdBox{
-  padding: 20px 15px 10px;
+
+.createProdBox {
+	padding: 70px 15px 10px;
+	background: #eee;
 }
 
-.createProdBox input{
-  border: 1.5px solid #ddd;
-  width: 100%;
-  height: 50px;
-  border-radius: 7px;
-  outline: none;
-  padding: 0 20px;
-  margin-bottom: 10px;
-  font-family: Poppins-Regular;
+.createProdBox label {
+	padding: 0 0 5px 4px;
+	font-size: 12px;
+	font-family: Poppins-Regular;
 }
 
-.createProdBox button{
-  border: none; 
-  width: 100%;
-  height: 40px;
-  border-radius: 5px;
-  background: #0000dd;
-  color: #fff;
+.createProdBox input {
+	border: 1.5px solid #ddd;
+	width: 100%;
+	height: 50px;
+	border-radius: 7px;
+	outline: none;
+	padding: 0 20px;
+	margin: 5px 0 10px;
+	font-family: Poppins-Regular;
+}
+
+.createProdBox button {
+	border: none;
+	width: 100%;
+	height: 35px;
+	border-radius: 5px;
+	background: #0000dd;
+	color: #fff;
 }
 
 
@@ -187,112 +193,73 @@ header .top > div > button{
 
 
 
-.cardprod{
-    position: relative;
-    overflow: hidden;
-    margin: 10px 0;
-    border-radius: 10px;
-    border:  2px solid #3332;
-    width: 100%;
-    height: 50px;
-    display: grid;
-    place-content: center;
+.cardprod {
+	position: relative;
+	overflow: hidden;
+	margin: 10px 0;
+	border-radius: 10px;
+	border: 2px solid #3332;
+	width: 100%;
+	height: 50px;
+	display: grid;
+	place-content: center;
+	
 }
 
-.focusBox{
-    background: #FFF28D;
+.focusBox {
+	background: #FFF28D;
 }
 
-.actions{
-    position: absolute;
-    width: 20%;
-    height: 100%;
-    background: #70FFE2;
-    right: -21%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: right 0.5 ease-in;
-    
+.actions {
+	position: absolute;
+	width: 20%;
+	height: 100%;
+	background: #70FFE2;
+	right: -21%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	transition: right 0.5 ease-in;
+	
 }
 
-.actions.open{
-    right: 0;
-    
+.actions.open {
+	right: 0;
+	
 }
 
 
 .actions button {
-    width: 100%;
-    height: 40%;
-    font-size: 10px;
-    padding: 0;
+	width: 100%;
+	height: 40%;
+	font-size: 10px;
+	padding: 0;
 }
 
 
 .pannel_form {
-    position: fixed;
-    z-index: 10;
-    bottom: -51%;
-    background: white;
-    width: 100%;
-    height: 50%;
-    padding: 20px;
-    box-shadow: 0 -3px 3px #2222;
-    transition: bottom .2s ease-in;
-} 
-
-
-
-.pannel_form.open{
-    bottom: 0;
+	position: fixed;
+	z-index: 10;
+	bottom: -51%;
+	background: white;
+	width: 100%;
+	height: 50%;
+	padding: 20px;
+	box-shadow: 0 -3px 3px #2222;
+	transition: bottom .2s ease-in;
 }
 
 
 
-
-
-
-
-
-
-
-
-#addNewTaskBtn{
-    background: white;
-    width: 60px;
-    height: 60px;
-    color: #000;
-    position: absolute;
-    top: -20px;
-    box-shadow: 0 -.2px 2px 0px #333333;
-}
-
-#addNewTaskBtn svg {
-    
-    width: 20px;
-    height: 20px;
-    color: #000;
-    
-    
+.pannel_form.open {
+	bottom: 0;
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#addNewTaskBtn {
+   display: none;
+}
+	
 
 
 

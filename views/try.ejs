@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo List</title>
+
+    
+    <link rel="stylesheet" type="text/css" href="./../css/bootstrap.min.css">
+
+</head>
+<body>
+
+
+<section>
+   
+   <% for ( let msg of getFlashMessages('err') )  { %>
+     <li> Voici <%= msg %> </li>
+   <% } %>
+   <% for ( let msg of getFlashMessages('success') )  { %>
+     <li>  <%= msg %> </li>
+   <% } %>
+   
+</section>
+
+<form action="/get" method="POST"   >
+   
+   <input type="text" name="text" id="text" />
+   <button type="submit"> Submit </button>
+   
+</form>
+
+
+</body>
+</html>
+
+
+
+
+

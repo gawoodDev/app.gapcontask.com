@@ -1,0 +1,167 @@
+
+<%- include("layout/head", {css:
+["./../css/profile.css"], title: "PROFILE PAGE" }) %>
+
+
+<header>
+        <div class="top">
+            <div>
+                <a class="/project" href="#">
+                    <button type="button">
+                        <i>
+                            <svg fill="currentColor" width="32" height="32" viewBox="0 0 32 32">
+                                <path d="M12.586 27.414l-10-10c-0.781-0.781-0.781-2.047 0-2.828l10-10c0.781-0.781 2.047-0.781 2.828 0s0.781 2.047 0 2.828l-6.586 6.586h19.172c1.105 0 2 0.895 2 2s-0.895 2-2 2h-19.172l6.586 6.586c0.39 0.39 0.586 0.902 0.586 1.414s-0.195 1.024-0.586 1.414c-0.781 0.781-2.047 0.781-2.828 0z"></path>
+                            </svg>
+                        </i>
+                    </button>
+                </a>
+            </div>
+            
+            <div>
+                <h5> Profile </h5>
+            </div>
+            
+            <div>
+                <a class="" href="#">
+                    <button type="button">
+                    </button>
+                </a>
+            </div>
+
+        </div>
+</header> 
+<div class="banner_bg">
+    <div class="pic_prof">
+        
+        <% if(locals.url){ %>
+             <img src="<%= url %>" alt="">
+        <% } %>
+        
+    </div>
+</div>
+
+
+
+<main>
+	  
+    <div class="box_model_grid fast_options">
+	
+        <div>
+			<% if(locals.username){ %>
+	            <p> <%= username %> </p>
+	        <% } %>
+	        
+	        <% if(locals.email){ %>
+	            <small>       
+					<%= email %>
+	            </small>
+	        <% } %>
+        </div>
+        
+        
+        <button id="showUpModal" type="button">Modifier le profil</button>
+        <button type="button">Services clientèle</button>
+    </div>
+    
+    <div class="box_model_grid parameters">
+        <ul>
+            <li>
+                <a href="" draggable="false">
+                    <i>
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                            <path d="M8 4v28l10-10 10 10v-28zM24 0h-20v28l2-2v-24h18z"></path>
+                        </svg>
+                    </i>
+                    <small>Connexions</small>
+                </a>
+            </li>
+            <li>
+                <a href="" draggable="false">
+                    <i>
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                            <path d="M14 4v-0.5c0-0.825-0.675-1.5-1.5-1.5h-5c-0.825 0-1.5 0.675-1.5 1.5v0.5h-6v4h6v0.5c0 0.825 0.675 1.5 1.5 1.5h5c0.825 0 1.5-0.675 1.5-1.5v-0.5h18v-4h-18zM8 8v-4h4v4h-4zM26 13.5c0-0.825-0.675-1.5-1.5-1.5h-5c-0.825 0-1.5 0.675-1.5 1.5v0.5h-18v4h18v0.5c0 0.825 0.675 1.5 1.5 1.5h5c0.825 0 1.5-0.675 1.5-1.5v-0.5h6v-4h-6v-0.5zM20 18v-4h4v4h-4zM14 23.5c0-0.825-0.675-1.5-1.5-1.5h-5c-0.825 0-1.5 0.675-1.5 1.5v0.5h-6v4h6v0.5c0 0.825 0.675 1.5 1.5 1.5h5c0.825 0 1.5-0.675 1.5-1.5v-0.5h18v-4h-18v-0.5zM8 28v-4h4v4h-4z"></path>
+                        </svg>
+                    </i>
+                    <small>Message</small>
+                </a>
+            </li>
+            <li>
+                <a href="" draggable="false">
+                           <i>
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="32" height="32" viewBox="0 0 32 32">
+                        <path d="M20.586 23.414l-6.586-6.586v-8.828h4v7.172l5.414 5.414zM16 0c-8.837 0-16 7.163-16 16s7.163 16 16 16 16-7.163 16-16-7.163-16-16-16zM16 28c-6.627 0-12-5.373-12-12s5.373-12 12-12c6.627 0 12 5.373 12 12s-5.373 12-12 12z"></path>
+                        </svg>
+                    </i> 
+                        <small> Notification</small>
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    <i>
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+<path d="M29.996 4c0.001 0.001 0.003 0.002 0.004 0.004v23.993c-0.001 0.001-0.002 0.003-0.004 0.004h-27.993c-0.001-0.001-0.003-0.002-0.004-0.004v-23.993c0.001-0.001 0.002-0.003 0.004-0.004h27.993zM30 2h-28c-1.1 0-2 0.9-2 2v24c0 1.1 0.9 2 2 2h28c1.1 0 2-0.9 2-2v-24c0-1.1-0.9-2-2-2v0z"></path>
+<path d="M26 9c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3z"></path>
+<path d="M28 26h-24v-4l7-12 8 10h2l7-6z"></path>
+</svg>
+
+                    </i>
+                    
+                    <small>Collaboration </small>
+                </a>
+            </li>
+            <li>
+                <a href="">
+             <i><svg version="1.1" fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                        <path d="M22 2l-10 10h-6l-6 8c0 0 6.357-1.77 10.065-0.94l-10.065 12.94 13.184-10.255c1.839 4.208-1.184 10.255-1.184 10.255l8-6v-6l10-10 2-10-10 2z"></path>
+                        </svg>
+                     </i>
+                    <small>Affichage et thème</small>
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    <i>
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="32" height="32" viewBox="0 0 32 32">
+                        <path d="M20.807 10.22l-2.030-2.029-10.15 10.148c-1.682 1.681-1.682 4.408 0 6.089s4.408 1.681 6.090 0l12.18-12.178c2.804-2.802 2.804-7.346 0-10.148-2.802-2.803-7.347-2.803-10.149 0l-12.788 12.787c-0.009 0.009-0.019 0.018-0.027 0.026-3.909 3.909-3.909 10.245 0 14.153 3.908 3.908 10.246 3.908 14.156 0 0.009-0.009 0.016-0.018 0.026-0.027l0.001 0.001 8.729-8.728-2.031-2.029-8.729 8.727c-0.009 0.008-0.018 0.018-0.026 0.026-2.784 2.783-7.312 2.783-10.096 0-2.783-2.783-2.783-7.31 0-10.093 0.010-0.009 0.019-0.018 0.028-0.026l-0.001-0.002 12.79-12.786c1.678-1.679 4.411-1.679 6.090 0s1.678 4.411 0 6.089l-12.18 12.178c-0.56 0.56-1.47 0.56-2.030 0-0.559-0.559-0.559-1.47 0-2.029l10.15-10.149z"></path>
+                        </svg>
+                    </i>
+                    <small>Sauvegarde et synchronisation</small>
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="box_model_grid auth_options">
+        <a href="/logout">
+                <button class="button">Déconnexion</button>
+            </a>
+        <a href="/removeuser">
+                <button class="button" >Supprimer le compte.</button>
+            </a>
+    </div>
+    
+</main>
+
+
+
+<%- include("composant/bottomBar") %>
+
+
+<%- include("layout/footer", {js: [ "./js/jquery.min.js", "./js/profile.js"], title: "URGENT CARE" }) %>
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

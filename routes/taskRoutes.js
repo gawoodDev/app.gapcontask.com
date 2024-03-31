@@ -2,110 +2,104 @@ const express = require("express");
 const routes = express.Router();
 const db = require("../db/db.js");
 const validation = require("../midelware/model.js");
-
+const asyncError = require("express-async-handler");
 
 const {
-    addTask,
-    updateTask,
-    deleteTask,
-    getAllTask,
-    doneTask,
-    REMOVE_SELECTED
+   addTask,
+   updateTask,
+   deleteTask,
+   getAllTask,
+   doneTask,
+   REMOVE_SELECTED
 } = require("../api/taskApi.js")
 
 
 
+routes.post("/addTask", asyncError(async (req, res) => {
 
-routes.post("/addTask", (req, res) => {
-    addTask(req.body, req.user.user_id, function (err, success, task_id) {
-        if (err) throw err;
-        res.status(200).json({
-            task_id
-        })
-    })
-})
+   let { err, task_id } = await addTask(req.body, req.user.user_id);
 
+   if (err) throw err;
 
+   res.status(200).json({
+      task_id
+   })
 
 
-
-routes.post("/deleteTask", (req, res) => {
-
-    console.log(req.body)
-
-    if (req.body.id) {
-        deleteTask({
-            id: req.body.id
-        }, req.user.user_id, function (err, success) {
-            if (err) throw err;
-            console.log("Delete unique")
-            res.status(200).end();
-        })
-        return
-    }
+}));
 
 
-    if (!req.body.data) return
+routes.post("/deleteTask", asyncError(async (req, res) => {
 
-    let data = req.body.data
-    
-    console.log(data)
+   console.log(req.body)
 
-    REMOVE_SELECTED({
-        data : data
-    }, req.user.user_id, function (err, success) {
-        if (err) throw err;
-        console.log("Delete multiples")
-    })
+   if (req.body.id) {
+      let { error, successs } = await deleteTask({
+         id: req.body.id
+      }, req.user.user_id);
 
-});
+      if (error) throw error;
+      console.log("Delete unique")
+      res.status(200).end();
 
-
-
+      return
+   }
 
 
+   if (!req.body.data) return
+
+   let data = req.body.data
+
+   let { err, success } = await REMOVE_SELECTED({data}, req.user.user_id);
+
+   if (err) throw err;
+   
+   console.log("Delete multiples")
+
+   res.status(200).end();
+
+}));
 
 
-routes.post("/modifTask", (req, res) => {
-    updateTask(req.body,
-        req.user.user_id,
-        function (err,
-            success) {
-            if (err) throw err;
-            res.status(200).send("Modif avec success !");
-        })
+routes.post("/modifTask", asyncError(async (req, res) => {
 
-})
+   console.log("Its work! UPDATED ...");
 
+   let { err, success } = await updateTask(req.body,
+      req.user.user_id);
+   if (err) throw err;
+   res.status(200).send("Modif avec success !");
 
-routes.get("/getDatas", (req, res) => {
-    getAllTask({},
-        req.user.user_id,
-        function (err, success, data) {
-            if (err) throw err;
-            res.json(data);
-        })
-
-})
+}));
 
 
+routes.get("/getDatas", asyncError(async (req, res) => {
+
+   let { err, rows, success } = await getAllTask({},
+      req.user.user_id)
+
+   if (err) throw err;
+
+   res.status(200).json(rows);
+
+}));
 
 
+routes.post("/doneTask", asyncError(async (req, res) => {
 
+   let { err, success } = await doneTask(req.body, req.user.user_id);
 
-routes.post("/doneTask", (req, res) => {
+   if (err) throw err;
 
-    doneTask(req.body,
-        req.user.user_id,
-        function (err,
-            success) {
-            if (err) throw err;
-            res.status(200).send("success !");
-        })
+   res.status(200).send("success !");
 
-})
+}));
 
 
 
 
 module.exports = routes;
+
+
+
+

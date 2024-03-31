@@ -2,41 +2,75 @@ const express = require("express");
 const routes = express.Router();
 
 
-
 routes.get('/get', (req, res) => {
-	let mode = req.headers['sec-fetch-mode'];
-	if (mode === "cors") {
-		console.log("Corsing...")
-	}
-	console.log("Testinng...", mode)
-	res.status(200).json({ mode: "social" })
+   res.flash("err", "Sorry")
+   res.status(200).render("try.ejs")
+});
+routes.post('/get', (req, res) => {
+   let { text } = req.body;
+
+   if (text.length < 8) {
+      res.flash("err", "Veilliez inséré un texte de plus de 8 caractères.")
+   } else {
+      res.flash("success", "Ajouter avec success!")
+   }
+
+   res.status(200).redirect("/get")
 });
 
-
-
-
-
 routes.get("/", (req, res) => {
-	console.log("Home page access")
-	res.render("index.ejs", { username: req.user.username })
-
+   req.user = { username: "Math" };
+   res.render("index.ejs", { username: req.user.username });
 })
 
+
 routes.get('/project', (req, res) => {
-	res.render('project.ejs');
+   res.render('project.ejs');
+})
+
+
+routes.get('/profile', async (req, res) => {
+
+   try {
+
+      let promise = require("../db/db-2.js")
+      let [rows] = await promise.execute(`SELECT profil_path, username, email  FROM users WHERE
+	user_id="${req.user.user_id}"`);
+
+      let profil_path = rows[0].profil_path
+
+      if (!profil_path) {
+         profil_path = "./upload/photo.jpg"
+      } else {
+
+         profil_path = profil_path.replace("public", ".")
+
+      }
+
+      console.log("You are", profil_path);
+
+      res.render('profile.ejs', {
+         url: profil_path, username: rows[0].username,
+         email: rows[0].email
+      });
+   }
+   catch (e) {
+      console.log(e)
+   }
+
 })
 
 
 routes.get('/project/plan:id', (req, res) => {
-	let {
-		user_id
-	} = req.user;
-	let id = req.params.id.replace(":",
-		"");
-	let ref_key = req.query.ref;
+   let {
+      user_id
+   } = req.user;
+   let id = req.params.id.replace(":",
+      "");
+   let ref_key = req.query.ref;
 
 
-	res.render("plan.ejs", {id: id,ref_key,title: "Ok"});
+   res.render("plan.ejs", { id: id, ref_key, title: "Ok" });
 
 })
 

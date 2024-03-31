@@ -1,18 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToDo List</title>
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
-    <link rel="stylesheet" href="./css/project.css">
-    
-    
-</head>
-<body>
-    
-    
-    <header>
+<%- include("layout/head", {css: ["./../css/cssComposant.css","./../css/project.css"], title: "INDEX PAGE" }) %>
+
+<%- include("./composant/bottomBar") %>
+
+<header>
      <div class="top">
       
       
@@ -31,57 +21,28 @@
 
   </header>
   
-  
-  <div class="createProdBox">
+<div class="createProdBox">
+    <label for="addProdInp" >Crée un nouveau projet.</label>
     
-    <input type="text" placeholder="Nom du projet" name="addProdInp" id="addProdInp" value="FINANCE">
+    <input type="text" placeholder="Nom du projet" name="addProdInp" id="addProdInp" >
     <button id="add_prod" type="button">Add</button>
     
   </div>
   
-  
-  
- <main class="container">
-    <h2>Project recent</h2>
+<main class="contain">
+    <h2>Récent</h2>
     
     <div class="" id="affichage">
-    
         
-        
-    </div>
-      
-      
-    <div class="" id="">
-    
         
     </div>
 </main>
+
+
+
+
     
 <%- include("composant/bottomBar") %>
 
-  
- 
-    
-    
+<%- include("layout/footer", {js: [ "./js/jquery.min.js", "./js/project.js"], title: "URGENT CARE" }) %>
 
-
-
-    <script src="./js/jquery.min.js"></script>
-    
-    <script src="./js/bootstrap.min.js"></script>
-    <script src="./js/project.js"></script>
-
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
- 

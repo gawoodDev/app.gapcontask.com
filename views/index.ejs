@@ -1,34 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToDo List</title>
 
-    <link rel="stylesheet" href="./../css/plan.css">
-    <link rel="stylesheet" href="./../css/cssComposant.css">
+<%- include("layout/head", {css: ["./../css/cssComposant.css","./../css/plan.css"], title: "INDEX PAGE" }) %>
+
+<%- include("layout/mini.composant.ejs") %>
 
 
+<header>
 
-</head>
-<body>
-
-
-
-    <%- include("composant/bottomBar") %>
-    <%- include("composant/bottomAddTask") %>
-    <%- include("composant/floatRightMenu")%>
-    <%- include("composant/headOptions")%>
-    <%- include("composant/bottomOptions")%>
-    <%- include("composant/englobPopUp")%>
-    <%- include("composant/bottomModProd")%>
-
-
-
-
-    <header>
-
-        <div class="top">
+   <div class="top">
             <div>
 
                 <h5> Hello <%= username %></h5>
@@ -41,98 +19,37 @@
         </div>
 
 
-
-        <div style="display: none" class="middle">
-            <div>
-                <strong>124</strong>
-                <span>En cours</span>
+   <div class="bottom">
+      <div id="filterByDate" class="scrollCont">
+                <button data-action="0" type="button"> All</button>
+                <button data-action="1" type="button">Reporté</button>
+                <button data-action="2" type="button">Aujourd'hui</button>
+                <button data-action="3" type="button">Demain</button>
+                <button data-action="4" type="button">Prochainement</button>
+                <button data-action="5" type="button">Aucune date</button>
+                <button data-action="6" type="button">Aucune date</button>
             </div>
-            <div>
-                <strong>12 Fév 2024</strong>
-                <span>Today</span>
-            </div>
-            <div>
-                <strong>330</strong>
-                <span>Achevée</span>
-            </div>
-        </div>
+   </div>
+        
+        
+
+</header>
+
+<section class="assembly main">
 
 
 
-        <div style="display: none" class="bottom">
-            <div class="scrollCont">
-                <button type="button">All</button>
-                <button type="button">Today</button>
-                <button type="button">Tomorrow</button>
-                <button type="button">Late</button>
-            </div>
-        </div>
-
-    </header>
-
-    <div class="assembly">
-
-        <div>
-            
-            <a href="/logout">
-                <button>LogOut</button>
-            </a>
-            
-            <a href="/removeuser">
-                <button>Sprimer le compte.</button>
-            </a>
-            
-            
-        </div>
-
-        <h3> URGENT </h3>
+        <h3 id="title_section"> Tout </h3>
         <div id="affichage" class="container">
 
-            <div class="card">
-                <div>
-                    <input type="checkbox" class="form-check-input">
-                </div>
-
-                <div class="card-body">
-                    <h5 class="card-title">Titre de cette tâche ... </h5>
-                    <div>
-                        <p>
-                            10:00 PM
-                        </p>
-                        &nbsp; • &nbsp;
-                        <span> Repeat </span>
-                    </div>
-                    <p class="card-text">
-                        Description de la tache de sang pour vous offrir ou pas demain mais vous avez besoin.
-                    </p>
-                </div>
-
-                <div>
-                    <div>
-                        Home
-                    </div>
-                    <button type="button"> __ </button>
-                </div>
-
-            </div>
-
 
         </div>
 
 
-
-    </div>
-
+</section>
 
 
 
-
-    <script src="./js/jquery.min.js"></script>
-
-
-    <script src="./js/minified/swiped-events.js"></script>
-    <script type="module" src="./js/main.js"></script>
+<%- include("layout/footer", {js: [ "./js/jquery.min.js", "./js/main.js"], title: "URGENT CARE" }) %>
 
 
-</body>
-</html>

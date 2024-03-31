@@ -47,6 +47,7 @@ app.get("/signup", UNACCESS_LOGGIN_SIGNUP, onSignup);
 function onLoggin(req, res, next) {
 
 	res.cookie("referer", req.headers.referer)
+	
 	res.render("loggin");
 
 }

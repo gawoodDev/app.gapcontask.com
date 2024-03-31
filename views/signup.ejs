@@ -13,12 +13,23 @@
 
 </head>
 <body>
+   
+   
 
     <div class="card m-3 bg-primary">
         <a href="/loggin">
-            <button class="btn" type="button">signup</button>
+            <button class="btn" type="button">Log In</button>
         </a>
     </div>
+    
+   <div class="card m-3  bg-danger">
+      <% for ( let msg of getFlashMessages('error') )  { %>
+         <p> <%= msg %> </p>
+      <% } %>
+      
+      <small>Is there an error</small>
+   </div>
+
 
 
     <div class="container">
@@ -78,30 +89,25 @@
                 username: username.value, password: password.value, email: email.value
             };
 
-            alert(e.target.username.value);
-            console.log(body);
+            
+            
 
             POST_TO_SERVER("/signup", body)
-            .then((res)=> res.json())
-            .then((res) => {
-                console.log(res)
-                if (res.status === 200) {
-                    
-
-                    if (res.msg) {
-                        alert(res.msg)
-                        
-                        
-                    }
-                    
-                    
-                }
-                
-                let a = document.createElement("a")
+            .then((res)=> {
+               if (res.status === 200) {
+               
+                  let a = document.createElement("a");
                     a.href = "/loggin";
                     a.click()
-
-
+                    
+               }
+               
+                return res.json()
+            })
+            .then((res)=>  {
+                
+               console.log(res)
+                
             })
 
 

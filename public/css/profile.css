@@ -1,0 +1,491 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	height: auto;
+	width: 100vw;
+	background: #fff;
+}
+
+@font-face {
+	font-family: RedHatDisplay_Bold;
+	src: url("../font/RedHatDisplay-Bold.ttf");
+}
+
+@font-face {
+	font-family: Montserrat-Regular;
+	src: url("../font/Montserrat-Regular.ttf");
+}
+
+@font-face {
+	font-family: Lato-Regular;
+	src: url("../font/Lato-Regular.ttf");
+}
+
+@font-face {
+	font-family: OpenSans;
+	src: url("../font/OpenSans-Regular.ttf");
+}
+
+@font-face {
+	font-family: OpenSans-Bold;
+	src: url("../font/OpenSans-Bold.ttf");
+}
+
+@font-face {
+	font-family: Poppins-Regular;
+	src: url("../font/Poppins-Regular.ttf");
+}
+
+
+
+
+
+i {
+	width: 30px;
+	height: 30px;
+	display: grid;
+	place-content: center;
+	
+}
+
+i svg {
+	width: 20px;
+	height: 20px;
+	color: #333;
+}
+
+
+
+
+#addNewTaskBtn {
+   display: none;
+}
+	
+
+header {
+	width: 100%;
+	z-index: 10;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: white;
+	box-shadow: 1px 1px 5px #0004;
+}
+
+header .top {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	height: 50px;
+	padding: 0px 15px;
+}
+
+header .top h5 {
+	font-size: 20px;
+	font-weight: 400;
+	font-family: RedHatDisplay_Bold;
+	color: #323232;
+}
+
+
+header .top>div button {
+	width: 40px;
+	height: 40px;
+	border-radius: 50em;
+	border: none;
+	font-size: 10px;
+	background: none;
+	display: grid;
+	place-content: center;
+}
+
+
+header .top>div button svg {
+	color: #494949;
+}
+
+
+.bottom_bar {
+	position: fixed;
+	background: #0000dd;
+	bottom: 0;
+	width: 100%;
+	height: 60px;
+	padding: 0 0px;
+	z-index: 13;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.bottom_bar>div {
+	width: 20%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.bottom_bar>div button {
+	width: 40px;
+	height: 40px;
+	border: 0;
+	border-radius: 50em;
+	font-size: 10px;
+	background: none;
+	color: #fff;
+}
+
+
+
+
+
+
+
+
+
+.banner_bg {
+	width: 100%;
+	height: 70px;
+	background: #0000dd;
+	position: relative;
+	margin: 50px 0 0px;
+}
+
+.pic_prof {
+	width: 100px;
+	height: 100px;
+	border-radius: 50em;
+	border: 5px solid #eee;
+	background: #0000dd;
+	position: absolute;
+	bottom: -70%;
+	left: calc(50% - 50px);
+}
+
+.pic_prof img {
+	width: 100%;
+	height: 100%;
+	border-radius: 50em;
+	object-fit: cover;
+}
+
+
+
+main {
+	padding: 60px 20px 70px;
+	background: #eee;
+	font-family: Poppins-Regular;
+}
+
+.box_model_grid {
+	width: 100%;
+	min-height: 150px;
+	height: auto;
+	background: #fff;
+	border-radius: 5px;
+	display: grid;
+	grid-template-rows: repeat(6, 1fr);
+	padding: 15px;
+	grid-row-gap: 10px;
+	margin-bottom: 20px
+}
+
+.fast_options strong {
+	font-family: RedHatDisplay_Bold;
+}
+
+.fast_options button,
+.box_model_grid button {
+	border-radius: 50em;
+	border: 1px solid #ddd;
+	min-height: 35px
+}
+
+.fast_options div:nth-child(1) {
+	grid-row-start: 1;
+	grid-row-end: 3;
+}
+
+.fast_options div:nth-child(1) p {
+	margin: 0;
+	padding: 0;
+	color: #333;
+	margin-bottom: -9px;
+	margin-top: -3px;
+	font-size: 15px;
+	text-transform: uppercase;
+	font-family: RedHatDisplay_Bold;
+}
+
+.fast_options div:nth-child(1) small {
+	color: #555;
+	font-size: 10px;
+}
+
+.fast_options button:nth-child(2) {
+	grid-row-start: 3;
+	grid-row-end: 5;
+	background: #0000dd;
+	color: #fff;
+}
+
+.fast_options button:last-child {
+	grid-row-start: 5;
+	grid-row-end: 7;
+	
+}
+
+div.fast_options {
+	display: noneo;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.parameters {
+	height: 325px;
+	padding: 5px 0 0;
+}
+
+.parameters ul {
+	width: 100%;
+	height: 320px;
+	list-style: none;
+	display: grid;
+	grid-template-rows: repeat(6, 1fr);
+	grid-row-gap: 0px;
+}
+
+
+.parameters ul li {
+	width: 100%;
+}
+
+.parameters ul li a {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	text-decoration: none;
+}
+
+.parameters ul li a i {
+	width: 70px;
+	display: grid;
+	place-content: center;
+	
+}
+
+.parameters ul li a i svg {
+	width: 20px;
+	height: 20px;
+	color: #333;
+}
+
+
+.parameters ul li a small {
+	height: 100%;
+	width: calc(100% - 70px);
+	border-bottom: 1px solid #eee;
+	color: #333;
+	display: grid;
+	align-content: center;
+	padding: 0px;
+	font-family: Poppins-Regular;
+	font-weight: 600;
+	letter-spacing: .7px;
+	font-size: 12px;
+	text-transform: capitalize;
+	
+}
+
+.parameters ul li:last-child a small {
+	border-bottom: none;
+}
+
+.auth_options {
+	min-height: 110px;
+	height: 50px;
+	width: 100%;
+}
+
+.auth_options button {
+	width: 100%;
+}
+
+.auth_options button {
+	color: #ff5555;
+	font-family: Montserrat-Regular;
+	font-weight: 900;
+}
+
+
+button:hover {
+	background: #0000dd;
+	color: #fff;
+}
+
+.auth_options button:hover {
+	background: #ff555550;
+	font-family: Montserrat-Regular;
+	font-weight: 900;
+}
+
+
+
+.screen {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.274);
+	display: grid;
+	place-content: center;
+	color: white;
+	z-index: 100;
+	opacity: 0;
+	visibility: hidden;
+	transition: all cubic-bezier(0.39, 0.575, 0.565, 1) ease;
+}
+
+.screen.show {
+	opacity: 1;
+	visibility: visible
+}
+
+.content {
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	width: 300px;
+	height: 200px;
+	border-radius: 30px;
+	background: #0000dd;
+	display: grid;
+	place-content: center;
+	color: white;
+	z-index: 101;
+}
+
+.updateProfil {
+	position: absolute;
+	
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	min-height: 200px;
+	height: auto;
+	background: #fff;
+	border-top-left-radius: 30px;
+	border-top-right-radius: 30px;
+	box-shadow: 1px 1px 5px #0004;
+	padding: 20px 15px;
+}
+
+.updateProfil h3 {
+	font-family: RedHatDisplay_Bold;
+	font-size: 18px
+}
+
+.updateProfil form {
+	margin-top: 20px
+}
+
+.updateProfil form>div label {
+	font-size: 12px;
+	color: #555;
+	font-family: OpenSans;
+}
+
+.updateProfil form div.profilArea {
+	width: 150px;
+	height: 150px;
+	border-radius: 30px;
+	background: #eee;
+	margin-bottom: 20px;
+	margin-left: calc(50% - 75px);
+	
+}
+
+.updateProfil form div.profilArea img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover
+}
+
+.updateProfil #profilChoosed {
+	width: 100%;
+	height: 100%;
+	border-radius: 30px;
+}
+
+.updateProfil #clickAddPhoto {
+	width: 100%;
+	height: auto;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	padding: 5px 10px;
+	border: none;
+	margin: 0 0 20px;
+}
+
+.updateProfil #clickAddPhoto i {
+	margin-right: 10px
+}
+
+.updateProfil #newUsernameBox {
+	width: 100%;
+	height: auto;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+}
+
+.updateProfil #newUsernameBox label {
+	color: #555;
+	font-size: 12px;
+	margin-bottom: 5px
+}
+
+.updateProfil #newUsernameBox input {
+	width: 100%;
+	height: 40px;
+	background: #eee;
+	border-radius: 5px;
+	border: none;
+	outline: none;
+	padding: 0 15px;
+	margin-bottom: 20px
+}
+
+.updateProfil button[type="submit"] {
+	width: 100%;
+	height: 35px;
+	background: #0000dd;
+	border-radius: 5px;
+	border: none;
+	padding: 0 15px;
+	color: #fff;
+	outline: none;
+	
+}
