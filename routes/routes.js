@@ -2,10 +2,28 @@ const express = require("express");
 const routes = express.Router();
 
 
+routes.get("/login", (req, res) => {
+   console.log("log")
+   res.render("loggin.ejs")
+})
+routes.get("/signup", (req, res) => {
+   console.log("up")
+   res.render("signup.ejs")
+})
+routes.get("/logout", (req, res) => {
+   req.logOut(() => {
+      console.log("Logout...")
+      res.redirect("/app/login")
+   })
+})
+
+
+
 routes.get('/get', (req, res) => {
    res.flash("err", "Sorry")
    res.status(200).render("try.ejs")
 });
+
 routes.post('/get', (req, res) => {
    let { text } = req.body;
 
@@ -18,16 +36,17 @@ routes.post('/get', (req, res) => {
    res.status(200).redirect("/get")
 });
 
-routes.get("/", (req, res) => {
-   req.user = { username: "Math" };
-   res.render("index.ejs", { username: req.user.username });
-})
 
+
+
+routes.get("/", (req, res) => {
+   req.user = req.user ? req.user : { username: "Math" };
+   res.render("index.ejs", { username: req.user.username });
+});
 
 routes.get('/project', (req, res) => {
    res.render('project.ejs');
-})
-
+});
 
 routes.get('/profile', async (req, res) => {
 
@@ -39,8 +58,8 @@ routes.get('/profile', async (req, res) => {
 
       let profil_path = rows[0].profil_path
 
-      if (!profil_path) {
-         profil_path = "./upload/photo.jpg"
+      if (!profil_path || profil_path.length < 1) {
+         profil_path = "../upload/photo.jpg"
       } else {
 
          profil_path = profil_path.replace("public", ".")
@@ -54,12 +73,13 @@ routes.get('/profile', async (req, res) => {
          email: rows[0].email
       });
    }
-   catch (e) {
-      console.log(e)
+   catch (err) {
+      res.redirect("/")
+      console.log(err)
+      throw err
    }
 
-})
-
+});
 
 routes.get('/project/plan:id', (req, res) => {
    let {
@@ -67,12 +87,13 @@ routes.get('/project/plan:id', (req, res) => {
    } = req.user;
    let id = req.params.id.replace(":",
       "");
+      
    let ref_key = req.query.ref;
 
 
    res.render("plan.ejs", { id: id, ref_key, title: "Ok" });
 
-})
+});
 
 
 

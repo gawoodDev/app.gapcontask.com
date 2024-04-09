@@ -1,0 +1,16 @@
+{
+   "compilerOptions": {
+      "outDir": "public/dist",
+      "target": "ES2021",
+      "noEmitOnError": false,
+      "declaration": true,
+      "moduleResolution": "node"
+   },
+   "files": [
+      "src/front/signup.ts",
+      "src/front/login.ts"
+   ],
+   "includes": [
+      "src/types/**/*"
+   ]
+}

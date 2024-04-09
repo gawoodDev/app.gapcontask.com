@@ -30,6 +30,9 @@
 
         </div>
 </header> 
+
+
+
 <div class="banner_bg">
     <div class="pic_prof">
         
@@ -132,12 +135,13 @@
     </div>
     
     <div class="box_model_grid auth_options">
-        <a href="/logout">
+        <a href="/app/logout">
                 <button class="button">Déconnexion</button>
             </a>
-        <a href="/removeuser">
-                <button class="button" >Supprimer le compte.</button>
+        <a href="/api/removeuser">
+                <button class="button">Déconnexion</button>
             </a>
+        
     </div>
     
 </main>
@@ -147,7 +151,7 @@
 <%- include("composant/bottomBar") %>
 
 
-<%- include("layout/footer", {js: [ "./js/jquery.min.js", "./js/profile.js"], title: "URGENT CARE" }) %>
+<%- include("layout/footer", {js: [ "../js/jquery.min.js", "../js/profile.js"], title: "URGENT CARE" }) %>
 	
 
 

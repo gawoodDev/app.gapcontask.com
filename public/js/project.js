@@ -5,8 +5,6 @@ let form = document.querySelector(`#addProdInp`)
 let id = 0;
 
 
-
-
 class PROD_ITEM {
 
    #isFocus = false;
@@ -54,7 +52,7 @@ class PROD_ITEM {
          e.preventDefault();
          e.stopImmediatePropagation()
          let a = this.CREATE_ELEMENT(`a`, 'text-link', `Democryte`);
-         a.href = `/project/plan:${this.id}?ref=${this.ref_key}`;
+         a.href = `/app/project/plan:${this.id}?ref=${this.ref_key}`;
 
 
          document.cookie = `p_d=${this.data.ref_key}${this.id}`;
@@ -69,7 +67,7 @@ class PROD_ITEM {
 }
 
 async function getDataFromDB() {
-   let fetched = await fetch("/get_project_list")
+   let fetched = await fetch(`/api/projects`)
    let datas = await fetched.json()
    return datas;
 }
@@ -95,15 +93,12 @@ async function CREATE_NEW_PROD(e) {
    let title = form.value;
 
    if (title.length >= 1) {
-      postToServer('/addProd', JSON.stringify({
+      postToServer('/api/addProd', JSON.stringify({
          title
       }), "POST")
          .then((res) => {
             if (res.status === 200) return res.json()
-
-
          }).then((data) => {
-            alert(data.project_id)
 
 
          })
@@ -115,13 +110,13 @@ async function CREATE_NEW_PROD(e) {
    SET_PROD_LIST()
 };
 
-function postToServer(url, body, method) {
+function postToServer(url, body, method = "POST") {
 
    return fetch(url, {
       headers: {
          "Content-type": "application/json;charset=UTF-8"
       },
-      method: "POST",
+      method: method,
       body: body
    });
 

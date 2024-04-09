@@ -22,7 +22,7 @@ if (id_page.getAttribute("data-id")) {
 
 
 
-   getData_PROD_FromDB(`/unique_prod_datas:${id}`).then((datas) => {
+   getData_PROD_FromDB(`/api/project/tasks:${id}`).then((datas) => {
 
       document.querySelector("#title_prod").innerText = datas.title;
 
@@ -33,16 +33,20 @@ if (id_page.getAttribute("data-id")) {
          }
       }
 
-      getDataFromDB(`/get_project_list`)
-         .then((selectes) => {
-            if (selectes.length > 0) {
-               let SLCT = new SELECT_ITEM(selectes);
+      getDataFromDB(`/api/projects`)
+         .then((response) => {
+            let rows = response.datas;
+            console.dir()
+
+            if (rows.length > 0) {
+               let SLCT = new SELECT_ITEM(rows);
                SLCT.appendTo(select_box);
                SLCT.defaultSelected(datas.ref_key);
             }
          })
          .catch((err) => {
             console.error(err)
+            throw err
          })
    }).catch((err) => {
       console.error(err)
@@ -161,4 +165,4 @@ getDataFromDB(`/get_project_list`).then((datas)=>{
    }
 })
 
-*/ 
+*/

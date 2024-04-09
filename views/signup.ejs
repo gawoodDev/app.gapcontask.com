@@ -7,53 +7,49 @@
 
     <link rel="stylesheet" href="./../css/bootstrap.min.css">
 
-    <link rel="stylesheet" type="text/css" href="./../css/cssComposantosgosmos.css">
-
-
+    <link rel="stylesheet" type="text/css" href="./../css/cssComposant.css">
 
 </head>
 <body>
    
    
+ <div class="containers">
 
-    <div class="card m-3 bg-primary">
-        <a href="/loggin">
+    <div class="card bg-primary">
+        <a href="/app/login">
             <button class="btn" type="button">Log In</button>
         </a>
     </div>
     
-   <div class="card m-3  bg-danger">
-      <% for ( let msg of getFlashMessages('error') )  { %>
-         <p> <%= msg %> </p>
-      <% } %>
+   
+
+   <div class="displayServerMsg">
       
-      <small>Is there an error</small>
    </div>
 
 
-
-    <div class="container">
-
-        <form class="form">
+   <form class="form">
             <div class="form-group">
                 <input name="username" placeholder="Username" type="text" class="form-control" />
+                <span></span>
             </div>
             <div class="form-group">
                 <input name="email" placeholder="Email" type="text" class="form-control" />
+                <span></span>
             </div>
             <div class="form-group">
-                <input name="password" placeholder="Password" type="text" class="form-control" />
+                <input name="password" id="password" placeholder="Password" type="text" class="form-control" />
+                <span></span>
             </div>
-
             <div class="form-group">
                 <input name="submit" placeholder="Submit" type="submit" class="form-control" />
+                <span></span>
             </div>
 
         </form>
 
 
-
-    </div>
+</div>
 
 
 
@@ -70,63 +66,8 @@
 
 
     <script src="./../js/bootstrap.min.js"></script>
-
-    <script>
-
-
-        const form = document.querySelector("form");
-        form.addEventListener("submit", (e)=> {
-            e.preventDefault()
-            let {
-                username, password, email
-            } = form;
-
-
-
-
-
-            let body = {
-                username: username.value, password: password.value, email: email.value
-            };
-
-            
-            
-
-            POST_TO_SERVER("/signup", body)
-            .then((res)=> {
-               if (res.status === 200) {
-               
-                  let a = document.createElement("a");
-                    a.href = "/loggin";
-                    a.click()
-                    
-               }
-               
-                return res.json()
-            })
-            .then((res)=>  {
-                
-               console.log(res)
-                
-            })
-
-
-        });
-
-        function POST_TO_SERVER (url, body) {
-            body = JSON.stringify(body);
-            return fetch(url, {
-                headers: {
-                    "Content-type": "application/json;charset=UTF-8"
-                },
-                method: "POST",
-                body
-            });
-        }
-
-
-    </script>
-
-
+    <script type="module" type="text/javascript" defer src="./../js/signup.js"></script>
+    
+    
 </body>
 </html>

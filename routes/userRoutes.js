@@ -2,23 +2,17 @@ const express = require("express");
 const routes = express.Router();
 const upload = require("../function/multerUpload.js");
 const db = require("../api/userApi.js");
+const asyncError = require("express-async-handler");
 
 
+routes.post("/updateuser", upload.single("photo"), asyncError(updateUserInfo));
 
+routes.get("/removeuser", asyncError(removeUser));
 
+async function removeUser(req, res, next) {
 
+   console.log("Removing ")
 
-
-
-
-
-routes.post("/updateuser", upload.single("photo"), updateUserInfo);
-routes.get("/removeuser", removeUser);
-
-
-
-
-function removeUser(req, res, next) {
    let user_id = req.user.user_id,
       sql = `DELETE FROM users WHERE user_id=?`;
 
@@ -27,13 +21,16 @@ function removeUser(req, res, next) {
    })
       .then((db) => {
          req.logOut(function () {
-            db.promise.query(sql, [user_id])
-               .then(() => res.redirect("/loggin"));
+            require("../db/db-2.js").query(sql, [user_id])
+               .then(() => res.redirect("/app/loggin"));
          });
-      }).catch(err => console.log);
+      }).catch(err => {
+         err.type = "SERVER ERRORS "
+         throw err
+      });
 }
 
-function updateUserInfo(req, res) {
+async function updateUserInfo(req, res) {
    let user_id = req.user.user_id, profil_path = null;
    if (req.file && req.file.path) {
       profil_path = req.file.path;
@@ -44,7 +41,9 @@ function updateUserInfo(req, res) {
       .then((response) => {
          console.log("User update fully")
          return res.redirect("/profile");
-      }).catch(err => console.log);
+      }).catch(err => {
+         throw err
+      });
 
 };
 

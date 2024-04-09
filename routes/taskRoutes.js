@@ -11,15 +11,18 @@ const {
    getAllTask,
    doneTask,
    REMOVE_SELECTED
-} = require("../api/taskApi.js")
-
+} = require("../api/taskApi.js");
 
 
 routes.post("/addTask", asyncError(async (req, res) => {
 
+   console.log("Its work: addTask")
+
    let { err, task_id } = await addTask(req.body, req.user.user_id);
 
-   if (err) throw err;
+   if (err) {
+      throw err;
+   }
 
    res.status(200).json({
       task_id
@@ -29,9 +32,9 @@ routes.post("/addTask", asyncError(async (req, res) => {
 }));
 
 
-routes.post("/deleteTask", asyncError(async (req, res) => {
+routes.delete("/deleteTask", asyncError(async (req, res) => {
 
-   console.log(req.body)
+
 
    if (req.body.id) {
       let { error, successs } = await deleteTask({
@@ -50,10 +53,10 @@ routes.post("/deleteTask", asyncError(async (req, res) => {
 
    let data = req.body.data
 
-   let { err, success } = await REMOVE_SELECTED({data}, req.user.user_id);
+   let { err, success } = await REMOVE_SELECTED({ data }, req.user.user_id);
 
    if (err) throw err;
-   
+
    console.log("Delete multiples")
 
    res.status(200).end();
@@ -61,7 +64,7 @@ routes.post("/deleteTask", asyncError(async (req, res) => {
 }));
 
 
-routes.post("/modifTask", asyncError(async (req, res) => {
+routes.put("/modifTask", asyncError(async (req, res) => {
 
    console.log("Its work! UPDATED ...");
 
@@ -73,10 +76,12 @@ routes.post("/modifTask", asyncError(async (req, res) => {
 }));
 
 
-routes.get("/getDatas", asyncError(async (req, res) => {
+routes.get("/tasks", asyncError(async (req, res) => {
+
+   console.log("Its work! Sended ...");
 
    let { err, rows, success } = await getAllTask({},
-      req.user.user_id)
+      req.user.user_id);
 
    if (err) throw err;
 

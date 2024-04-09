@@ -13,7 +13,7 @@ async function ADD_PROD({
 
    try {
 
-      let query = `INSERT INTO prodlist (title, ref_key , user_id, project_id) VALUES (?,?,?,?)`;
+      let query = `INSERT INTO projectlist (title, ref_key , user_id, project_id) VALUES (?,?,?,?)`;
 
       let ref_key = Date.now().toString().slice(5, 11) + '_' + title.slice(0, 3) + "_" + user_id;
 
@@ -27,7 +27,8 @@ async function ADD_PROD({
       }
    }
    catch (err) {
-
+      err.type = "MySql Error"
+      err.message = err.message || err.sqlMessage;
       return { err }
    }
 
@@ -37,11 +38,12 @@ async function ADD_PROD({
 async function DELETE_PROD({
    ref_key, user_id, id
 }) {
-
+   
+   
    try {
       let qryTask = `DELETE FROM tasklist WHERE user_id=? AND ref=?`;
 
-      let query = `DELETE FROM prodlist WHERE user_id=? AND project_id=? OR id=?`;
+      let query = `DELETE FROM projectlist WHERE user_id=? AND project_id=? OR id=?`;
 
       let fieldTask = await db.query(qryTask, [user_id, ref_key]);
 
@@ -52,7 +54,8 @@ async function DELETE_PROD({
       }
    }
    catch (err) {
-
+      err.type = "MySql Error"
+      err.message = err.message || err.sqlMessage;
       return { err }
    }
 
@@ -63,14 +66,15 @@ async function UPDATE_PROD({
    title, user_id, id
 }) {
    try {
-      let query = `UPDATE prodlist SET title=? WHERE id="${id}" OR project_id="?"`;
+      let query = `UPDATE projectlist SET title=? WHERE id="${id}" OR project_id="?"`;
 
       let field = await db.query(query, [title, id, id]);
 
       return { success: true }
    }
    catch (err) {
-
+      err.type = "MySql Error"
+      err.message = err.message || err.sqlMessage;
       return { err }
    }
 }
@@ -82,7 +86,7 @@ async function GET_ALL_TASK_FROM({
 
    try {
 
-      let qryProd = `SELECT * FROM prodlist WHERE user_id=? AND id=? OR project_id=? `;
+      let qryProd = `SELECT * FROM projectlist WHERE user_id=? AND id=? OR project_id=? `;
 
       let [prodItem] = await db.query(qryProd, [user_id, id, id]);
 
@@ -97,6 +101,8 @@ async function GET_ALL_TASK_FROM({
       return { rows: rows, success }
 
    } catch (err) {
+      err.type = "MySql Error"
+      err.message = err.message || err.sqlMessage;
       console.log(err);
       return { err }
    }
@@ -110,7 +116,7 @@ async function GET_ALL_USER_PROD({
 
    try {
 
-      let query = `SELECT * FROM prodlist WHERE user_id=?`;
+      let query = `SELECT * FROM projectlist WHERE user_id=?`;
 
       let [rows] = await db.execute(query, [user_id]);
 
@@ -118,6 +124,8 @@ async function GET_ALL_USER_PROD({
 
    }
    catch (err) {
+      err.type = "MySql Error"
+      err.message = err.message || err.sqlMessage;
       return { err }
    }
 

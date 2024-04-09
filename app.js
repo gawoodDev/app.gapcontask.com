@@ -17,6 +17,12 @@ const { addTask, updateTask, deleteTask } = require("./api/taskApi.js");
 const flash = require('express-flash-message').default;
 
 const asyncError = require("express-async-handler");
+const methodOverride = require('method-override')
+
+
+//app.use(methodOverride('X-HTTP-Method-Override'));
+
+app.use(methodOverride('_method'));
 
 app.use(require("cors")())
 app.use(cookieParser())
@@ -46,48 +52,88 @@ app.use(passport.initialize())
 app.use(passport.session());
 
 
-
 // isAuthentication rootes
 app.use(asyncError(authRoutes));
 
 
-// protect rootes
-app.use(asyncError(function (req, res, next) {
-
-   if (req.isAuthenticated() && (req.user || req.session.user)) {
-      return next()
-   }
-
-   console.log(req.baseurl)
-
-   res.redirect("/loggin");
-
-}));
-
-//
 
 
-app.use(asyncError(routes));
-app.use(asyncError(taskRoutes));
-app.use(asyncError(projectRoutes));
-app.use(asyncError(userRoutes));
+app.use("/app", PROTECTION,
+   asyncError(routes));
+
+app.use("/api", asyncError(taskRoutes));
+app.use("/api", asyncError(projectRoutes));
+app.use("/api", asyncError(userRoutes));
 app.use("/admin", asyncError(adminRoutes));
 
 
+app.get("/*", (req, res) => {
+   let url = ["/login", "/signup", "profile"]
+   // for(let )
+   console.log(req.originalUrl)
+   if (req.originalUrl == "/signup") {
+      res.redirect("/app/signup")
+   }
+
+   res.redirect("/app")
+})
 
 app.use(function (err, res, req, next) {
 
    if (err) {
 
-      console.log(":::::::::::::", err)
+      let ErrorObject = {
+         path: generatePathError(err), type: err.type, message: err.message
+      }
+
+      console.log(ErrorObject)
 
    }
 
 })
 
+app.listen(8080, () => console.log("Ist ok running at 8080"));
 
 
-app.listen(8000, () => console.log("Ist ok running at 8000"));
+function generatePathError(err) {
+   let string = ["/api", "/routes"];
+   let arr = err.stack.split(" at ");
+   let path = [];
+   for (let str of string) {
+      arr.forEach((item) => {
+         if (item.includes(str)) {
+            let index = item.indexOf(str);
+            if (index) {
+               path.push(item.slice(index).replace(`\n`, "").trim());
+            }
+         }
+      })
+   }
+   return path;
+
+}
+function PROTECTION(req, res, next) {
+   if (req.isAuthenticated() || req.user) {
+      if (req.originalUrl == "/app/login" || req.originalUrl == "/app/signup") {
+         res.redirect("/app")
+      }
+      else {
+         return next()
+      }
+   } else {
+      if (req.originalUrl == "/app/login" || req.originalUrl == "/app/signup") {
+         return next()
+      }
+      else {
+         res.redirect("/app/login")
+      }
+   }
+}
+
+
+
+
+
 
 
 

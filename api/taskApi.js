@@ -1,12 +1,9 @@
 const db = require("../db/db.js");
 let dbs = require("../db/db-2.js")
-const validation = require("../midelware/model.js"),
-   {
-      getRandom,
-      generateID
-   } = require("../function/ids.js")
+const validation = require("../midelware/model.js")
+let { getRandom, generateID } = require("../function/ids.js")
 const success = true;
-//console.log(generateID("001A"));
+
 
 let by = [
    "user_id", "id", "ref", "echeance", "priority", "createdDate"
@@ -21,6 +18,8 @@ exports.addTask = async function (data, user_id) {
 
       if (err) {
          console.log(err.details[0].message);
+         err.type = "Data Validation"
+         err.message = err.details[0].message;
          return { err }
       }
 
@@ -32,9 +31,15 @@ exports.addTask = async function (data, user_id) {
 
       console.log("Api data _________", task_id, value);
 
-      let query = `INSERT INTO tasklist (title,body,isdone,ref,user_id, task_id) VALUES    ("${title}","${body}","${isdone}","${ref}", "${user_id}", "${task_id}")`;
+      let query = `INSERT INTO tasklist (title,body,isdone,ref,user_id, task_id) VALUES (?,?,?,?,?,?) `;
 
-      let rows = await dbs.execute(query);
+      try {
+         await dbs.execute(query, [title, body, isdone, ref, user_id, task_id]);
+      } catch (err) {
+         err.type = "MySql Error"
+         err.message = err.message || err.sqlMessage;
+         throw err;
+      }
 
       return {
          task_id
@@ -55,26 +60,23 @@ exports.REMOVE_SELECTED = async function (content, user_id) {
 
       let { data } = content;
 
+      let query = `DELETE FROM tasklist WHERE task_id=? AND user_id=?`;
       for (let id in data) {
-         let query = `DELErTE FROM tasklist WHERE task_id=? AND user_id=?`;
-
-         console.log("La tache " + id + " a ete supprimer  avec succes !")
 
          if ((data.length - 1)) {
             console.log("End______")
-            return { success: true };
-
+            return { success: true, err: null };
             break
          }
 
-
-
-         //let rows = await dbs.execute(query, [data[id], user_id]);
+         await dbs.execute(query, [data[id], user_id]).then((resp) => { });
 
       }
 
+
    } catch (err) {
-      console.log("_-++---____", err)
+      err.type = "MySql Error"
+      err.message = err.message || err.sqlMessage;
       return { err }
    }
 
@@ -93,7 +95,8 @@ exports.deleteTask = async function (data, user_id) {
       return { success };
    }
    catch (err) {
-
+      err.type = "MySql Error"
+      err.message = err.message || err.sqlMessage;
       return { err }
    }
 }
@@ -102,7 +105,6 @@ exports.deleteTask = async function (data, user_id) {
 
 exports.updateTask = async function (data, user_id) {
 
-   console.log("Its work! UPDATED ...");
    try {
       let {
          id, title, body, isdone, ref, finish_at
@@ -111,15 +113,16 @@ exports.updateTask = async function (data, user_id) {
       isdone = isdone === true ? 1 : 0;
 
 
-      let query = `UPDATE tasklist SET title="${title}",  body="${body}", finish_at="${finish_at}",  ref='${ref}', isdone='${isdone}'  WHERE id='${id}' AND  user_id="${user_id}"`;
+      let query = `UPDATE tasklist SET title=?,  body=?, finish_at=?,  ref=?, isdone=?  WHERE id=? AND  user_id=?`;
 
-      let rows = await dbs.execute(query);
+      let rows = await dbs.execute(query, [title, body, finish_at, ref, isdone, id, user_id]);
 
 
       return { success: true }
 
    } catch (err) {
-
+      err.type = "MySql Error"
+      err.message = err.message || err.sqlMessage;
       return {
          err
       }
@@ -133,14 +136,13 @@ exports.updateTask = async function (data, user_id) {
 exports.getAllTask = async function (data, user_id) {
 
    try {
-      let [rows] = await dbs.execute(`SELECT * FROM tasklist WHERE user_id="${user_id}"`)
-
-      console.log("Select all task from db")
+      let [rows] = await dbs.execute(`SELECT * FROM tasklist WHERE user_id=?`, [user_id])
 
       return { rows, success: true };
    }
    catch (err) {
-      console.log(err)
+      err.type = "MySql Error"
+      err.message = err.message || err.sqlMessage;
       return { err }
    }
 }
@@ -154,7 +156,7 @@ exports.doneTask = async function (data, user_id) {
       } = data;
       isdone = isdone === true ? 1 : 0;
 
-      let query = `UPDAT tasklist SET isdone=?  WHERE user_id=?  AND task_id=? `;
+      let query = `UPDATE tasklist SET isdone=?  WHERE user_id=?  AND task_id=? `;
 
       await dbs.execute(query, [isdone, user_id, id]);
 
@@ -163,7 +165,8 @@ exports.doneTask = async function (data, user_id) {
       return { success };
    }
    catch (err) {
-      console.log(err)
+      err.type = "MySql Error"
+      err.message = err.message || err.sqlMessage;
       return { err }
    }
 
@@ -197,16 +200,21 @@ const getTaskBy = async function ({
 
       let query;
 
-      if (!type && !key) return done("No key", false, null);
-
+      if (!type || !key) {
+         let err = new Error("Type & key aren't provided!");
+         err.type = "Reference Error";
+         return {
+            err
+         }
+      }
 
       query = `SELECT * FROM tasklist WHERE user_id="${user_id}" AND ${type}="${key}"`;
 
 
       let [rows] = await dbs.execute(query);
 
-
       console.log("Select all task from db");
+
       return { rows, success };
    }
 

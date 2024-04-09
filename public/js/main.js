@@ -22,8 +22,9 @@ window.addEventListener("DOMContentLoaded", (e) => {
    }
 
    async function getData_PROD_FromDB(url) {
-      let fetched = await fetch(`/getDatas`)
+      let fetched = await fetch(`/api/tasks`)
       let datas = await fetched.json()
+      console.log(datas)
       return datas;
    };
 
@@ -118,7 +119,7 @@ window.addEventListener("DOMContentLoaded", (e) => {
 
 
    try {
-      getDataFromDB(`/get_project_list`).then(({datas}) => {
+      getDataFromDB(`/api/projects`).then(({ datas }) => {
          if (datas.length > 0) {
             let select_box = document.querySelector("form.addTask div#select_box");
 

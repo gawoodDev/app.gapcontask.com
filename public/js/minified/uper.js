@@ -1,68 +1,81 @@
 function UPER({ screen, content, type }) {
-	this.screen = document.createElement('div');
-	type = type || "div"
-	this.screen.classList = screen;
-	this.content = this.CONTENT_TYPE(type) 
-	this.content.classList = content;
-	this.screen.append(this.content)
+   this.screen = document.createElement('div');
+   type = type || "div";
+
+   if (screen && typeof screen === "string") {
+      this.screen.classList = screen;
+   } else if (screen && screen.length) {
+      for (let Class of screen) {
+         this.screen.classList.add(Class);
+      }
+
+   }
+
+
+   this.content = this.CONTENT_TYPE(type)
+   this.content.classList = content;
+   this.screen.append(this.content)
 }
 
 function SET_CONTENT_VALUE(value) {
-	if (typeof value === 'string') {
-		this.content.innerHTML = value
-	} else {
-		console.log(typeof value)
-		this.content.append(value)
-	}
+   if (typeof value === 'string') {
+      this.content.innerHTML = value
+   } else {
+      console.log(typeof value)
+      this.content.append(value)
+   }
 }
 
 
 function ADD_TO(container) {
-	container.prepend(this.screen);
+   container.prepend(this.screen);
 }
 
 
 function SHOW() {
-	this.screen.classList.add('show');
-	this.content.classList.add('show');
+   this.screen.classList.add('show');
+   this.content.classList.add('show');
 }
 
 
 function HIDE() {
-	this.screen.classList.remove('show');
-	this.content.classList.remove('show');
+   this.screen.classList.remove('show');
+   this.content.classList.remove('show');
 }
 
 
 function TRIGER(showUp, close = null, callBack) {
-	if (showUp && typeof showUp === 'object') {
-		showUp.onclick = (event) => {
-			event.preventDefault();
-			this.SHOW();
-			callBack(event, 1)
-		}
-	}
-	if (close && typeof close === 'object') {
-		close.onclick = (event) => {
-			event.preventDefault();
-			this.HIDE();
-			callBack(event, 0)
-		}
-	}
+   if (showUp && typeof showUp === 'object') {
+      showUp.onclick = (event) => {
+         event.preventDefault();
+         this.SHOW();
+         callBack(event, 1, this)
+      }
+   }
+   if (close && typeof close === 'object') {
+      close.onclick = (event) => {
+         event.preventDefault();
+         this.HIDE();
+         callBack(event, 0, this)
+      }
+   }
 
-	this.screen.onclick = (event) => {
-		event.preventDefault();
-		this.HIDE()
-		callBack(event, 0)
-	}
-	this.content.onclick = (event) => {
-		event.stopPropagation();
-	}
+   this.screen.onclick = (event) => {
+      event.preventDefault();
+      this.HIDE()
+      callBack(event, 0, this)
+   }
+   this.content.onclick = (event) => {
+      event.stopPropagation();
+   }
 }
 
-function CONTENT_TYPE (type){
+function CONTENT_TYPE(type) {
    return document.createElement(type);
 }
+
+
+
 
 let _prototype = UPER.prototype;
 _prototype.SET_CONTENT = SET_CONTENT_VALUE;

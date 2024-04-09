@@ -1,36 +1,36 @@
 
 
-<%- include("layout/head", {css: ["./../css/cssComposant.css","./../css/plan.css"], title: "INDEX PAGE" }) %>
+<%- include("layout/head", {css: ["./../css/admin.css"], title: "INDEX PAGE" }) %>
 
-
-
-<header>
-
-   <div class="top">
-        
-
-                <h5> ADMINISTRATION </h5>
+    <header>
+        <nav>
+            <ul class="onglet">
+                <li><a href="/">Home</a></li>
+                <li><a href="#">Issues</a></li>
+            </ul>
+        </nav>
+    </header>
     
+
+
+
+    <main>
+        <section class="box">
             
-   </div>
-   
+            
+            
+            
+            
+        </section>
         
-
-</header>
-
-
-<section>
-   
-   
-   
-   Nothing to see 
-   
-</section>
+    </main> 
+    
 
 
 
 
-<%- include("layout/footer", {js: [ "./js/jquery.min.js", "./js/main.js"], title: "URGENT CARE" }) %>
+
+<%- include("layout/footer", {js: [ "./js/jquery.min.js", "./js/issuesDashboard.js"], title: "URGENT CARE" }) %>
 
 
 

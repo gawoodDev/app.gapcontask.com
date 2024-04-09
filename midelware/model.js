@@ -11,7 +11,7 @@ function validation (body) {
     
     
     let userValidationSignup = Joi.object({
-        username : Joi.string().min(1).max(20).trim().required(),
+        username : Joi.string().min(8).max(20).trim().required(),
         email : Joi.string().email().trim().required(),
         password : Joi.string().min(1).max(20).trim().required()
     })

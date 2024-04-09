@@ -39,7 +39,7 @@ routes.post(`/addProd`, asyncError(async (req, res) => {
 
 }));
 
-routes.post(`/modifProd`, asyncError(async (req, res) => {
+routes.put(`/modifProd`, asyncError(async (req, res) => {
    let {
       user_id
    } = req.user;
@@ -56,29 +56,32 @@ routes.post(`/modifProd`, asyncError(async (req, res) => {
 
 }));
 
-routes.post(`/deleteProd`, asyncError(async (req, res) => {
+routes.delete(`/deleteProd`, asyncError(async (req, res) => {
+   try {
    let {
       user_id
    } = req.session.user || req.user;
 
 
+      let { err, successs } = await DELETE_PROD({
+         id: req.body.id,
+         user_id,
+         ref_key: req.body.ref_key
+      })
+      if (err) throw err;
+      res.status(200).send("success")
 
-   let { err, successs } = await DELETE_PROD({
-      id: req.body.id,
-      user_id,
-      ref_key: req.body.ref_key
-   })
+   } catch (error) {
+      error.type = error.type || "Reference Error"
+      throw error
+   }
 
 
-   if (err) throw err;
-
-   res.status(200).send("success")
 }));
 
 
 
-routes.get('/get_project_list', asyncError(async (req, res) => {
-
+routes.get('/projects', asyncError(async (req, res) => {
 
    let {
       user_id
@@ -88,17 +91,16 @@ routes.get('/get_project_list', asyncError(async (req, res) => {
       user_id
    });
 
+   console.log("Project list sended!")
 
    if (err) throw err;
-
    res.status(200).json({ datas: rows });
-
 
 }));
 
 
 
-routes.get('/unique_prod_datas:id', asyncError(async (req, res) => {
+routes.get('/project/tasks:id', asyncError(async (req, res) => {
 
 
    let { user_id } = req.user, id;
@@ -109,8 +111,6 @@ routes.get('/unique_prod_datas:id', asyncError(async (req, res) => {
    let { rows, err, successs } = await GET_ALL_TASK_FROM({ id, user_id });
 
    if (err) throw err;
-
-   console.log(rows)
 
    res.status(200).json(rows);
 

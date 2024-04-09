@@ -27,14 +27,15 @@ let HOOK = function ({
 
 
 
-function postToServer(url, body) {
+function postToServer(url, body, method = "POST") {
 
    return fetch(url,
       {
          headers: {
             "Content-type": "application/json;charset=UTF-8"
+
          },
-         method: "POST",
+         method: method,
          body: JSON.stringify(body)
       })
 
@@ -58,7 +59,7 @@ function POST_SERVER(data) {
 function DELETE_TASK(LIST) {
    if (LIST.length > 0) {
 
-      postToServer("/deleteTask", { data: LIST })
+      postToServer("/api/deleteTask", { data: LIST }, "DELETE")
          .then((res) => {
             if (res.status !== 200) return
          })
@@ -80,14 +81,16 @@ function addItem() {
 
    this.data.title = this.form.title.value;
    this.data.body = this.form.body.value;
-   this.data.ref = this.form.select.value;
+   if (this.form.select) {
+      this.data.ref = this.form.select.value;
+   }
    this.data.isdone = this.form.isdone.checked
    this.data.finish_at = date;
    this.data.timer = moment().format("YYYY-MM-DDTHH:mm:ss:SSS[Z]")
 
 
 
-   postToServer("/addTask", this.data)
+   postToServer("/api/addTask", this.data, "POST")
       .then((res) => {
          if (res.status !== 200) return
          return res.json();
@@ -117,12 +120,12 @@ function modifItem() {
       this.data.isdone = this.form.isdone.checked
       this.data.finish_at = date;
    }
-   
+
 
 
    this.updateITEM()
 
-   postToServer("/modifTask", this.data)
+   postToServer("/api/modifTask", this.data, "PUT")
       .then((res) => {
          if (res.status !== 200) return;
 
@@ -147,7 +150,7 @@ function deleteItem() {
 
    if (this.isItem === true) {
       if (!this.liveId) return
-      postToServer("/deleteTask", { id: this.liveId })
+      postToServer("/api/deleteTask", { id: this.liveId }, "DELETE")
          .then((res) => {
             if (res.status !== 200) return
             document.querySelector(`div#task_${this.liveId}`).remove();
@@ -164,10 +167,12 @@ function deleteItem() {
 
 }
 
-function onFucusExisting() {
+function onFucusExisting(Elem) {
+   Elem.SHOW();
+   /*
    $("#deleteItemBtn").show();
-   document.querySelector("div.screen").classList.add("show");
-   document.querySelector("form.addTask").classList.add("show");
+   document.querySelector("div.pannelAddTask").classList.add("show");
+   document.querySelector("form.addTask").classList.add("show");*/
    $("#submitBtn").css("width",
       "60%");
    $("#submitBtn").text("Enregistrer");

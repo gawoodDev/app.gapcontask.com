@@ -4,7 +4,12 @@ const db = mysql.createConnection({
 	host: "localhost",
 	user: "root",
 	password: "root",
-	database: "skyapper"
+	database: "gapcontask"
+});
+
+db.connect((err) => {
+   if (err) throw err;
+   console.log("Connection a la base de donnee reussit !")
 });
 
 

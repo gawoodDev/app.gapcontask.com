@@ -1,79 +1,16 @@
 import SELECT_ITEM from './component/select_prod_proto.js';
 import moment from './minified/moment.js';
+import { modal } from './midelware/panelAddTask_Uper.js';
+import * as englob from './midelware/modeme_Uper.js';
+
 import HOOK from './component/hooks_proto.js';
 import UPER from './minified/uper.js';
 
 
 const id_page = document.querySelector('div#forIDcheck') // null
-let id;
-let ref_key;
-
-console.log(id_page)
-
-let selectewd = [],
-   onSelected = false,
-   list_id = [],
-   a = 0,
-   START_X = null,
-   PROJECT_LIST = null,
-   isDragging = true;
-
 const showUpModal = document.querySelector('#addNewTaskBtn')
-const modal = new UPER({ screen: 'screen', content: 'addTask', type: 'form' });
 const pannelAddTask = document.querySelector("#pannelAddTask")
-
-
-
-modal.CONTENT_TYPE("form")
-modal.SET_CONTENT(pannelAddTask.innerHTML)
-
-modal.APPEND_TO(document.body)
-pannelAddTask.remove();
-modal.TRIGER(showUpModal, null, (e, init) => {
-   if (init === 1) {
-      hooks.focusNoExisting();
-   }
-   if (init === 0) {
-      hooks.onLoseFucusExisting();
-   }
-});
-//pannelAddTask.remove()
-
-getDataFromDB(`/get_project_list`)
-   .then(({ datas }) => {
-      PROJECT_LIST = datas;
-
-      console.log("Sssss", PROJECT_LIST)
-
-   }).catch((err) => {
-      console.error(err)
-   });
-
-
-
-window.addEventListener("DOMContentLoaded", (e) => {
-
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-if (id_page) {
-   id = id_page.getAttribute("data-id");
-   ref_key = id_page.getAttribute("data-ref-key");
-}
-
-
-
+let prod_tools = document.querySelector('#prod_tools');
 
 let select_box = document.querySelector("#select_box");
 let headOptions = document.querySelector('.headOptions')
@@ -83,13 +20,13 @@ let show_up = document.querySelector('.show_up')
 let bottom_options = document.querySelector('.bottom_options')
 let englob_popUp = document.querySelector('.englob_popUp')
 
-let modif_elprod = document.querySelector('#modif_elprod')
-let delete_prod = document.querySelector('.modeme #delete_prod');
-let prod_tools = document.querySelector('#prod_tools');
-let modeme = document.querySelector('.modeme')
+let modif_elprod = document.querySelector('#modif_elprod');
+//let delete_prod = document.querySelector('.modeme #delete_prod');
 
-let select_tasks = document.querySelector('.modeme #select_tasks')
-let bottom_modProd = document.querySelector('.bottom_modProd')
+let modeme = document.querySelector('.modeme');
+
+let select_tasks = document.querySelector('.modeme #select_tasks');
+let bottom_modProd = document.querySelector('.bottom_modProd');
 let bottom_modProd_input = bottom_modProd.querySelector('input');
 let bottom_modProd_button = bottom_modProd.querySelector('button')
 let title_prod = document.querySelector('#title_prod');
@@ -106,15 +43,10 @@ let submitBtn = document.querySelector("#submitBtn");
 let deleteBtn = document.querySelector("button#deleteBtn");
 let modifBtn = document.querySelector("button#modifBtn");
 
-
-
 let closePanel = document.querySelector(".closePanel");
 let addNewTaskBtn = document.querySelector("#addNewTaskBtn");
 let selectDate = document.querySelector("#selectDate");
-
-
-
-
+let delete_prod = document.querySelector('.modeme #delete_prod');
 
 
 
@@ -126,7 +58,157 @@ let hooks = new HOOK({
    },
    form: document.querySelector("form"),
    pannelAddTask
+});
+
+
+
+
+
+
+let id;
+let ref_key;
+let selectewd = [];
+let onSelected = false
+let list_id = [];
+let a = 0;
+let START_X = null;
+let PROJECT_LIST = null;
+let isDragging = true;
+let thisVal = null;
+
+
+/*
+
+const modal = new UPER({ screen: 'screen', content: 'addTask', type: 'form' });
+
+modal.CONTENT_TYPE("form")
+modal.SET_CONTENT(pannelAddTask.innerHTML)
+modal.APPEND_TO(document.body)
+pannelAddTask.remove();
+modal.TRIGER(showUpModal, null, (e, init) => {
+   if (init === 1) {
+      hooks.focusNoExisting();
+   }
+   if (init === 0) {
+      hooks.onLoseFucusExisting();
+   }
+});
+
+*/
+
+
+
+//pannelAddTask.remove()
+
+getDataFromDB(`/api/projects`)
+   .then(({ datas }) => {
+      PROJECT_LIST = datas;
+      console.log("Sssss", PROJECT_LIST)
+
+   }).catch((err) => {
+      console.error(err)
+   });
+
+
+
+
+
+
+
+
+
+
+
+function NOT_ALLOWED() {
+   if (!title_prod) {
+      $(delete_prod).hide();
+   }
+   if (id_page) {
+      id = id_page.getAttribute("data-id");
+      ref_key = id_page.getAttribute("data-ref-key");
+   }
+}
+NOT_ALLOWED()
+
+
+
+
+
+
+
+
+modal.TRIGER(showUpModal, null, (e, init) => {
+   if (init === 1) {
+      hooks.focusNoExisting();
+   }
+   if (init === 0) {
+      hooks.onLoseFucusExisting();
+   }
+});
+
+
+
+englob.balb.TRIGER(delete_prod, null, (e, init, Self) => {
+   console.log("Is iterate", e.currentTarget, Self)
+   englob.modeme.HIDE();
+   setPopUpContent(Self.content, {
+      title: 'Supprimer le projet ?',
+      body: `Cette action définitive et irréversible
+        supprimera le projet  y compris les tâches incluse.`
+   })
+});
+
+
+englob.modeme.TRIGER(prod_tools, null, (e, init) => {
+   console.log("Is Modeme item")
+   englob.balb.HIDE()
+});
+englob.updateprod.TRIGER(modif_elprod, null, (e, init) => {
+   console.log("Is modif_elprod item")
+   englob.modeme.HIDE()
+   englob.balb.HIDE()
+});
+
+
+
+
+englob.balb.content.querySelectorAll('button').forEach((button) => {
+   button.addEventListener('click', function (event) {
+      event.preventDefault()
+      event.stopPropagation()
+      let result = this.getAttribute('data-return')
+
+      REMOVE_PROJECT(result === "true")
+
+      console.log(result)
+   });
+
+});
+
+select_tasks.addEventListener('click', function (event) {
+   event.preventDefault()
+   modeme.classList.remove('active');
+   this.classList.add('active');
+   headOptions.classList.add('active');
+   bottom_options.classList.add('active');
+   onSelected = true;
+   isDragging = false;
+   bottom_modProd.classList.remove('active');
+});
+
+
+/***
+
+let hooks = new HOOK({
+   id: 10,
+   self: {
+      body: "Give me one new time up", title: "Hello"
+   },
+   form: document.querySelector("form"),
+   pannelAddTask
 })
+
+***
 
 console.log(hooks);
 
@@ -142,13 +224,13 @@ englob_popUp.querySelectorAll('button').forEach((button) => {
       }
 
       if (ret === "true") {
-         alert("Supprimer")
-         postToServer("/deleteProd", JSON.stringify({
+
+         postToServer("/api/deleteProd", JSON.stringify({
             id, ref_key
-         })).then((res) => {
+         }), "DELETE").then((res) => {
             if (res.status === 200) {
                let a = document.createElement("a");
-               a.href = "/project";
+               a.href = "/api/project";
                a.click();
             }
          })
@@ -283,10 +365,10 @@ bottom_modProd_button.addEventListener('click', function (event) {
    bottom_modProd_input.blur();
    title_prod.innerText = bottom_modProd_input.value
 
-   postToServer("/modifProd", JSON.stringify({
+   postToServer("/api/modifProd", JSON.stringify({
       id: Number(id),
       title: bottom_modProd_input.value
-   }))
+   }), "PUT")
       .then((rem) => {
          bottom_modProd.classList.remove('active');
       })
@@ -321,14 +403,33 @@ remove_selected.addEventListener('click', (event) => {
 
 
 
-
-let thisVal = null;
-
+*/
 
 
-function setPopUpContent({ title, body }) {
-   englob_popUp.querySelector(".popUp_modal > div h5").innerHTML = title;
-   englob_popUp.querySelector(".popUp_modal > div p").innerHTML = body;
+
+
+function REMOVE_PROJECT(res) {
+   if (!res) {
+      englob_popUp.classList.remove('active');
+   } else {
+
+      postToServer("/api/deleteProd", JSON.stringify({
+         id, ref_key
+      }), "DELETE").then((res) => {
+         if (res.status !== 200) return
+         let a = document.createElement("a");
+         a.href = "/api/project";
+         a.click();
+      }).catch((err) => {
+         console.log(err);
+      });
+   }
+}
+
+
+function setPopUpContent(self, { title, body }) {
+   self.querySelector("#deleterTitle").innerHTML = title;
+   self.querySelector("#deleterContent").innerHTML = body;
 }
 
 
@@ -361,13 +462,13 @@ function On_Click(e, self) {
 
 
 
-/*
+/**
 state : {type : Number} 4 etats possible
   0 : la tache a ete enregistre dans la base de donner
   1 : une tache deja enregistre dans la base de donner mais qui a éte modifier
   2: Une nouvelle tache pas encore enregistre dans la base de donner cote Server
   3 : Cette tache va etre suprimer dans la base de donneés
-*/
+**/
 
 class TASK_ITEM {
 
@@ -493,7 +594,7 @@ class TASK_ITEM {
       } catch (e) { }
 
       hooks.setters(this);
-      hooks.onFucusExisting();
+      hooks.onFucusExisting(modal);
       hooks.auto_fill();
    }
 
@@ -506,7 +607,7 @@ class TASK_ITEM {
          ref: this.ref
       }
 
-      postToServer("/doneTask", JSON.stringify(data), "POST")
+      postToServer("/api/doneTask", JSON.stringify(data), "POST")
          .then((res) => {
             if (res.status !== 200) return;
 
@@ -602,14 +703,14 @@ async function getDataFromDB(url) {
 }
 
 
-function postToServer(url, body, method) {
+function postToServer(url, body, method = "POST") {
 
    return fetch(url,
       {
          headers: {
             "Content-type": "application/json;charset=UTF-8"
          },
-         method: "POST",
+         method,
          body: body
       })
 
